@@ -64,6 +64,7 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .rel-row.level-2{margin-left:16px}.rel-row.level-3{margin-left:32px}.rel-row.level-deep{margin-left:48px}
 .rel-item,.outline-item{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:10px;padding:8px;color:var(--muted);font-size:13px;line-height:1.35}
 .rel-item:hover,.outline-item:hover,.outline-item.active{background:var(--hover);color:var(--text)}
+.outline-item.active{border-left:3px solid var(--accent);padding-left:9px;font-weight:650}
 .nav-empty{color:var(--faint);font-size:12px;padding:8px}
 .tag-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted)}
 .session-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.session-actions button{font-size:12px;padding:6px 8px}
@@ -681,9 +682,40 @@ function renderDetailNav(){
   const outline=document.getElementById('outlineList');
   if(!detailState.outline.length){outline.innerHTML='<div class="nav-empty">No outline</div>';}else{
     detailState.outline.forEach(item=>{
-      const b=document.createElement('button');b.className='outline-item';b.textContent=`${item.index+1}. ${item.title}`;b.onclick=()=>jumpToTurn(item.index);outline.appendChild(b);
+      const b=document.createElement('button');b.className='outline-item';b.dataset.index=item.index;b.textContent=`${item.index+1}. ${item.title}`;b.onclick=()=>jumpToTurn(item.index);outline.appendChild(b);
     });
   }
+}
+
+let outlineSyncFrame=null;
+let activeOutlineIndex=null;
+function syncOutline(){
+  if(currentView!=='detail')return;
+  if(outlineSyncFrame)return;
+  outlineSyncFrame=requestAnimationFrame(()=>{
+    outlineSyncFrame=null;
+    const turns=[...document.querySelectorAll('.turn[id^="turn-"]')];
+    if(!turns.length)return;
+    const anchor=window.innerHeight*0.28;
+    let best=turns[0];
+    let bestDistance=Infinity;
+    turns.forEach(turn=>{
+      const rect=turn.getBoundingClientRect();
+      const distance=Math.abs(rect.top-anchor);
+      if(rect.top<=window.innerHeight*0.75&&rect.bottom>=80&&distance<bestDistance){
+        best=turn;bestDistance=distance;
+      }
+    });
+    const index=Number(best.id.replace('turn-',''));
+    if(index===activeOutlineIndex)return;
+    activeOutlineIndex=index;
+    document.querySelectorAll('.outline-item.active').forEach(item=>item.classList.remove('active'));
+    const item=document.querySelector(`.outline-item[data-index="${index}"]`);
+    if(item){
+      item.classList.add('active');
+      item.scrollIntoView({block:'nearest'});
+    }
+  });
 }
 
 async function removeRelation(path){
@@ -717,6 +749,7 @@ function renderTurns(append=false){
 
 async function loadSession(path,opts={}){
   currentView='detail';activePath=path;renderList();
+  if(!opts.append)activeOutlineIndex=null;
   applyLayout(layoutMode);
   updateTopActions();
   const s=activeSession();document.getElementById('topTitle').textContent=s?s.name:'Session Detail';
@@ -735,6 +768,7 @@ async function loadSession(path,opts={}){
     const chat=document.getElementById('chat');
     if(!detailState.turns.length){chat.innerHTML='<div class="empty">No visible messages</div>';return;}
     renderTurns(opts.append);
+    syncOutline();
     if(opts.turnIndex!=null)jumpToTurn(opts.turnIndex);
   }catch(err){const chat=document.getElementById('chat');if(chat){chat.innerHTML='<div class="error"></div>';chat.querySelector('.error').textContent=err.message;}}
 }
@@ -750,7 +784,10 @@ async function jumpToTurn(index){
     await loadSession(activePath,{offset:pageStart});
   }
   const el=document.getElementById('turn-'+index);
-  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(el){
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(syncOutline,260);
+  }
 }
 
 function openRelationPicker(){
@@ -804,6 +841,8 @@ document.getElementById('searchInput').oninput=(ev)=>{
 document.getElementById('relationClose').onclick=()=>closeRelationPicker();
 document.getElementById('relationPicker').onclick=(ev)=>{if(ev.target.id==='relationPicker')closeRelationPicker();};
 document.getElementById('relationFilter').oninput=(ev)=>renderRelationPicker(ev.target.value);
+document.querySelector('.content').addEventListener('scroll',syncOutline,{passive:true});
+window.addEventListener('scroll',syncOutline,{passive:true});
 document.addEventListener('keydown',(ev)=>{
   if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();openSearch();}
   if(ev.key==='Escape')closeSearch();
