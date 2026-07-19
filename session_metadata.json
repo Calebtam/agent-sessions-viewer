@@ -1,10 +1,45 @@
 {
   "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl": {
-    "name": "static_hold"
+    "category": "zupt",
+    "name": "static_hold",
+    "tags": [
+      "static hold"
+    ]
   },
   "2026/07/17/rollout-2026-07-17T17-06-05-019f6f53-6bb8-7e71-ab6e-e73a4083a6e9.jsonl": {
-    "relations": [
-      "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl"
+    "category": "dev_workflow",
+    "pinned": false,
+    "relations": [],
+    "tags": []
+  },
+  "_access": {
+    "publicSessions": [
+      "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl",
+      "2026/06/16/rollout-2026-06-16T16-31-09-019ecf8e-49d5-78c0-9422-b337678c4e28.jsonl"
+    ],
+    "remoteEnabled": true,
+    "remoteToken": "",
+    "tokens": [
+      {
+        "name": "Admin",
+        "publicSessions": [],
+        "role": "admin",
+        "token": "7fY1vK-nI3fYAf_ycRNUWW7iLPHmKgsh"
+      },
+      {
+        "name": "Viewer 2",
+        "publicSessions": [
+          "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl",
+          "2026/06/16/rollout-2026-06-16T16-31-09-019ecf8e-49d5-78c0-9422-b337678c4e28.jsonl",
+          "2026/06/16/rollout-2026-06-16T17-00-54-019ecfa9-8875-7c52-a72b-846241c820d0.jsonl"
+        ],
+        "role": "viewer",
+        "token": "Kj-bBDLGfAfE9rWZxStv0cbus6SNYMuG"
+      }
     ]
-  }
+  },
+  "_categories": [
+    "zupt",
+    "dev_workflow"
+  ]
 }
