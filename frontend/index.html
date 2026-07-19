@@ -20,23 +20,32 @@ body.sidebar-collapsed .sidebar{width:0;min-width:0;overflow:hidden;border-right
 .brand-dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .side-actions{margin-left:auto;display:flex;gap:6px}
 .icon-btn{min-width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;padding:0;font-weight:750}
-.session-list{overflow:auto;padding:10px}
+.session-list{overflow:auto;padding:10px;flex:1;min-height:0}
+.panel-footer{height:46px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;background:var(--surface2);color:var(--faint);font-size:12px;flex:none}
+.side-mode{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--line)}.side-mode button{font-size:12px;padding:5px 7px}.side-mode button.active{border-color:var(--accent);color:var(--accent)}
 .date{margin:16px 8px 7px;color:var(--faint);font-size:12px;font-weight:800;text-transform:uppercase}
 .side-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px;border-radius:12px;cursor:pointer}
 .side-item:hover,.side-item.active{background:var(--hover)}
+.side-item.subagent{margin-left:18px;padding:7px 8px;border-left:2px solid var(--line);grid-template-columns:1fr}.side-item.subagent .side-title{font-size:12px;color:var(--muted)}
+.side-item.subagent.level-2{margin-left:34px}.side-item.subagent.level-3{margin-left:50px}.side-item.subagent.level-deep{margin-left:66px}
 .side-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
 .side-sub{margin-top:3px;color:var(--faint);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rename{font-size:12px;padding:5px 7px;background:transparent}
 .content{flex:1;min-width:0;height:100%;overflow:auto;background:var(--bg)}
 .topbar{position:sticky;top:0;z-index:4;height:58px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 18px}
 body:not(.sidebar-collapsed) #sideOpen{display:none}
+body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sideOpen{display:inline-flex}
 .top-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
 .top-spacer{flex:1}
 .home{max-width:1180px;margin:0 auto;padding:30px 24px 80px}
 .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:26px}
 .hero h1{margin:0;font-size:32px;letter-spacing:0}.hero p{margin:8px 0 0;color:var(--muted)}
 .stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 13px;color:var(--muted)}.stat strong{color:var(--text)}
-.home-date{margin:30px 0 12px;font-weight:800;color:var(--muted)}
+.home-controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 8px}.home-controls button.active{border-color:var(--accent);color:var(--accent)}
+.access-cta{border-color:color-mix(in srgb,var(--accent) 60%,var(--line));background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
+#adminBtn{display:none}
+.access-panel{max-width:980px;margin:0 auto;padding:28px 24px 80px}.access-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.access-head h1{margin:0;font-size:30px}.access-head p{margin:8px 0 0;color:var(--muted)}.access-grid{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:16px}.access-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.access-box h2{margin:0 0 10px;font-size:16px}.access-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.access-row:first-of-type{border-top:0}.access-muted{color:var(--muted);font-size:13px;line-height:1.45}.access-token{display:flex;gap:8px;margin-top:10px}.access-token input,.access-filter{width:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);padding:10px;font:inherit}.access-list{margin-top:12px;max-height:62vh;overflow:auto}.access-item{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px;border-radius:12px}.access-item:hover{background:var(--hover)}.access-item-title{font-weight:650}.access-item-meta{color:var(--faint);font-size:12px;margin-top:3px}.access-status{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px}.access-status.on{color:#075244;background:#b9f3e2;border-color:#84dfc9}.access-status.off{color:var(--muted);background:var(--surface)}
+.home-date{margin:30px 0 12px;font-weight:800;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:10px}.home-date-actions{display:flex;gap:6px}.home-date-actions button{font-size:12px;padding:5px 7px;font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);cursor:pointer;min-height:210px;display:flex;flex-direction:column}
 .card:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));transform:translateY(-1px)}
@@ -44,13 +53,18 @@ body:not(.sidebar-collapsed) #sideOpen{display:none}
 .card-title{font-weight:800;line-height:1.3;overflow-wrap:anywhere}.file-name{margin-top:5px;color:var(--faint);font-size:12px;overflow-wrap:anywhere}
 .preview{margin:14px 0 0;padding:0;list-style:none;color:var(--muted);font-size:13px}.preview li{margin:8px 0;padding-left:12px;border-left:2px solid color-mix(in srgb,var(--accent) 45%,var(--line));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:12px}
+.category-select{max-width:140px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:4px;font-size:12px}
 .chat{max-width:960px;margin:0 auto;padding:32px 24px 90px}
 .detail-shell{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 58px)}
-.detail-nav{position:sticky;top:58px;height:calc(100vh - 58px);overflow:auto;border-right:1px solid var(--line);background:var(--surface2);padding:14px}
+.detail-nav{position:sticky;top:58px;height:calc(100vh - 58px);border-right:1px solid var(--line);background:var(--surface2);display:flex;flex-direction:column;min-height:0}
+.detail-nav-body{overflow:auto;padding:14px;flex:1;min-height:0}
 .detail-main{min-width:0;overflow:visible}
 .nav-section{margin-bottom:18px}.nav-title{font-size:12px;color:var(--faint);font-weight:800;text-transform:uppercase;margin:0 0 8px}
+.rel-group{margin:10px 0 12px}.rel-group-title{display:flex;align-items:center;justify-content:space-between;color:var(--faint);font-size:11px;font-weight:700;text-transform:uppercase;margin:0 0 5px;padding:0 4px}.rel-count{font-weight:600;color:var(--faint)}.rel-row{display:flex;align-items:center;gap:6px}.rel-kind{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.02em;border:1px solid var(--line);border-radius:999px;padding:3px 6px;color:var(--muted);background:var(--panel)}.rel-kind.subagent{color:#075244;background:#b9f3e2;border-color:#84dfc9}.rel-kind.master{color:#103a68;background:#cfe4ff;border-color:#94bff4}.rel-kind.reference{color:#433406;background:#f7e7a0;border-color:#dec767}
+.rel-row.level-2{margin-left:16px}.rel-row.level-3{margin-left:32px}.rel-row.level-deep{margin-left:48px}
 .rel-item,.outline-item{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:10px;padding:8px;color:var(--muted);font-size:13px;line-height:1.35}
 .rel-item:hover,.outline-item:hover,.outline-item.active{background:var(--hover);color:var(--text)}
+.outline-item.active{border-left:3px solid var(--accent);padding-left:9px;font-weight:650}
 .nav-empty{color:var(--faint);font-size:12px;padding:8px}
 .tag-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted)}
 .session-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.session-actions button{font-size:12px;padding:6px 8px}
@@ -87,6 +101,17 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
 .picker-panel{width:min(780px,100%);max-height:76vh;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
 .picker-head{display:flex;gap:10px;padding:14px;border-bottom:1px solid var(--line)}.picker-head input{flex:1;border:0;outline:0;background:var(--surface);color:var(--text);border-radius:12px;padding:12px 14px;font:inherit}
 .picker-list{overflow:auto;padding:8px}.picker-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border-radius:12px}.picker-row:hover{background:var(--hover)}.picker-title{font-weight:650}.picker-sub{color:var(--faint);font-size:12px;margin-top:3px}
+.layout-switch{display:flex;align-items:center;gap:8px}
+.layout-toggle{width:38px;height:30px;border-radius:9px;padding:0;display:flex;align-items:center;justify-content:center}
+.layout-icon{width:22px;height:16px;border:1.5px solid var(--muted);border-radius:4px;display:flex;align-items:stretch;overflow:hidden}
+.layout-icon span{flex:1;border-left:1.5px solid var(--muted)}.layout-icon span:first-child{border-left:0}
+.layout-switch-label{font-size:12px;color:var(--faint)}
+.floating-layout{position:fixed;left:14px;bottom:14px;z-index:10;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:6px}
+body.layout-one .sidebar,body.layout-one .detail-nav{display:none}body.layout-one .detail-shell{display:block}
+body.layout-two .sidebar{display:none}body.layout-two .detail-shell{grid-template-columns:280px 1fr}
+body.layout-three .sidebar{display:flex}body.layout-three .detail-shell{grid-template-columns:280px 1fr}
+body.layout-one #sideOpen,body.layout-two #sideOpen{display:inline-flex}
+body.layout-three #sideOpen{display:none}
 @media(max-width:980px){.detail-shell{grid-template-columns:1fr}.detail-nav{position:relative;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line)}}
 @media(max-width:860px){.sidebar{position:absolute;z-index:9;height:100%;box-shadow:var(--shadow)}body.sidebar-collapsed .sidebar{transform:translateX(-100%);width:300px;min-width:300px}.hero{align-items:flex-start;flex-direction:column}.chat,.home{padding:20px 14px 64px}.bubble{max-width:94%}details.think-box{margin-left:0}.avatar{display:none}}
 </style>
@@ -96,6 +121,7 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
   <aside class="sidebar">
     <div class="brand"><span class="brand-dot"></span><span>Sessions</span><div class="side-actions"><button id="sideClose" class="icon-btn" title="Collapse sidebar">‹</button></div></div>
     <div id="sessionList" class="session-list"></div>
+    <div id="sessionFooter" class="panel-footer"><span>Sessions</span></div>
   </aside>
   <main class="content">
     <div class="topbar">
@@ -103,11 +129,13 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
       <div id="topTitle" class="top-title">Codex Session Viewer</div>
       <div class="top-spacer"></div>
       <button id="searchBtn" title="Search sessions">Search</button>
+      <button id="adminBtn" class="access-cta" title="Access settings">Admin</button>
       <button id="homeBtn" title="Home">Home</button>
       <button id="themeToggle" title="Toggle theme">Light</button>
     </div>
     <div id="view"></div>
   </main>
+  <div id="floatingLayout" class="floating-layout"></div>
 </div>
 <div id="searchModal" class="search-modal">
   <div class="search-panel">
@@ -121,7 +149,7 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
 <div id="relationPicker" class="picker-modal">
   <div class="picker-panel">
     <div class="picker-head">
-      <input id="relationFilter" placeholder="Find a session to relate..." autocomplete="off">
+      <input id="relationFilter" placeholder="Find a reference session..." autocomplete="off">
       <button id="relationClose">Close</button>
     </div>
     <div id="relationList" class="picker-list"></div>
@@ -131,10 +159,19 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
 <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
 <script>
 let sessions=[];
+let categories=[];
 let activePath='';
 let currentView='home';
 let searchTimer=null;
-let detailState={path:'',session:null,turns:[],outline:[],relations:{subagents:[],manual:[]},offset:0,limit:50,total:0,hasMore:false};
+let detailState={path:'',session:null,turns:[],outline:[],relations:{masters:[],subagents:[],references:[],manual:[]},offset:0,limit:50,total:0,hasMore:false};
+let accessState={remoteEnabled:false,isAdmin:false,publicPaths:[]};
+let homeGroupMode=localStorage.getItem('homeGroupMode')||'date';
+let sideGroupMode=localStorage.getItem('sideGroupMode')||homeGroupMode;
+let layoutMode=localStorage.getItem('detailLayoutMode')||'two';
+const urlToken=new URLSearchParams(location.search).get('token')||'';
+let accessToken=urlToken||sessionStorage.getItem('accessToken')||'';
+if(urlToken)sessionStorage.setItem('accessToken',urlToken);
+localStorage.removeItem('accessToken');
 const savedTheme=localStorage.getItem('viewerTheme')||'dark';
 document.body.dataset.theme=savedTheme;
 
@@ -154,59 +191,337 @@ function highlightIn(root){
   root.querySelectorAll('pre code').forEach(block=>hljs.highlightElement(block));
 }
 function sessionUrl(path){return path.split('/').map(encodeURIComponent).join('/');}
+function apiUrl(url){if(!accessToken)return url;const sep=url.includes('?')?'&':'?';return `${url}${sep}token=${encodeURIComponent(accessToken)}`;}
+function apiFetch(url,options){return fetch(apiUrl(url),options);}
 function groupByDate(items){return items.reduce((acc,item)=>{const key=item.date||'unknown';(acc[key]||=[]).push(item);return acc;},{});}
+function groupByCategory(items){return items.reduce((acc,item)=>{const key=item.category||'Uncategorized';(acc[key]||=[]).push(item);return acc;},{});}
 function activeSession(){return sessions.find(s=>s.path===activePath);}
 function updateTopActions(){
   document.getElementById('homeBtn').style.display=currentView==='home'?'none':'inline-flex';
+  document.getElementById('adminBtn').style.display=accessState.isAdmin?'inline-flex':'none';
+  placeLayoutSwitch();
+}
+function applyLayout(mode){
+  layoutMode=mode;
+  localStorage.setItem('detailLayoutMode',mode);
+  document.body.classList.remove('layout-one','layout-two','layout-three');
+  document.body.classList.remove('sidebar-collapsed');
+  if(currentView==='detail')document.body.classList.add('layout-'+mode);
+  placeLayoutSwitch();
+}
+function nextLayout(){
+  const order=['one','two','three'];
+  applyLayout(order[(order.indexOf(layoutMode)+1)%order.length]);
+}
+function layoutLabel(){
+  return layoutMode==='one'?'1 column':layoutMode==='two'?'2 columns':'3 columns';
+}
+function layoutIcon(){
+  const count=layoutMode==='one'?1:layoutMode==='two'?2:3;
+  return `<span></span>`.repeat(count);
+}
+function layoutSwitchHtml(){
+  return `<div class="layout-switch"><span class="layout-switch-label">${layoutLabel()}</span><button id="layoutCycle" class="layout-toggle" title="Switch layout"><span class="layout-icon">${layoutIcon()}</span></button></div>`;
+}
+function placeLayoutSwitch(){
+  const floating=document.getElementById('floatingLayout');
+  const sessionFooter=document.getElementById('sessionFooter');
+  const detailFooter=document.getElementById('detailFooter');
+  if(floating)floating.innerHTML='';
+  if(sessionFooter)sessionFooter.innerHTML='<span>Sessions</span>';
+  if(detailFooter)detailFooter.innerHTML='<span>Detail</span>';
+  if(currentView!=='detail'){
+    if(floating)floating.style.display='none';
+    return;
+  }
+  if(floating)floating.style.display=layoutMode==='one'?'block':'none';
+  const target=layoutMode==='three'&&sessionFooter?sessionFooter:(layoutMode==='two'&&detailFooter?detailFooter:floating);
+  if(target)target.innerHTML=layoutSwitchHtml();
+  const btn=document.getElementById('layoutCycle');
+  if(btn)btn.onclick=nextLayout;
 }
 
-async function loadList(opts={}){const r=await fetch('/api/sessions');sessions=await r.json();renderList();if(opts.renderHome!==false)renderHome();}
+async function loadList(opts={}){
+  const r=await apiFetch('/api/sessions');
+  const data=await r.json();
+  sessions=Array.isArray(data)?data:data.sessions;
+  categories=[...new Set(Array.isArray(data)?[]:(data.categories||[]))].sort((a,b)=>a.localeCompare(b));
+  await refreshAccessState();
+  renderList();
+  if(opts.renderHome!==false)renderHome();
+}
+
+async function refreshAccessState(){
+  try{
+    const r=await apiFetch('/api/access');
+    if(!r.ok)return;
+    accessState=await r.json();
+  }catch(err){}
+}
 
 function renderList(){
   const sb=document.getElementById('sessionList');sb.textContent='';
-  const grouped=groupByDate(sessions);
-  for(const date of Object.keys(grouped).sort().reverse()){
-    const header=document.createElement('div');header.className='date';header.textContent=date;sb.appendChild(header);
-    grouped[date].forEach(s=>{
-      const e=document.createElement('div');e.className='side-item'+(s.path===activePath?' active':'');
-      const label=document.createElement('div');label.innerHTML='<div class="side-title"></div><div class="side-sub"></div>';
-      label.querySelector('.side-title').textContent=s.name;label.querySelector('.side-sub').textContent=s.originalName;
-      const btn=document.createElement('button');btn.className='rename';btn.textContent='Rename';btn.onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
-      e.onclick=()=>loadSession(s.path);e.appendChild(label);e.appendChild(btn);sb.appendChild(e);
+  const controls=document.createElement('div');controls.className='side-mode';
+  controls.innerHTML='<button data-mode="date">Date</button><button data-mode="category">Category</button>';
+  controls.querySelectorAll('button').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.mode===sideGroupMode);
+    btn.onclick=()=>{sideGroupMode=btn.dataset.mode;localStorage.setItem('sideGroupMode',sideGroupMode);renderList();};
+  });
+  sb.appendChild(controls);
+  const normal=sessions.filter(s=>s.sessionType!=='subagent');
+  const subagents=sessions.filter(s=>s.sessionType==='subagent');
+  const byId=normal.reduce((acc,s)=>{if(s.sessionId)acc[s.sessionId]=s;if(s.fileId)acc[s.fileId]=s;if(s.shortName)acc[s.shortName]=s;return acc;},{});
+  const parentPathOf=(s)=>s.parentPath||(byId[s.parentThreadId]&&byId[s.parentThreadId].path)||'';
+  const subByParent=subagents.reduce((acc,s)=>{const p=parentPathOf(s);if(p)(acc[p]||=[]).push(s);return acc;},{});
+  const renderSubtree=(parentPath,depth)=>{
+    (subByParent[parentPath]||[]).forEach(sub=>{
+      sb.appendChild(sideSessionItem(sub,true,depth));
+      renderSubtree(sub.path,depth+1);
+    });
+  };
+  const orphans=subagents.filter(s=>!parentPathOf(s));
+  const grouped=sideGroupMode==='category'?groupByCategory(normal):groupByDate(normal);
+  for(const key of Object.keys(grouped).sort().reverse()){
+    const header=document.createElement('div');header.className='date';header.textContent=key;sb.appendChild(header);
+    grouped[key].forEach(s=>{
+      sb.appendChild(sideSessionItem(s,false));
+      renderSubtree(s.path,1);
     });
   }
+  if(orphans.length){
+    const header=document.createElement('div');header.className='date';header.textContent='Unlinked subagents';sb.appendChild(header);
+    orphans.forEach(s=>sb.appendChild(sideSessionItem(s,true,1)));
+  }
+}
+
+function sideSessionItem(s,isSubagent,depth=0){
+  const level=isSubagent?(depth>=4?' level-deep':` level-${Math.max(1,depth)}`):'';
+  const e=document.createElement('div');e.className='side-item'+(isSubagent?' subagent'+level:'')+(s.path===activePath?' active':'');
+  const label=document.createElement('div');label.innerHTML='<div class="side-title"></div><div class="side-sub"></div>';
+  label.querySelector('.side-title').textContent=(isSubagent?'↳ ':'')+s.name;
+  label.querySelector('.side-sub').textContent=isSubagent?`Subagent of ${s.parentName||s.mainAgentName||'unknown'}`:s.originalName;
+  e.onclick=()=>loadSession(s.path);
+  e.appendChild(label);
+  if(!isSubagent){
+    const btn=document.createElement('button');btn.className='rename';btn.textContent='Rename';btn.onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
+    e.appendChild(btn);
+  }
+  return e;
 }
 
 function renderHome(){
   currentView='home';activePath='';renderList();
+  document.body.classList.remove('layout-one','layout-two','layout-three');
+  placeLayoutSwitch();
   updateTopActions();
   document.getElementById('topTitle').textContent='Session Overview';
   const view=document.getElementById('view');
-  const grouped=groupByDate(sessions);
+  const grouped=homeGroupMode==='category'?groupByCategory(sessions):groupByDate(sessions);
   const dates=Object.keys(grouped).sort().reverse();
   const total=sessions.length;
-  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date, inspect filenames, and jump into detailed ChatGPT-style views.</p></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
+  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date or category, inspect filenames, and jump into detailed ChatGPT-style views.</p><div class="home-controls"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="newCategory">New category</button></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
+  document.getElementById('groupDate').classList.toggle('active',homeGroupMode==='date');
+  document.getElementById('groupCategory').classList.toggle('active',homeGroupMode==='category');
+  document.getElementById('groupDate').onclick=()=>{homeGroupMode='date';sideGroupMode='date';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
+  document.getElementById('groupCategory').onclick=()=>{homeGroupMode='category';sideGroupMode='category';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
+  document.getElementById('newCategory').onclick=()=>createCategory();
   const pinned=sessions.filter(s=>s.pinned).length;
   const archived=sessions.filter(s=>s.archived).length;
-  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${dates.length}</strong> dates</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div>`;
+  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${dates.length}</strong> ${homeGroupMode==='category'?'groups':'dates'}</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div><div class="stat"><strong>${accessState.remoteEnabled?'Restricted':'Open'}</strong> remote</div>`;
   const groups=view.querySelector('#homeGroups');
   for(const date of dates){
-    const title=document.createElement('div');title.className='home-date';title.textContent=date;groups.appendChild(title);
+    const title=document.createElement('div');title.className='home-date';
+    title.innerHTML='<span></span><span class="home-date-actions"></span>';
+    title.querySelector('span').textContent=date;
+    const actions=title.querySelector('.home-date-actions');
+    if(homeGroupMode==='category'&&date!=='Uncategorized'){
+      actions.innerHTML='<button class="rename-category">Rename</button><button class="delete-category">Delete</button>';
+      actions.querySelector('.rename-category').onclick=()=>renameCategory(date);
+      actions.querySelector('.delete-category').onclick=()=>deleteCategory(date);
+    }
+    groups.appendChild(title);
     const grid=document.createElement('div');grid.className='grid';
     grouped[date].forEach(s=>grid.appendChild(sessionCard(s)));
     groups.appendChild(grid);
   }
 }
 
+async function createCategory(){
+  const name=prompt('New category name');
+  if(!name)return;
+  const r=await apiFetch('/api/categories',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+  if(!r.ok){alert('Create category failed');return;}
+  await loadList({renderHome:false});
+  renderHome();
+}
+
+async function renameCategory(oldName){
+  const name=prompt('Rename category',oldName);
+  if(name===null)return;
+  const next=name.trim();
+  if(!next||next===oldName)return;
+  const r=await apiFetch('/api/categories',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({oldName,name:next})});
+  if(!r.ok){alert('Rename category failed');return;}
+  await loadList({renderHome:false});
+  renderHome();
+}
+
+async function deleteCategory(name){
+  if(!confirm(`Delete category "${name}"? Sessions in it will become Uncategorized.`))return;
+  const r=await apiFetch('/api/categories',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+  if(!r.ok){alert('Delete category failed');return;}
+  await loadList({renderHome:false});
+  renderHome();
+}
+
+async function fetchAccess(){
+  const r=await apiFetch('/api/access');
+  if(!r.ok){alert('Access settings unavailable');return null;}
+  return r.json();
+}
+
+async function patchAccess(patch){
+  const r=await apiFetch('/api/access',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
+  if(!r.ok){alert('Update access failed');return null;}
+  return r.json();
+}
+
+async function generateAccessToken(){
+  const r=await apiFetch('/api/access',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({generateToken:true})});
+  if(!r.ok){alert('Generate token failed');return '';}
+  const data=await r.json();
+  return data.token||'';
+}
+
+async function renderAccessPage(){
+  currentView='access';activePath='';renderList();
+  document.body.classList.remove('layout-one','layout-two','layout-three');
+  placeLayoutSwitch();
+  updateTopActions();
+  document.getElementById('topTitle').textContent='Access Settings';
+  const access=await fetchAccess();
+  if(!access)return;
+  accessState=access;
+  const view=document.getElementById('view');
+  if(!access.isAdmin){
+    view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Access Settings</h1><p>Admin access is required. Open locally or use a URL with ?token=...</p></div><button id="backHome">Home</button></div></div>';
+    document.getElementById('backHome').onclick=()=>renderHome();
+    return;
+  }
+  let guestPublicPaths=[...(access.guestPublicPaths||access.publicPaths||[])];
+  let tokens=(access.tokens||[]).map(t=>({...t,publicSessions:[...(t.publicSessions||[])]}));
+  let selectedKind='guest';
+  let selectedIndex=-1;
+  view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Access Settings</h1><p>Manage guest access and scoped tokens. Select a subject on the left, then assign visible sessions on the right.</p></div><div><button id="clearToken">Clear token</button> <button id="backHome">Home</button></div></div><div class="access-grid"><section class="access-box"><h2>Remote Policy</h2><div class="access-row"><div><div>Remote restriction</div><div class="access-muted">When enabled, remote visitors only see sessions allowed by Guest or their token.</div></div><button id="accessToggle"></button></div><div class="access-row"><span id="accessStatus"></span><span class="access-muted" id="publicCount"></span></div><h2>Subjects</h2><div id="subjectList" class="access-list"></div><div class="access-token"><button id="addToken">New token</button><button id="deleteToken">Delete token</button></div></section><section class="access-box"><h2 id="subjectTitle">Guest access</h2><div id="tokenFields"></div><div class="access-token"><button id="generateToken">Generate token</button><button id="saveAccess">Save changes</button></div><input id="accessFilter" class="access-filter" placeholder="Filter sessions..."><div id="accessList" class="access-list"></div></section></div></div>';
+  document.getElementById('backHome').onclick=()=>renderHome();
+  document.getElementById('clearToken').onclick=()=>{sessionStorage.removeItem('accessToken');accessToken='';location.href=location.pathname;};
+  const status=document.getElementById('accessStatus');
+  status.className='access-status '+(access.remoteEnabled?'on':'off');
+  status.textContent=access.remoteEnabled?'Restricted remote':'Open remote';
+  const toggle=document.getElementById('accessToggle');
+  toggle.textContent=access.remoteEnabled?'Disable':'Enable';
+  toggle.onclick=async()=>{await patchAccess({remoteEnabled:!access.remoteEnabled});await refreshAccessState();renderAccessPage();};
+  const selectedSubject=()=>selectedKind==='guest'
+    ?{name:'Guest',role:'guest',publicSessions:guestPublicPaths}
+    :tokens[selectedIndex];
+  const saveAccess=async()=>{
+    const saved=await patchAccess({publicSessions:guestPublicPaths,tokens});
+    if(!saved)return false;
+    await refreshAccessState();
+    return true;
+  };
+  const renderSubjects=()=>{
+    const root=document.getElementById('subjectList');
+    root.textContent='';
+    const guest=document.createElement('button');
+    guest.className='rel-item'+(selectedKind==='guest'?' active':'');
+    guest.textContent=`Guest · ${guestPublicPaths.length} sessions`;
+    guest.onclick=()=>{selectedKind='guest';selectedIndex=-1;renderSubjects();renderEditor();renderPublicList();};
+    root.appendChild(guest);
+    tokens.forEach((token,idx)=>{
+      const btn=document.createElement('button');
+      btn.className='rel-item'+(selectedKind==='token'&&selectedIndex===idx?' active':'');
+      btn.textContent=`${token.name||'Token'} · ${token.role||'viewer'} · ${(token.publicSessions||[]).length}`;
+      btn.onclick=()=>{selectedKind='token';selectedIndex=idx;renderSubjects();renderEditor();renderPublicList();};
+      root.appendChild(btn);
+    });
+  };
+  const renderEditor=()=>{
+    const subject=selectedSubject();
+    document.getElementById('subjectTitle').textContent=selectedKind==='guest'?'Guest access':subject.name||'Token';
+    document.getElementById('publicCount').textContent=`${(subject.publicSessions||[]).length} allowed`;
+    const fields=document.getElementById('tokenFields');
+    fields.textContent='';
+    document.getElementById('generateToken').style.display=selectedKind==='token'?'inline-flex':'none';
+    document.getElementById('deleteToken').style.display=selectedKind==='token'?'inline-flex':'none';
+    if(selectedKind==='guest'){
+      const note=document.createElement('div');
+      note.className='access-muted';
+      note.textContent='Guest applies to remote visitors without a token.';
+      fields.appendChild(note);
+      return;
+    }
+    fields.innerHTML='<div class="access-token"><input id="tokenName" placeholder="Token name"></div><div class="access-token"><input id="tokenValue" placeholder="Token value"></div><div class="access-token"><select id="tokenRole" class="access-filter"><option value="viewer">Viewer</option><option value="admin">Admin</option></select></div><div class="access-muted">Viewer tokens only read allowed sessions. Admin tokens can open /admin and manage access.</div>';
+    document.getElementById('tokenName').value=subject.name||'';
+    document.getElementById('tokenValue').value=subject.token||'';
+    document.getElementById('tokenRole').value=subject.role||'viewer';
+    document.getElementById('tokenName').oninput=(ev)=>{subject.name=ev.target.value;renderSubjects();};
+    document.getElementById('tokenValue').oninput=(ev)=>{subject.token=ev.target.value;};
+    document.getElementById('tokenRole').onchange=(ev)=>{subject.role=ev.target.value;renderSubjects();};
+  };
+  const renderPublicList=()=>{
+    const subject=selectedSubject();
+    const publicSet=new Set(subject.publicSessions||[]);
+    const root=document.getElementById('accessList');
+    const q=document.getElementById('accessFilter').value.trim().toLowerCase();
+    root.textContent='';
+    sessions.filter(s=>!q||[s.name,s.originalName,s.date,s.category,...(s.previewQuestions||[])].join(' ').toLowerCase().includes(q)).forEach(s=>{
+      const row=document.createElement('label');
+      row.className='access-item';
+      row.innerHTML='<input type="checkbox"><div><div class="access-item-title"></div><div class="access-item-meta"></div></div>';
+      const input=row.querySelector('input');
+      input.checked=publicSet.has(s.path);
+      input.onchange=()=>{
+        if(input.checked)publicSet.add(s.path);else publicSet.delete(s.path);
+        subject.publicSessions=[...publicSet];
+        if(selectedKind==='guest')guestPublicPaths=subject.publicSessions;
+        document.getElementById('publicCount').textContent=`${publicSet.size} allowed`;
+        renderSubjects();
+      };
+      row.querySelector('.access-item-title').textContent=s.name;
+      row.querySelector('.access-item-meta').textContent=`${s.date||'unknown'} · ${s.category||'Uncategorized'} · ${s.originalName}.jsonl`;
+      root.appendChild(row);
+    });
+  };
+  document.getElementById('addToken').onclick=async()=>{
+    const token=await generateAccessToken();
+    tokens.push({name:`Viewer ${tokens.length+1}`,token,role:'viewer',publicSessions:[]});
+    selectedKind='token';selectedIndex=tokens.length-1;
+    renderSubjects();renderEditor();renderPublicList();
+    await saveAccess();
+  };
+  document.getElementById('generateToken').onclick=async()=>{if(selectedKind!=='token')return;const token=await generateAccessToken();if(!token)return;tokens[selectedIndex].token=token;renderEditor();};
+  document.getElementById('deleteToken').onclick=()=>{if(selectedKind!=='token')return;if(!confirm('Delete this token?'))return;tokens.splice(selectedIndex,1);selectedKind='guest';selectedIndex=-1;renderSubjects();renderEditor();renderPublicList();};
+  document.getElementById('saveAccess').onclick=async()=>{const ok=await saveAccess();if(ok)alert('Access saved');};
+  document.getElementById('accessFilter').oninput=renderPublicList;
+  renderSubjects();
+  renderEditor();
+  renderPublicList();
+}
+
 function sessionCard(s){
   const card=document.createElement('article');card.className='card';card.onclick=()=>loadSession(s.path);
   const preview=(s.previewQuestions||[]).map(q=>`<li>${escapeHtml(q)}</li>`).join('');
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
-  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div><div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><span><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename">Rename</button></span></div>`;
+  const agentMeta=s.sessionType==='subagent'?`<div class="file-name">Subagent of ${escapeHtml(s.parentName||'unknown')} · Main ${escapeHtml(s.mainAgentName||s.parentName||'unknown')}</div>`:'';
+  const options=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
+  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div>${agentMeta}<div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><span><select class="category-select">${options}</select><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename">Rename</button></span></div>`;
   card.querySelector('.card-title').textContent=s.name;
   card.querySelector('.file-name').textContent=s.originalName+'.jsonl';
   card.querySelector('.pin').onclick=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{pinned:!s.pinned});};
   card.querySelector('button:not(.pin)').onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
+  card.querySelector('select').onclick=(ev)=>ev.stopPropagation();
+  card.querySelector('select').onchange=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{category:ev.target.value});};
   return card;
 }
 
@@ -258,7 +573,7 @@ async function runSearch(query){
   const q=query.trim();
   if(!q){renderSearchResults([]);return;}
   renderSearchResults([],true);
-  const r=await fetch('/api/search?q='+encodeURIComponent(q));
+  const r=await apiFetch('/api/search?q='+encodeURIComponent(q));
   const data=await r.json();
   renderSearchResults(data);
 }
@@ -277,7 +592,7 @@ async function editTags(s){
 }
 
 async function patchSessionMeta(s,patch){
-  const r=await fetch('/api/session-meta/'+sessionUrl(s.path),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
+  const r=await apiFetch('/api/session-meta/'+sessionUrl(s.path),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
   if(!r.ok){alert('Update failed');return;}
   await loadList({renderHome:false});
   if(currentView==='detail'&&activePath===s.path)loadSession(s.path,{preserve:true});
@@ -320,28 +635,93 @@ function addThinking(root,text){if(!text)return;const details=document.createEle
 function addAssistant(root,text){if(!text)return;const row=document.createElement('div');row.className='message assistant';const wrap=document.createElement('div');wrap.className='assistant-wrap';const avatar=document.createElement('div');avatar.className='avatar';avatar.textContent='AI';const bubble=document.createElement('div');bubble.className='bubble';addMarkdown(bubble,text);wrap.appendChild(avatar);wrap.appendChild(bubble);row.appendChild(wrap);root.appendChild(row);}
 
 function renderDetailNav(){
-  const nav=document.getElementById('detailNav');
+  const nav=document.getElementById('detailNavBody');
   if(!nav)return;
   const s=detailState.session||{};
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
-  nav.innerHTML=`<div class="nav-section"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><div class="tag-list">${tags}</div><div class="session-actions"><button id="tagBtn">Tags</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div><div class="nav-section"><div class="nav-title">Related sessions</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add relation</button></div></div><div class="nav-section"><div class="nav-title">Outline</div><div id="outlineList"></div></div>`;
+  const categoryOptions=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
+  nav.innerHTML=`<div class="nav-section"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="tagBtn">Tags</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline</div><div id="outlineList"></div></div>`;
   document.getElementById('tagBtn').onclick=()=>editTags(s);
   document.getElementById('pinBtn').onclick=()=>patchSessionMeta(s,{pinned:!s.pinned});
   document.getElementById('archiveBtn').onclick=()=>patchSessionMeta(s,{archived:!s.archived});
+  document.getElementById('detailCategory').onchange=(ev)=>patchSessionMeta(s,{category:ev.target.value});
   document.getElementById('addRelationBtn').onclick=()=>openRelationPicker();
   const related=document.getElementById('relatedList');
-  const rels=[...(detailState.relations.subagents||[]),...(detailState.relations.manual||[])];
-  if(!rels.length){related.innerHTML='<div class="nav-empty">No related sessions</div>';}else{
-    rels.forEach(item=>{
-      const b=document.createElement('button');b.className='rel-item';b.textContent=(item.sessionType==='subagent'?'Subagent · ':'')+item.name;b.onclick=()=>loadSession(item.path);related.appendChild(b);
-    });
-  }
+  const notSelf=(item)=>item&&item.path!==activePath;
+  const cleanTree=(items)=>(items||[]).filter(notSelf).map(item=>({...item,children:cleanTree(item.children||[])}));
+  const masters=(detailState.relations.masters||[]).filter(notSelf);
+  const subagents=cleanTree(detailState.relations.subagents||[]);
+  const references=(detailState.relations.references||detailState.relations.manual||[]).filter(notSelf);
+  related.textContent='';
+  const countTree=(items)=>items.reduce((total,item)=>total+1+countTree(item.children||[]),0);
+  const appendRelRow=(group,item,kind,removable,depth=1)=>{
+    const row=document.createElement('div');
+    row.className='rel-row'+(depth>=4?' level-deep':depth>1?` level-${depth}`:'');
+    const pill=document.createElement('span');pill.className='rel-kind '+kind;pill.textContent=kind==='subagent'?'Subagent':kind==='master'?'Master':'Reference';
+    const btn=document.createElement('button');btn.className='rel-item';btn.textContent=item.name;btn.onclick=()=>loadSession(item.path);
+    row.appendChild(pill);row.appendChild(btn);
+    if(removable){
+      const remove=document.createElement('button');remove.className='rename';remove.textContent='Remove';remove.onclick=()=>removeRelation(item.path);row.appendChild(remove);
+    }
+    group.appendChild(row);
+    if(kind==='subagent')(item.children||[]).forEach(child=>appendRelRow(group,child,kind,removable,depth+1));
+  };
+  const renderRelGroup=(title,count,emptyText,items,kind,removable)=>{
+    if(!items.length && kind!=='reference')return;
+    const group=document.createElement('div');group.className='rel-group';
+    group.innerHTML=`<div class="rel-group-title"><span>${title}</span><span class="rel-count">${count}</span></div>`;
+    if(!items.length){
+      const empty=document.createElement('div');empty.className='nav-empty';empty.textContent=emptyText;group.appendChild(empty);
+    }
+    items.forEach(item=>appendRelRow(group,item,kind,removable));
+    related.appendChild(group);
+  };
+  renderRelGroup('Masters',masters.length,'No masters',masters,'master',false);
+  renderRelGroup('Subagents',countTree(subagents),'No subagents',subagents,'subagent',false);
+  renderRelGroup('References',references.length,'No references',references,'reference',true);
   const outline=document.getElementById('outlineList');
   if(!detailState.outline.length){outline.innerHTML='<div class="nav-empty">No outline</div>';}else{
     detailState.outline.forEach(item=>{
-      const b=document.createElement('button');b.className='outline-item';b.textContent=`${item.index+1}. ${item.title}`;b.onclick=()=>jumpToTurn(item.index);outline.appendChild(b);
+      const b=document.createElement('button');b.className='outline-item';b.dataset.index=item.index;b.textContent=`${item.index+1}. ${item.title}`;b.onclick=()=>jumpToTurn(item.index);outline.appendChild(b);
     });
   }
+}
+
+let outlineSyncFrame=null;
+let activeOutlineIndex=null;
+function syncOutline(){
+  if(currentView!=='detail')return;
+  if(outlineSyncFrame)return;
+  outlineSyncFrame=requestAnimationFrame(()=>{
+    outlineSyncFrame=null;
+    const turns=[...document.querySelectorAll('.turn[id^="turn-"]')];
+    if(!turns.length)return;
+    const anchor=window.innerHeight*0.28;
+    let best=turns[0];
+    let bestDistance=Infinity;
+    turns.forEach(turn=>{
+      const rect=turn.getBoundingClientRect();
+      const distance=Math.abs(rect.top-anchor);
+      if(rect.top<=window.innerHeight*0.75&&rect.bottom>=80&&distance<bestDistance){
+        best=turn;bestDistance=distance;
+      }
+    });
+    const index=Number(best.id.replace('turn-',''));
+    if(index===activeOutlineIndex)return;
+    activeOutlineIndex=index;
+    document.querySelectorAll('.outline-item.active').forEach(item=>item.classList.remove('active'));
+    const item=document.querySelector(`.outline-item[data-index="${index}"]`);
+    if(item){
+      item.classList.add('active');
+      item.scrollIntoView({block:'nearest'});
+    }
+  });
+}
+
+async function removeRelation(path){
+  const r=await apiFetch('/api/session-relations/'+sessionUrl(activePath),{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({path})});
+  if(!r.ok){alert('Remove reference failed');return;}
+  loadSession(activePath,{preserve:true});
 }
 
 function renderTurns(append=false){
@@ -369,22 +749,26 @@ function renderTurns(append=false){
 
 async function loadSession(path,opts={}){
   currentView='detail';activePath=path;renderList();
+  if(!opts.append)activeOutlineIndex=null;
+  applyLayout(layoutMode);
   updateTopActions();
   const s=activeSession();document.getElementById('topTitle').textContent=s?s.name:'Session Detail';
   const view=document.getElementById('view');
   if(!opts.append){
-    view.innerHTML='<div class="detail-shell"><aside id="detailNav" class="detail-nav"></aside><div class="detail-main"><div id="chat" class="chat"></div></div></div>';
+    view.innerHTML='<div class="detail-shell"><aside id="detailNav" class="detail-nav"><div id="detailNavBody" class="detail-nav-body"></div><div id="detailFooter" class="panel-footer"><span>Detail</span></div></aside><div class="detail-main"><div id="chat" class="chat"></div></div></div>';
   }
   try{
     const offset=opts.offset??0;
     const limit=detailState.limit||50;
-    const r=await fetch(`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`);const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
+    const r=await apiFetch(`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`);const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
     detailState={path,session:d.session,turns:opts.append?[...detailState.turns,...d.turns]:d.turns,outline:d.outline,relations:d.relations,offset:d.offset,limit:d.limit,total:d.total,hasMore:d.hasMore};
     document.getElementById('topTitle').textContent=d.session.name;
     renderDetailNav();
+    placeLayoutSwitch();
     const chat=document.getElementById('chat');
     if(!detailState.turns.length){chat.innerHTML='<div class="empty">No visible messages</div>';return;}
     renderTurns(opts.append);
+    syncOutline();
     if(opts.turnIndex!=null)jumpToTurn(opts.turnIndex);
   }catch(err){const chat=document.getElementById('chat');if(chat){chat.innerHTML='<div class="error"></div>';chat.querySelector('.error').textContent=err.message;}}
 }
@@ -400,7 +784,10 @@ async function jumpToTurn(index){
     await loadSession(activePath,{offset:pageStart});
   }
   const el=document.getElementById('turn-'+index);
-  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  if(el){
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(syncOutline,260);
+  }
 }
 
 function openRelationPicker(){
@@ -418,7 +805,7 @@ function renderRelationPicker(filter){
   const q=filter.trim().toLowerCase();
   root.textContent='';
   sessions.filter(s=>s.path!==activePath).filter(s=>!q||[s.name,s.originalName,s.cwd,...(s.previewQuestions||[])].join(' ').toLowerCase().includes(q)).forEach(s=>{
-    const row=document.createElement('div');row.className='picker-row';row.innerHTML='<div><div class="picker-title"></div><div class="picker-sub"></div></div><button>Add</button>';
+    const row=document.createElement('div');row.className='picker-row';row.innerHTML='<div><div class="picker-title"></div><div class="picker-sub"></div></div><button>Add reference</button>';
     row.querySelector('.picker-title').textContent=s.name;
     row.querySelector('.picker-sub').textContent=`${s.date} · ${s.originalName}`;
     row.querySelector('button').onclick=()=>addRelation(s.path);
@@ -427,16 +814,23 @@ function renderRelationPicker(filter){
 }
 
 async function addRelation(path){
-  const r=await fetch('/api/session-relations/'+sessionUrl(activePath),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path})});
-  if(!r.ok){alert('Add relation failed');return;}
+  const r=await apiFetch('/api/session-relations/'+sessionUrl(activePath),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path})});
+  if(!r.ok){alert('Add reference failed');return;}
   closeRelationPicker();
   loadSession(activePath,{preserve:true});
 }
 
 document.getElementById('themeToggle').onclick=()=>{const next=document.body.dataset.theme==='light'?'dark':'light';document.body.dataset.theme=next;localStorage.setItem('viewerTheme',next);updateThemeButton();};
-document.getElementById('sideClose').onclick=()=>document.body.classList.add('sidebar-collapsed');
-document.getElementById('sideOpen').onclick=()=>document.body.classList.remove('sidebar-collapsed');
+document.getElementById('sideClose').onclick=()=>{
+  if(currentView==='detail')applyLayout(layoutMode==='three'?'two':'one');
+  else document.body.classList.add('sidebar-collapsed');
+};
+document.getElementById('sideOpen').onclick=()=>{
+  if(currentView==='detail')applyLayout(layoutMode==='one'?'two':'three');
+  else document.body.classList.remove('sidebar-collapsed');
+};
 document.getElementById('homeBtn').onclick=()=>renderHome();
+document.getElementById('adminBtn').onclick=()=>renderAccessPage();
 document.getElementById('searchBtn').onclick=()=>openSearch();
 document.getElementById('searchClose').onclick=()=>closeSearch();
 document.getElementById('searchModal').onclick=(ev)=>{if(ev.target.id==='searchModal')closeSearch();};
@@ -447,12 +841,15 @@ document.getElementById('searchInput').oninput=(ev)=>{
 document.getElementById('relationClose').onclick=()=>closeRelationPicker();
 document.getElementById('relationPicker').onclick=(ev)=>{if(ev.target.id==='relationPicker')closeRelationPicker();};
 document.getElementById('relationFilter').oninput=(ev)=>renderRelationPicker(ev.target.value);
+document.querySelector('.content').addEventListener('scroll',syncOutline,{passive:true});
+window.addEventListener('scroll',syncOutline,{passive:true});
 document.addEventListener('keydown',(ev)=>{
   if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();openSearch();}
   if(ev.key==='Escape')closeSearch();
 });
 updateThemeButton();
-loadList();
+applyLayout(layoutMode);
+loadList({renderHome:location.pathname!=='/admin'}).then(()=>{if(location.pathname==='/admin')renderAccessPage();});
 </script>
 </body>
 </html>
