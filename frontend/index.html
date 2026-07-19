@@ -45,6 +45,18 @@ body:not(.sidebar-collapsed) #sideOpen{display:none}
 .preview{margin:14px 0 0;padding:0;list-style:none;color:var(--muted);font-size:13px}.preview li{margin:8px 0;padding-left:12px;border-left:2px solid color-mix(in srgb,var(--accent) 45%,var(--line));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:12px}
 .chat{max-width:960px;margin:0 auto;padding:32px 24px 90px}
+.detail-shell{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 58px)}
+.detail-nav{position:sticky;top:58px;height:calc(100vh - 58px);overflow:auto;border-right:1px solid var(--line);background:var(--surface2);padding:14px}
+.detail-main{min-width:0;overflow:visible}
+.nav-section{margin-bottom:18px}.nav-title{font-size:12px;color:var(--faint);font-weight:800;text-transform:uppercase;margin:0 0 8px}
+.rel-item,.outline-item{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:10px;padding:8px;color:var(--muted);font-size:13px;line-height:1.35}
+.rel-item:hover,.outline-item:hover,.outline-item.active{background:var(--hover);color:var(--text)}
+.nav-empty{color:var(--faint);font-size:12px;padding:8px}
+.tag-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted)}
+.session-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.session-actions button{font-size:12px;padding:6px 8px}
+.load-more{display:flex;justify-content:center;margin:20px 0}.load-more button{min-width:160px}
+.turn{content-visibility:auto;contain-intrinsic-size:480px}
+.copy-btn{float:right;margin:0 0 8px 10px;font-size:12px;padding:5px 8px;color:var(--muted);background:var(--surface)}
 .empty,.error{max-width:720px;margin:18vh auto;color:var(--muted);text-align:center}.error{color:var(--danger)}
 .turn{margin:0;padding:18px 0 30px}.turn+.turn{border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}.message{display:flex;margin:16px 0}.message.user{justify-content:flex-end}.message.assistant{justify-content:flex-start}
 .bubble{max-width:min(790px,88%);line-height:1.68;font-size:15.5px}.user .bubble{background:var(--user);border:1px solid transparent;border-radius:20px;padding:12px 16px}.assistant .bubble{background:transparent;border:0;border-radius:0;padding:2px 0;width:100%;box-shadow:none}
@@ -58,6 +70,7 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
 .md blockquote{margin:.9em 0;padding:.15em 1em;border-left:3px solid var(--line);color:var(--muted);background:transparent;border-radius:0}
 .md table{border-collapse:collapse;margin:1em 0;width:100%;border-radius:8px;overflow:hidden}.md th,.md td{border:1px solid var(--line);padding:8px 10px;text-align:left}.md th{background:var(--surface);color:var(--text);font-weight:650}
 .md pre{margin:1em 0;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;overflow:auto}.md pre code{display:block;padding:14px 16px;background:transparent;border:0;white-space:pre;font-size:13px;line-height:1.55;color:inherit}
+.code-wrap{position:relative}.code-copy{position:absolute;right:8px;top:8px;z-index:2;font-size:12px;padding:4px 7px;background:color-mix(in srgb,var(--card) 88%,transparent)}
 .md code{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;background:var(--inline-code);border:0;border-radius:5px;padding:2px 5px;font-size:.92em}.md pre code{background:transparent;padding:14px 16px}
 .md a{color:var(--blue);text-decoration:none}.md a:hover{text-decoration:underline}.md hr{border:0;border-top:1px solid var(--line);margin:1.2em 0}
 .search-modal{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.38);display:none;align-items:flex-start;justify-content:center;padding:9vh 18px}.search-modal.open{display:flex}
@@ -70,6 +83,11 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
 .context-content{border-top:1px solid var(--line);padding:8px 11px;color:var(--muted);font-size:12px;line-height:1.45}
 .context-content .md h1,.context-content .md h2,.context-content .md h3{font-size:12px;font-weight:600;color:var(--faint);margin:.35em 0}
 .context-content .md p{margin:.35em 0}
+.picker-modal{position:fixed;inset:0;z-index:21;background:rgba(0,0,0,.38);display:none;align-items:flex-start;justify-content:center;padding:9vh 18px}.picker-modal.open{display:flex}
+.picker-panel{width:min(780px,100%);max-height:76vh;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.picker-head{display:flex;gap:10px;padding:14px;border-bottom:1px solid var(--line)}.picker-head input{flex:1;border:0;outline:0;background:var(--surface);color:var(--text);border-radius:12px;padding:12px 14px;font:inherit}
+.picker-list{overflow:auto;padding:8px}.picker-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border-radius:12px}.picker-row:hover{background:var(--hover)}.picker-title{font-weight:650}.picker-sub{color:var(--faint);font-size:12px;margin-top:3px}
+@media(max-width:980px){.detail-shell{grid-template-columns:1fr}.detail-nav{position:relative;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line)}}
 @media(max-width:860px){.sidebar{position:absolute;z-index:9;height:100%;box-shadow:var(--shadow)}body.sidebar-collapsed .sidebar{transform:translateX(-100%);width:300px;min-width:300px}.hero{align-items:flex-start;flex-direction:column}.chat,.home{padding:20px 14px 64px}.bubble{max-width:94%}details.think-box{margin-left:0}.avatar{display:none}}
 </style>
 </head>
@@ -100,6 +118,15 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
     <div id="searchResults" class="search-results"></div>
   </div>
 </div>
+<div id="relationPicker" class="picker-modal">
+  <div class="picker-panel">
+    <div class="picker-head">
+      <input id="relationFilter" placeholder="Find a session to relate..." autocomplete="off">
+      <button id="relationClose">Close</button>
+    </div>
+    <div id="relationList" class="picker-list"></div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
 <script>
@@ -107,6 +134,7 @@ let sessions=[];
 let activePath='';
 let currentView='home';
 let searchTimer=null;
+let detailState={path:'',session:null,turns:[],outline:[],relations:{subagents:[],manual:[]},offset:0,limit:50,total:0,hasMore:false};
 const savedTheme=localStorage.getItem('viewerTheme')||'dark';
 document.body.dataset.theme=savedTheme;
 
@@ -132,7 +160,7 @@ function updateTopActions(){
   document.getElementById('homeBtn').style.display=currentView==='home'?'none':'inline-flex';
 }
 
-async function loadList(){const r=await fetch('/api/sessions');sessions=await r.json();renderList();renderHome();}
+async function loadList(opts={}){const r=await fetch('/api/sessions');sessions=await r.json();renderList();if(opts.renderHome!==false)renderHome();}
 
 function renderList(){
   const sb=document.getElementById('sessionList');sb.textContent='';
@@ -158,7 +186,9 @@ function renderHome(){
   const dates=Object.keys(grouped).sort().reverse();
   const total=sessions.length;
   view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date, inspect filenames, and jump into detailed ChatGPT-style views.</p></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
-  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${dates.length}</strong> dates</div>`;
+  const pinned=sessions.filter(s=>s.pinned).length;
+  const archived=sessions.filter(s=>s.archived).length;
+  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${dates.length}</strong> dates</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div>`;
   const groups=view.querySelector('#homeGroups');
   for(const date of dates){
     const title=document.createElement('div');title.className='home-date';title.textContent=date;groups.appendChild(title);
@@ -171,10 +201,12 @@ function renderHome(){
 function sessionCard(s){
   const card=document.createElement('article');card.className='card';card.onclick=()=>loadSession(s.path);
   const preview=(s.previewQuestions||[]).map(q=>`<li>${escapeHtml(q)}</li>`).join('');
-  card.innerHTML=`<div class="card-head"><span class="badge">019</span><div><div class="card-title"></div><div class="file-name"></div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><button class="rename">Rename</button></div>`;
+  const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
+  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div><div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><span><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename">Rename</button></span></div>`;
   card.querySelector('.card-title').textContent=s.name;
   card.querySelector('.file-name').textContent=s.originalName+'.jsonl';
-  card.querySelector('button').onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
+  card.querySelector('.pin').onclick=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{pinned:!s.pinned});};
+  card.querySelector('button:not(.pin)').onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
   return card;
 }
 
@@ -217,7 +249,7 @@ function renderSearchResults(items, loading=false){
     row.querySelector('.search-result-title').textContent=item.name;
     row.querySelector('.search-result-meta').textContent=`${item.date} · ${item.matchType} · ${item.originalName}.jsonl`;
     row.querySelector('.search-snippet').textContent=item.snippet || '';
-    row.onclick=()=>{closeSearch();loadSession(item.path);};
+    row.onclick=()=>{closeSearch();loadSession(item.path,{turnIndex:item.turnIndex});};
     root.appendChild(row);
   });
 }
@@ -234,13 +266,37 @@ async function runSearch(query){
 async function renameSession(s){
   const next=prompt('Display name',s.name);
   if(next===null)return;
-  const r=await fetch('/api/session-title/'+sessionUrl(s.path),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:next})});
-  if(!r.ok){alert('Rename failed');return;}
-  await loadList();
-  if(currentView==='detail'&&activePath===s.path)loadSession(s.path);
+  await patchSessionMeta(s,{name:next});
 }
 
-function addMarkdown(target,text){const body=document.createElement('div');body.className='md';body.innerHTML=renderMarkdown(text);target.appendChild(body);highlightIn(body);}
+async function editTags(s){
+  const next=prompt('Tags, comma separated', (s.tags||[]).join(', '));
+  if(next===null)return;
+  const tags=next.split(',').map(x=>x.trim()).filter(Boolean);
+  await patchSessionMeta(s,{tags});
+}
+
+async function patchSessionMeta(s,patch){
+  const r=await fetch('/api/session-meta/'+sessionUrl(s.path),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
+  if(!r.ok){alert('Update failed');return;}
+  await loadList({renderHome:false});
+  if(currentView==='detail'&&activePath===s.path)loadSession(s.path,{preserve:true});
+}
+
+function addMarkdown(target,text){const body=document.createElement('div');body.className='md';body.innerHTML=renderMarkdown(text);target.appendChild(body);highlightIn(body);enhanceReading(body,text);return body;}
+function enhanceReading(root,rawText){
+  root.querySelectorAll('pre').forEach(pre=>{
+    const wrap=document.createElement('div');
+    wrap.className='code-wrap';
+    const btn=document.createElement('button');
+    btn.className='code-copy';
+    btn.textContent='Copy';
+    btn.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(pre.innerText);
+    pre.parentNode.insertBefore(wrap,pre);
+    wrap.appendChild(pre);
+    wrap.appendChild(btn);
+  });
+}
 function addUser(root,turn){
   const text=turn.user;
   const context=turn.user_context;
@@ -263,16 +319,118 @@ function addUser(root,turn){
 function addThinking(root,text){if(!text)return;const details=document.createElement('details');details.className='think-box';const lines=String(text).split(/\r?\n/).filter(Boolean).length;details.innerHTML=`<summary>Thinking <span class="think-meta">${lines} visible lines</span></summary><div class="think-content"></div>`;addMarkdown(details.querySelector('.think-content'),text);root.appendChild(details);}
 function addAssistant(root,text){if(!text)return;const row=document.createElement('div');row.className='message assistant';const wrap=document.createElement('div');wrap.className='assistant-wrap';const avatar=document.createElement('div');avatar.className='avatar';avatar.textContent='AI';const bubble=document.createElement('div');bubble.className='bubble';addMarkdown(bubble,text);wrap.appendChild(avatar);wrap.appendChild(bubble);row.appendChild(wrap);root.appendChild(row);}
 
-async function loadSession(path){
+function renderDetailNav(){
+  const nav=document.getElementById('detailNav');
+  if(!nav)return;
+  const s=detailState.session||{};
+  const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
+  nav.innerHTML=`<div class="nav-section"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><div class="tag-list">${tags}</div><div class="session-actions"><button id="tagBtn">Tags</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div><div class="nav-section"><div class="nav-title">Related sessions</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add relation</button></div></div><div class="nav-section"><div class="nav-title">Outline</div><div id="outlineList"></div></div>`;
+  document.getElementById('tagBtn').onclick=()=>editTags(s);
+  document.getElementById('pinBtn').onclick=()=>patchSessionMeta(s,{pinned:!s.pinned});
+  document.getElementById('archiveBtn').onclick=()=>patchSessionMeta(s,{archived:!s.archived});
+  document.getElementById('addRelationBtn').onclick=()=>openRelationPicker();
+  const related=document.getElementById('relatedList');
+  const rels=[...(detailState.relations.subagents||[]),...(detailState.relations.manual||[])];
+  if(!rels.length){related.innerHTML='<div class="nav-empty">No related sessions</div>';}else{
+    rels.forEach(item=>{
+      const b=document.createElement('button');b.className='rel-item';b.textContent=(item.sessionType==='subagent'?'Subagent · ':'')+item.name;b.onclick=()=>loadSession(item.path);related.appendChild(b);
+    });
+  }
+  const outline=document.getElementById('outlineList');
+  if(!detailState.outline.length){outline.innerHTML='<div class="nav-empty">No outline</div>';}else{
+    detailState.outline.forEach(item=>{
+      const b=document.createElement('button');b.className='outline-item';b.textContent=`${item.index+1}. ${item.title}`;b.onclick=()=>jumpToTurn(item.index);outline.appendChild(b);
+    });
+  }
+}
+
+function renderTurns(append=false){
+  const chat=document.getElementById('chat');
+  if(!chat)return;
+  if(!append)chat.textContent='';
+  detailState.turns.forEach(t=>{
+    if(document.getElementById('turn-'+t.index))return;
+    const turn=document.createElement('section');
+    turn.className='turn';
+    turn.id='turn-'+t.index;
+    const copy=document.createElement('button');
+    copy.className='copy-btn';
+    copy.textContent='Copy turn';
+    copy.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText([t.user,t.reasoning,t.assistant].filter(Boolean).join('\\n\\n'));
+    turn.appendChild(copy);
+    addUser(turn,t);addThinking(turn,t.reasoning);addAssistant(turn,t.assistant);chat.appendChild(turn);
+  });
+  let more=document.getElementById('loadMore');
+  if(more)more.remove();
+  if(detailState.hasMore){
+    more=document.createElement('div');more.id='loadMore';more.className='load-more';more.innerHTML='<button>Load more</button>';more.querySelector('button').onclick=()=>loadMoreTurns();chat.appendChild(more);
+  }
+}
+
+async function loadSession(path,opts={}){
   currentView='detail';activePath=path;renderList();
   updateTopActions();
   const s=activeSession();document.getElementById('topTitle').textContent=s?s.name:'Session Detail';
-  const view=document.getElementById('view');view.innerHTML='<div class="chat"></div>';const chat=view.querySelector('.chat');
+  const view=document.getElementById('view');
+  if(!opts.append){
+    view.innerHTML='<div class="detail-shell"><aside id="detailNav" class="detail-nav"></aside><div class="detail-main"><div id="chat" class="chat"></div></div></div>';
+  }
   try{
-    const r=await fetch('/api/session/'+sessionUrl(path));const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
-    if(!d.length){chat.innerHTML='<div class="empty">No visible messages</div>';return;}
-    d.forEach(t=>{const turn=document.createElement('section');turn.className='turn';addUser(turn,t);addThinking(turn,t.reasoning);addAssistant(turn,t.assistant);chat.appendChild(turn);});
-  }catch(err){chat.innerHTML='<div class="error"></div>';chat.querySelector('.error').textContent=err.message;}
+    const offset=opts.offset??0;
+    const limit=detailState.limit||50;
+    const r=await fetch(`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`);const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
+    detailState={path,session:d.session,turns:opts.append?[...detailState.turns,...d.turns]:d.turns,outline:d.outline,relations:d.relations,offset:d.offset,limit:d.limit,total:d.total,hasMore:d.hasMore};
+    document.getElementById('topTitle').textContent=d.session.name;
+    renderDetailNav();
+    const chat=document.getElementById('chat');
+    if(!detailState.turns.length){chat.innerHTML='<div class="empty">No visible messages</div>';return;}
+    renderTurns(opts.append);
+    if(opts.turnIndex!=null)jumpToTurn(opts.turnIndex);
+  }catch(err){const chat=document.getElementById('chat');if(chat){chat.innerHTML='<div class="error"></div>';chat.querySelector('.error').textContent=err.message;}}
+}
+
+async function loadMoreTurns(){
+  await loadSession(activePath,{append:true,offset:detailState.turns.length});
+}
+
+async function jumpToTurn(index){
+  if(index==null)return;
+  if(!detailState.turns.some(t=>t.index===index)){
+    const pageStart=Math.floor(index/detailState.limit)*detailState.limit;
+    await loadSession(activePath,{offset:pageStart});
+  }
+  const el=document.getElementById('turn-'+index);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function openRelationPicker(){
+  const modal=document.getElementById('relationPicker');
+  modal.classList.add('open');
+  document.getElementById('relationFilter').value='';
+  renderRelationPicker('');
+  document.getElementById('relationFilter').focus();
+}
+
+function closeRelationPicker(){document.getElementById('relationPicker').classList.remove('open');}
+
+function renderRelationPicker(filter){
+  const root=document.getElementById('relationList');
+  const q=filter.trim().toLowerCase();
+  root.textContent='';
+  sessions.filter(s=>s.path!==activePath).filter(s=>!q||[s.name,s.originalName,s.cwd,...(s.previewQuestions||[])].join(' ').toLowerCase().includes(q)).forEach(s=>{
+    const row=document.createElement('div');row.className='picker-row';row.innerHTML='<div><div class="picker-title"></div><div class="picker-sub"></div></div><button>Add</button>';
+    row.querySelector('.picker-title').textContent=s.name;
+    row.querySelector('.picker-sub').textContent=`${s.date} · ${s.originalName}`;
+    row.querySelector('button').onclick=()=>addRelation(s.path);
+    root.appendChild(row);
+  });
+}
+
+async function addRelation(path){
+  const r=await fetch('/api/session-relations/'+sessionUrl(activePath),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path})});
+  if(!r.ok){alert('Add relation failed');return;}
+  closeRelationPicker();
+  loadSession(activePath,{preserve:true});
 }
 
 document.getElementById('themeToggle').onclick=()=>{const next=document.body.dataset.theme==='light'?'dark':'light';document.body.dataset.theme=next;localStorage.setItem('viewerTheme',next);updateThemeButton();};
@@ -286,6 +444,9 @@ document.getElementById('searchInput').oninput=(ev)=>{
   clearTimeout(searchTimer);
   searchTimer=setTimeout(()=>runSearch(ev.target.value),220);
 };
+document.getElementById('relationClose').onclick=()=>closeRelationPicker();
+document.getElementById('relationPicker').onclick=(ev)=>{if(ev.target.id==='relationPicker')closeRelationPicker();};
+document.getElementById('relationFilter').oninput=(ev)=>renderRelationPicker(ev.target.value);
 document.addEventListener('keydown',(ev)=>{
   if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();openSearch();}
   if(ev.key==='Escape')closeSearch();

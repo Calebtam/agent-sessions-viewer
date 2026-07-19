@@ -1,5 +1,10 @@
 {
   "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl": {
     "name": "static_hold"
+  },
+  "2026/07/17/rollout-2026-07-17T17-06-05-019f6f53-6bb8-7e71-ab6e-e73a4083a6e9.jsonl": {
+    "relations": [
+      "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl"
+    ]
   }
 }

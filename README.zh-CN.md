@@ -4,6 +4,20 @@
 
 一个轻量级的 Web 查看器，用于浏览和搜索以 JSONL 格式导出的 Codex Agent 会话日志。
 
+## 版本 v0.0.2
+
+### 已实现内容
+
+- 会话目录增强：支持 Pin/Unpin、Archive/Unarchive、标签编辑，并在卡片中显示标签和 subagent 标识。
+- 详情页左侧导航：拆成 Session、Related sessions、Outline 三块。
+- 关联 session：自动显示 parent/subagent；支持 Add relation 人工关联其他 session。
+- 对话大纲：按 turn 列出用户问题，点击可跳转到对应内容。
+- 搜索增强：搜索结果带 turnIndex，点击可跳到具体 turn 所在页。
+- 内容阅读体验：每个 turn 支持 Copy turn，代码块支持 Copy，Thinking 继续可折叠。
+- API 分页：/api/session/<path>?offset=0&limit=50 返回分页 turn、outline、relations、session meta。
+- 前端渲染优化：使用 content-visibility:auto 做浏览器原生虚拟化，让长会话更轻量。
+- Parser 单元测试：新增 tests/test_parser.py，覆盖普通 event、IDE context、guardian approval、tool summary。
+
 ## 功能特性
 
 - 浏览指定会话目录下的所有会话

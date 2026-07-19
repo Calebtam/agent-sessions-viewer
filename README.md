@@ -4,6 +4,20 @@ English | [中文](README.zh-CN.md)
 
 A lightweight web viewer for browsing and searching Codex agent session logs exported as JSONL files.
 
+## Version v0.0.2
+
+### Implemented changes
+
+- Session directory enhancements: support Pin/Unpin, Archive/Unarchive, tag editing, and display tags and subagent identifiers on cards.
+- Detail page left navigation: split into Session, Related sessions, and Outline sections.
+- Related sessions: automatically show parent/subagent relationships and support Add relation to manually connect other sessions.
+- Conversation outline: list user questions by turn and jump to the corresponding section.
+- Search enhancements: search results include turnIndex so clicking jumps to the target turn.
+- Reading experience improvements: each turn supports Copy turn, code blocks support Copy, and Thinking remains collapsible.
+- API pagination: /api/session/<path>?offset=0&limit=50 returns paginated turns, outline, relations, and session metadata.
+- Frontend rendering optimization: uses content-visibility:auto for native browser virtualization, making long sessions lighter to browse.
+- Parser unit tests: added tests/test_parser.py covering normal events, IDE context, guardian approval, and tool summaries.
+
 ## Features
 
 - Browse all sessions from a configured session directory
