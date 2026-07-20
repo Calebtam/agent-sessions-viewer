@@ -1,21 +1,91 @@
 {
+  "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl": {
+    "category": "other",
+    "name": "yolov5 python源码"
+  },
+  "2026/06/17/rollout-2026-06-17T09-55-41-019ed34a-96b6-72b0-9541-95e15a022158.jsonl": {
+    "category": "stable hold",
+    "name": "静止状态原地跳变"
+  },
+  "2026/06/20/rollout-2026-06-20T12-24-07-019ee345-8eed-7e51-8a05-e3cf9f9e15e3.jsonl": {
+    "category": "dev_workflow",
+    "name": "优化dev-workflow 6.20"
+  },
+  "2026/06/20/rollout-2026-06-20T22-08-20-019ee55c-6e0b-7a53-a44d-38263bc99619.jsonl": {
+    "category": "tools"
+  },
+  "2026/06/22/rollout-2026-06-22T19-01-01-019eeefd-a6fd-7403-82f4-f31bdc499140.jsonl": {
+    "category": "tools",
+    "name": "upload脚本自动ip选择"
+  },
+  "2026/06/24/rollout-2026-06-24T11-41-14-019ef7b7-bc91-7390-95cd-ec4a87204196.jsonl": {
+    "category": "dev_workflow",
+    "name": "dev-workflow 调用失败修复"
+  },
+  "2026/06/25/rollout-2026-06-25T10-09-30-019efc8a-1e8b-7423-a1e0-677c261f6581.jsonl": {
+    "category": "stable hold",
+    "name": "静止状态稳定参数优化"
+  },
+  "2026/06/25/rollout-2026-06-25T11-24-42-019efcce-f612-70e0-a63b-dc2332795260.jsonl": {
+    "name": "Vibration Debug"
+  },
+  "2026/06/25/rollout-2026-06-25T17-04-01-019efe05-9be1-7a61-a341-3fe65c9c7641.jsonl": {
+    "category": "other",
+    "name": "vibe-coding"
+  },
+  "2026/06/25/rollout-2026-06-25T20-23-10-019efebb-f252-7b63-b408-2d9ad8f882b2.jsonl": {
+    "name": "Vibration debug"
+  },
+  "2026/06/30/rollout-2026-06-30T15-29-05-019f176e-813b-7a23-890e-c124cf33cd4d.jsonl": {
+    "category": "tools",
+    "name": "state_16dof_trace"
+  },
+  "2026/06/30/rollout-2026-06-30T16-54-49-019f17bc-fe7f-7472-b467-59773bb14ee8.jsonl": {
+    "category": "adaptive noise",
+    "name": "上下台阶根因分析"
+  },
+  "2026/07/09/rollout-2026-07-09T14-22-18-019f458a-98cb-70f3-83e4-319a700ab015.jsonl": {
+    "category": "trajectory consistence",
+    "name": "轨迹不一致问题分析"
+  },
+  "2026/07/14/rollout-2026-07-14T15-00-24-019f5f6d-4706-7773-ba57-8d10d8aab10a.jsonl": {
+    "category": "dev_workflow",
+    "name": "only read dev-workflow"
+  },
+  "2026/07/14/rollout-2026-07-14T16-02-57-019f5fa6-8922-7063-ba79-a610ecea8e49.jsonl": {
+    "category": "dev_workflow",
+    "name": "优化dev-workflow 7.14"
+  },
   "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl": {
-    "category": "zupt",
-    "name": "static_hold",
+    "category": "stable hold",
+    "name": "static_hold add IMU",
     "tags": [
       "static hold"
     ]
   },
   "2026/07/17/rollout-2026-07-17T17-06-05-019f6f53-6bb8-7e71-ab6e-e73a4083a6e9.jsonl": {
     "category": "dev_workflow",
+    "name": "agent-sessions-viewer",
     "pinned": false,
     "relations": [],
     "tags": []
   },
   "_access": {
     "publicSessions": [
+      "2026/06/30/rollout-2026-06-30T16-54-49-019f17bc-fe7f-7472-b467-59773bb14ee8.jsonl",
+      "2026/06/20/rollout-2026-06-20T12-24-07-019ee345-8eed-7e51-8a05-e3cf9f9e15e3.jsonl",
+      "2026/06/24/rollout-2026-06-24T11-41-14-019ef7b7-bc91-7390-95cd-ec4a87204196.jsonl",
+      "2026/07/14/rollout-2026-07-14T15-00-24-019f5f6d-4706-7773-ba57-8d10d8aab10a.jsonl",
+      "2026/07/14/rollout-2026-07-14T16-02-57-019f5fa6-8922-7063-ba79-a610ecea8e49.jsonl",
+      "2026/07/17/rollout-2026-07-17T17-06-05-019f6f53-6bb8-7e71-ab6e-e73a4083a6e9.jsonl",
       "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl",
-      "2026/06/16/rollout-2026-06-16T16-31-09-019ecf8e-49d5-78c0-9422-b337678c4e28.jsonl"
+      "2026/06/25/rollout-2026-06-25T17-04-01-019efe05-9be1-7a61-a341-3fe65c9c7641.jsonl",
+      "2026/06/17/rollout-2026-06-17T09-55-41-019ed34a-96b6-72b0-9541-95e15a022158.jsonl",
+      "2026/06/25/rollout-2026-06-25T10-09-30-019efc8a-1e8b-7423-a1e0-677c261f6581.jsonl",
+      "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl",
+      "2026/06/22/rollout-2026-06-22T19-01-01-019eeefd-a6fd-7403-82f4-f31bdc499140.jsonl",
+      "2026/06/30/rollout-2026-06-30T15-29-05-019f176e-813b-7a23-890e-c124cf33cd4d.jsonl",
+      "2026/07/09/rollout-2026-07-09T14-22-18-019f458a-98cb-70f3-83e4-319a700ab015.jsonl"
     ],
     "remoteEnabled": true,
     "remoteToken": "",
@@ -39,7 +109,11 @@
     ]
   },
   "_categories": [
-    "zupt",
-    "dev_workflow"
+    "dev_workflow",
+    "stable hold",
+    "trajectory consistence",
+    "tools",
+    "adaptive noise",
+    "other"
   ]
 }

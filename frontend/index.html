@@ -42,9 +42,11 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .hero h1{margin:0;font-size:32px;letter-spacing:0}.hero p{margin:8px 0 0;color:var(--muted)}
 .stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 13px;color:var(--muted)}.stat strong{color:var(--text)}
 .home-controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 8px}.home-controls button.active{border-color:var(--accent);color:var(--accent)}
+.filter-select{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:12px;max-width:220px}
+.side-filter{padding:8px 10px;border-bottom:1px solid var(--line)}.side-filter select{width:100%}
 .access-cta{border-color:color-mix(in srgb,var(--accent) 60%,var(--line));background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
 #adminBtn{display:none}
-.access-panel{max-width:980px;margin:0 auto;padding:28px 24px 80px}.access-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.access-head h1{margin:0;font-size:30px}.access-head p{margin:8px 0 0;color:var(--muted)}.access-grid{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:16px}.access-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.access-box h2{margin:0 0 10px;font-size:16px}.access-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.access-row:first-of-type{border-top:0}.access-muted{color:var(--muted);font-size:13px;line-height:1.45}.access-token{display:flex;gap:8px;margin-top:10px}.access-token input,.access-filter{width:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);padding:10px;font:inherit}.access-list{margin-top:12px;max-height:62vh;overflow:auto}.access-item{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px;border-radius:12px}.access-item:hover{background:var(--hover)}.access-item-title{font-weight:650}.access-item-meta{color:var(--faint);font-size:12px;margin-top:3px}.access-status{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px}.access-status.on{color:#075244;background:#b9f3e2;border-color:#84dfc9}.access-status.off{color:var(--muted);background:var(--surface)}
+.access-panel{max-width:1040px;margin:0 auto;padding:28px 24px 80px}.access-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.access-head h1{margin:0;font-size:28px}.access-head p{margin:8px 0 0;color:var(--muted)}.access-grid{display:grid;grid-template-columns:minmax(260px,330px) 1fr;gap:16px}.access-box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}.access-box h2{margin:0 0 10px;font-size:15px}.access-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.access-row:first-of-type{border-top:0}.access-muted{color:var(--muted);font-size:12px;line-height:1.45}.access-token{display:flex;gap:8px;margin-top:10px}.access-token input,.access-filter{width:100%;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--text);padding:8px 10px;font-size:13px}.access-search-row,.access-filter-row,.access-bulk,.access-save-row{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.access-filter-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.access-bulk{display:flex;gap:8px;flex-wrap:wrap}.access-save-row{display:flex;justify-content:flex-end}.access-save-row button{min-width:150px}.access-list{margin-top:12px;max-height:54vh;overflow:auto}.access-item{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px;border-radius:10px}.access-item:hover{background:var(--hover)}.access-item-title{font-weight:650;font-size:13px}.access-item-meta{color:var(--faint);font-size:12px;margin-top:3px}.access-status{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px}.access-status.on{color:#075244;background:#b9f3e2;border-color:#84dfc9}.access-status.off{color:var(--muted);background:var(--surface)}
 .home-date{margin:30px 0 12px;font-weight:800;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:10px}.home-date-actions{display:flex;gap:6px}.home-date-actions button{font-size:12px;padding:5px 7px;font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);cursor:pointer;min-height:210px;display:flex;flex-direction:column}
@@ -53,18 +55,19 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .card-title{font-weight:800;line-height:1.3;overflow-wrap:anywhere}.file-name{margin-top:5px;color:var(--faint);font-size:12px;overflow-wrap:anywhere}
 .preview{margin:14px 0 0;padding:0;list-style:none;color:var(--muted);font-size:13px}.preview li{margin:8px 0;padding-left:12px;border-left:2px solid color-mix(in srgb,var(--accent) 45%,var(--line));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:12px}
-.category-select{max-width:140px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:4px;font-size:12px}
+.category-select{max-width:140px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:12px;line-height:1.2}
 .chat{max-width:960px;margin:0 auto;padding:32px 24px 90px}
 .detail-shell{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 58px)}
 .detail-nav{position:sticky;top:58px;height:calc(100vh - 58px);border-right:1px solid var(--line);background:var(--surface2);display:flex;flex-direction:column;min-height:0}
-.detail-nav-body{overflow:auto;padding:14px;flex:1;min-height:0}
+.detail-nav-body{overflow:auto;padding:16px;flex:1;min-height:0;overscroll-behavior:contain}
 .detail-main{min-width:0;overflow:visible}
-.nav-section{margin-bottom:18px}.nav-title{font-size:12px;color:var(--faint);font-weight:800;text-transform:uppercase;margin:0 0 8px}
+.nav-section{margin-bottom:22px}.nav-title{font-size:12px;color:var(--faint);font-weight:800;text-transform:uppercase;margin:0 0 10px}.detail-session-head .side-title{font-size:15px;line-height:1.35;white-space:normal}.detail-session-head .side-sub{margin-top:8px;line-height:1.45;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.detail-session-controls{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .rel-group{margin:10px 0 12px}.rel-group-title{display:flex;align-items:center;justify-content:space-between;color:var(--faint);font-size:11px;font-weight:700;text-transform:uppercase;margin:0 0 5px;padding:0 4px}.rel-count{font-weight:600;color:var(--faint)}.rel-row{display:flex;align-items:center;gap:6px}.rel-kind{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.02em;border:1px solid var(--line);border-radius:999px;padding:3px 6px;color:var(--muted);background:var(--panel)}.rel-kind.subagent{color:#075244;background:#b9f3e2;border-color:#84dfc9}.rel-kind.master{color:#103a68;background:#cfe4ff;border-color:#94bff4}.rel-kind.reference{color:#433406;background:#f7e7a0;border-color:#dec767}
 .rel-row.level-2{margin-left:16px}.rel-row.level-3{margin-left:32px}.rel-row.level-deep{margin-left:48px}
 .rel-item,.outline-item{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:10px;padding:8px;color:var(--muted);font-size:13px;line-height:1.35}
 .rel-item:hover,.outline-item:hover,.outline-item.active{background:var(--hover);color:var(--text)}
 .outline-item.active{border-left:3px solid var(--accent);padding-left:9px;font-weight:650}
+.outline-progress{color:var(--faint);font-size:11px;font-weight:600}
 .nav-empty{color:var(--faint);font-size:12px;padding:8px}
 .tag-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted)}
 .session-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.session-actions button{font-size:12px;padding:6px 8px}
@@ -167,6 +170,8 @@ let detailState={path:'',session:null,turns:[],outline:[],relations:{masters:[],
 let accessState={remoteEnabled:false,isAdmin:false,publicPaths:[]};
 let homeGroupMode=localStorage.getItem('homeGroupMode')||'date';
 let sideGroupMode=localStorage.getItem('sideGroupMode')||homeGroupMode;
+let homeCategoryFilter=localStorage.getItem('homeCategoryFilter')||'';
+let sideCategoryFilter=localStorage.getItem('sideCategoryFilter')||'';
 let layoutMode=localStorage.getItem('detailLayoutMode')||'two';
 const urlToken=new URLSearchParams(location.search).get('token')||'';
 let accessToken=urlToken||sessionStorage.getItem('accessToken')||'';
@@ -195,6 +200,14 @@ function apiUrl(url){if(!accessToken)return url;const sep=url.includes('?')?'&':
 function apiFetch(url,options){return fetch(apiUrl(url),options);}
 function groupByDate(items){return items.reduce((acc,item)=>{const key=item.date||'unknown';(acc[key]||=[]).push(item);return acc;},{});}
 function groupByCategory(items){return items.reduce((acc,item)=>{const key=item.category||'Uncategorized';(acc[key]||=[]).push(item);return acc;},{});}
+function uniqueValues(items,fn){return [...new Set(items.map(fn).filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
+function categoryKey(item){return item.category||'Uncategorized';}
+function categoryOptionsHtml(items,selected,allLabel='All categories'){
+  const counts=items.reduce((acc,item)=>{const key=categoryKey(item);acc[key]=(acc[key]||0)+1;return acc;},{});
+  const keys=Object.keys(counts).sort((a,b)=>a.localeCompare(b));
+  return `<option value="">${allLabel} (${items.length})</option>`+keys.map(key=>`<option value="${escapeHtml(key)}"${selected===key?' selected':''}>${escapeHtml(key)} (${counts[key]})</option>`).join('');
+}
+function tagsOf(item){return Array.isArray(item.tags)?item.tags:[];}
 function activeSession(){return sessions.find(s=>s.path===activePath);}
 function updateTopActions(){
   document.getElementById('homeBtn').style.display=currentView==='home'?'none':'inline-flex';
@@ -270,6 +283,15 @@ function renderList(){
   sb.appendChild(controls);
   const normal=sessions.filter(s=>s.sessionType!=='subagent');
   const subagents=sessions.filter(s=>s.sessionType==='subagent');
+  let visibleNormal=normal;
+  if(sideGroupMode==='category'){
+    const filter=document.createElement('div');
+    filter.className='side-filter';
+    filter.innerHTML=`<select class="filter-select">${categoryOptionsHtml(normal,sideCategoryFilter)}</select>`;
+    filter.querySelector('select').onchange=(ev)=>{sideCategoryFilter=ev.target.value;localStorage.setItem('sideCategoryFilter',sideCategoryFilter);renderList();};
+    sb.appendChild(filter);
+    if(sideCategoryFilter)visibleNormal=normal.filter(s=>categoryKey(s)===sideCategoryFilter);
+  }
   const byId=normal.reduce((acc,s)=>{if(s.sessionId)acc[s.sessionId]=s;if(s.fileId)acc[s.fileId]=s;if(s.shortName)acc[s.shortName]=s;return acc;},{});
   const parentPathOf=(s)=>s.parentPath||(byId[s.parentThreadId]&&byId[s.parentThreadId].path)||'';
   const subByParent=subagents.reduce((acc,s)=>{const p=parentPathOf(s);if(p)(acc[p]||=[]).push(s);return acc;},{});
@@ -280,7 +302,7 @@ function renderList(){
     });
   };
   const orphans=subagents.filter(s=>!parentPathOf(s));
-  const grouped=sideGroupMode==='category'?groupByCategory(normal):groupByDate(normal);
+  const grouped=sideGroupMode==='category'?groupByCategory(visibleNormal):groupByDate(visibleNormal);
   for(const key of Object.keys(grouped).sort().reverse()){
     const header=document.createElement('div');header.className='date';header.textContent=key;sb.appendChild(header);
     grouped[key].forEach(s=>{
@@ -316,18 +338,24 @@ function renderHome(){
   updateTopActions();
   document.getElementById('topTitle').textContent='Session Overview';
   const view=document.getElementById('view');
-  const grouped=homeGroupMode==='category'?groupByCategory(sessions):groupByDate(sessions);
+  const homeItems=homeGroupMode==='category'&&homeCategoryFilter?sessions.filter(s=>categoryKey(s)===homeCategoryFilter):sessions;
+  const grouped=homeGroupMode==='category'?groupByCategory(homeItems):groupByDate(homeItems);
   const dates=Object.keys(grouped).sort().reverse();
   const total=sessions.length;
-  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date or category, inspect filenames, and jump into detailed ChatGPT-style views.</p><div class="home-controls"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="newCategory">New category</button></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
+  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date or category, inspect filenames, and jump into detailed ChatGPT-style views.</p><div class="home-controls"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="newCategory">New category</button><span id="homeCategorySlot"></span></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
   document.getElementById('groupDate').classList.toggle('active',homeGroupMode==='date');
   document.getElementById('groupCategory').classList.toggle('active',homeGroupMode==='category');
   document.getElementById('groupDate').onclick=()=>{homeGroupMode='date';sideGroupMode='date';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
   document.getElementById('groupCategory').onclick=()=>{homeGroupMode='category';sideGroupMode='category';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
   document.getElementById('newCategory').onclick=()=>createCategory();
+  const homeCategorySlot=document.getElementById('homeCategorySlot');
+  if(homeGroupMode==='category'){
+    homeCategorySlot.innerHTML=`<select class="filter-select">${categoryOptionsHtml(sessions,homeCategoryFilter)}</select>`;
+    homeCategorySlot.querySelector('select').onchange=(ev)=>{homeCategoryFilter=ev.target.value;localStorage.setItem('homeCategoryFilter',homeCategoryFilter);renderHome();};
+  }
   const pinned=sessions.filter(s=>s.pinned).length;
   const archived=sessions.filter(s=>s.archived).length;
-  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${dates.length}</strong> ${homeGroupMode==='category'?'groups':'dates'}</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div><div class="stat"><strong>${accessState.remoteEnabled?'Restricted':'Open'}</strong> remote</div>`;
+  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${homeItems.length}</strong> shown</div><div class="stat"><strong>${dates.length}</strong> ${homeGroupMode==='category'?'groups':'dates'}</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div><div class="stat"><strong>${accessState.remoteEnabled?'Restricted':'Open'}</strong> remote</div>`;
   const groups=view.querySelector('#homeGroups');
   for(const date of dates){
     const title=document.createElement('div');title.className='home-date';
@@ -412,7 +440,7 @@ async function renderAccessPage(){
   let tokens=(access.tokens||[]).map(t=>({...t,publicSessions:[...(t.publicSessions||[])]}));
   let selectedKind='guest';
   let selectedIndex=-1;
-  view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Access Settings</h1><p>Manage guest access and scoped tokens. Select a subject on the left, then assign visible sessions on the right.</p></div><div><button id="clearToken">Clear token</button> <button id="backHome">Home</button></div></div><div class="access-grid"><section class="access-box"><h2>Remote Policy</h2><div class="access-row"><div><div>Remote restriction</div><div class="access-muted">When enabled, remote visitors only see sessions allowed by Guest or their token.</div></div><button id="accessToggle"></button></div><div class="access-row"><span id="accessStatus"></span><span class="access-muted" id="publicCount"></span></div><h2>Subjects</h2><div id="subjectList" class="access-list"></div><div class="access-token"><button id="addToken">New token</button><button id="deleteToken">Delete token</button></div></section><section class="access-box"><h2 id="subjectTitle">Guest access</h2><div id="tokenFields"></div><div class="access-token"><button id="generateToken">Generate token</button><button id="saveAccess">Save changes</button></div><input id="accessFilter" class="access-filter" placeholder="Filter sessions..."><div id="accessList" class="access-list"></div></section></div></div>';
+  view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Access Settings</h1><p>Manage guest access and scoped tokens. Select a subject on the left, then assign visible sessions on the right.</p></div><div><button id="clearToken">Clear token</button> <button id="backHome">Home</button></div></div><div class="access-grid"><section class="access-box"><h2>Remote Policy</h2><div class="access-row"><div><div>Remote restriction</div><div class="access-muted">When enabled, remote visitors only see sessions allowed by Guest or their token.</div></div><button id="accessToggle"></button></div><div class="access-row"><span id="accessStatus"></span><span class="access-muted" id="publicCount"></span></div><h2>Subjects</h2><div id="subjectList" class="access-list"></div><div class="access-token"><button id="addToken">New token</button><button id="deleteToken">Delete token</button></div></section><section class="access-box"><h2 id="subjectTitle">Guest access</h2><div id="tokenFields"></div><div class="access-token"><button id="generateToken">Generate token</button></div><div class="access-search-row"><input id="accessFilter" class="access-filter" placeholder="Search sessions..."></div><div class="access-filter-row"><select id="accessCategory" class="access-filter"></select><select id="accessDate" class="access-filter"></select><select id="accessTag" class="access-filter"></select></div><div class="access-bulk"><button id="selectVisible">Select visible</button><button id="unselectVisible">Unselect visible</button><button id="clearAllowed">Clear all</button></div><div id="accessList" class="access-list"></div><div class="access-save-row"><button id="saveAccess" class="access-cta">Save changes</button></div></section></div></div>';
   document.getElementById('backHome').onclick=()=>renderHome();
   document.getElementById('clearToken').onclick=()=>{sessionStorage.removeItem('accessToken');accessToken='';location.href=location.pathname;};
   const status=document.getElementById('accessStatus');
@@ -474,8 +502,15 @@ async function renderAccessPage(){
     const publicSet=new Set(subject.publicSessions||[]);
     const root=document.getElementById('accessList');
     const q=document.getElementById('accessFilter').value.trim().toLowerCase();
+    const category=document.getElementById('accessCategory').value;
+    const date=document.getElementById('accessDate').value;
+    const tag=document.getElementById('accessTag').value;
+    const visibleSessions=sessions.filter(s=>{
+      const haystack=[s.name,s.originalName,s.date,s.category,...tagsOf(s),...(s.previewQuestions||[])].join(' ').toLowerCase();
+      return (!q||haystack.includes(q))&&(!category||categoryKey(s)===category)&&(!date||s.date===date)&&(!tag||tagsOf(s).includes(tag));
+    });
     root.textContent='';
-    sessions.filter(s=>!q||[s.name,s.originalName,s.date,s.category,...(s.previewQuestions||[])].join(' ').toLowerCase().includes(q)).forEach(s=>{
+    visibleSessions.forEach(s=>{
       const row=document.createElement('label');
       row.className='access-item';
       row.innerHTML='<input type="checkbox"><div><div class="access-item-title"></div><div class="access-item-meta"></div></div>';
@@ -492,6 +527,7 @@ async function renderAccessPage(){
       row.querySelector('.access-item-meta').textContent=`${s.date||'unknown'} · ${s.category||'Uncategorized'} · ${s.originalName}.jsonl`;
       root.appendChild(row);
     });
+    root.dataset.visiblePaths=JSON.stringify(visibleSessions.map(s=>s.path));
   };
   document.getElementById('addToken').onclick=async()=>{
     const token=await generateAccessToken();
@@ -503,7 +539,19 @@ async function renderAccessPage(){
   document.getElementById('generateToken').onclick=async()=>{if(selectedKind!=='token')return;const token=await generateAccessToken();if(!token)return;tokens[selectedIndex].token=token;renderEditor();};
   document.getElementById('deleteToken').onclick=()=>{if(selectedKind!=='token')return;if(!confirm('Delete this token?'))return;tokens.splice(selectedIndex,1);selectedKind='guest';selectedIndex=-1;renderSubjects();renderEditor();renderPublicList();};
   document.getElementById('saveAccess').onclick=async()=>{const ok=await saveAccess();if(ok)alert('Access saved');};
+  const accessCategory=document.getElementById('accessCategory');
+  accessCategory.innerHTML=categoryOptionsHtml(sessions,'','All categories');
+  const accessDate=document.getElementById('accessDate');
+  accessDate.innerHTML='<option value="">All dates</option>'+uniqueValues(sessions,s=>s.date).map(date=>`<option value="${escapeHtml(date)}">${escapeHtml(date)}</option>`).join('');
+  const accessTag=document.getElementById('accessTag');
+  accessTag.innerHTML='<option value="">All tags</option>'+uniqueValues(sessions.flatMap(s=>tagsOf(s)),tag=>tag).map(tag=>`<option value="${escapeHtml(tag)}">${escapeHtml(tag)}</option>`).join('');
   document.getElementById('accessFilter').oninput=renderPublicList;
+  accessCategory.onchange=renderPublicList;
+  accessDate.onchange=renderPublicList;
+  accessTag.onchange=renderPublicList;
+  document.getElementById('selectVisible').onclick=()=>{const subject=selectedSubject();const paths=JSON.parse(document.getElementById('accessList').dataset.visiblePaths||'[]');subject.publicSessions=[...new Set([...(subject.publicSessions||[]),...paths])];if(selectedKind==='guest')guestPublicPaths=subject.publicSessions;renderSubjects();renderEditor();renderPublicList();};
+  document.getElementById('unselectVisible').onclick=()=>{const subject=selectedSubject();const paths=new Set(JSON.parse(document.getElementById('accessList').dataset.visiblePaths||'[]'));subject.publicSessions=(subject.publicSessions||[]).filter(path=>!paths.has(path));if(selectedKind==='guest')guestPublicPaths=subject.publicSessions;renderSubjects();renderEditor();renderPublicList();};
+  document.getElementById('clearAllowed').onclick=()=>{const subject=selectedSubject();subject.publicSessions=[];if(selectedKind==='guest')guestPublicPaths=[];renderSubjects();renderEditor();renderPublicList();};
   renderSubjects();
   renderEditor();
   renderPublicList();
@@ -640,7 +688,8 @@ function renderDetailNav(){
   const s=detailState.session||{};
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
   const categoryOptions=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
-  nav.innerHTML=`<div class="nav-section"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="tagBtn">Tags</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline</div><div id="outlineList"></div></div>`;
+  nav.innerHTML=`<div class="nav-section detail-session-head"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><div class="detail-session-controls"><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="renameBtn">Rename</button><button id="tagBtn">Tags</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline <span id="outlineProgress" class="outline-progress"></span></div><div id="outlineList"></div></div>`;
+  document.getElementById('renameBtn').onclick=()=>renameSession(s);
   document.getElementById('tagBtn').onclick=()=>editTags(s);
   document.getElementById('pinBtn').onclick=()=>patchSessionMeta(s,{pinned:!s.pinned});
   document.getElementById('archiveBtn').onclick=()=>patchSessionMeta(s,{archived:!s.archived});
@@ -689,32 +738,70 @@ function renderDetailNav(){
 
 let outlineSyncFrame=null;
 let activeOutlineIndex=null;
+function centerOutlineItem(item){
+  const nav=document.getElementById('detailNavBody');
+  if(!nav||!item)return;
+  const navRect=nav.getBoundingClientRect();
+  const itemRect=item.getBoundingClientRect();
+  const delta=itemRect.top-navRect.top-(nav.clientHeight/2)+(itemRect.height/2);
+  nav.scrollTo({top:nav.scrollTop+delta,behavior:'smooth'});
+}
+function setActiveOutline(index,center=true){
+  if(index==null||Number.isNaN(Number(index)))return;
+  activeOutlineIndex=Number(index);
+  document.querySelectorAll('.outline-item.active').forEach(item=>item.classList.remove('active'));
+  const progress=document.getElementById('outlineProgress');
+  if(progress)progress.textContent=`${activeOutlineIndex+1} / ${detailState.total||detailState.outline.length||detailState.turns.length}`;
+  const item=document.querySelector(`.outline-item[data-index="${activeOutlineIndex}"]`);
+  if(item){
+    item.classList.add('active');
+    if(center)centerOutlineItem(item);
+  }
+}
+function scrollContentToTurn(index,behavior='smooth'){
+  const el=document.getElementById('turn-'+index);
+  const scroller=document.querySelector('.content');
+  if(!el||!scroller)return false;
+  const scrollerRect=scroller.getBoundingClientRect();
+  const elRect=el.getBoundingClientRect();
+  const top=scroller.scrollTop+elRect.top-scrollerRect.top-18;
+  scroller.scrollTo({top:Math.max(0,top),behavior});
+  return true;
+}
+function containNavWheel(ev){
+  if(currentView!=='detail')return;
+  const nav=document.getElementById('detailNavBody');
+  if(!nav||!nav.contains(ev.target))return;
+  ev.stopPropagation();
+  const atTop=nav.scrollTop<=0;
+  const atBottom=Math.ceil(nav.scrollTop+nav.clientHeight)>=nav.scrollHeight;
+  if((ev.deltaY<0&&atTop)||(ev.deltaY>0&&atBottom)){
+    ev.preventDefault();
+  }
+}
 function syncOutline(){
   if(currentView!=='detail')return;
   if(outlineSyncFrame)return;
   outlineSyncFrame=requestAnimationFrame(()=>{
     outlineSyncFrame=null;
+    const scroller=document.querySelector('.content');
     const turns=[...document.querySelectorAll('.turn[id^="turn-"]')];
-    if(!turns.length)return;
-    const anchor=window.innerHeight*0.28;
+    if(!scroller||!turns.length)return;
+    const scrollerRect=scroller.getBoundingClientRect();
+    const anchor=scrollerRect.top+(scroller.clientHeight*0.32);
     let best=turns[0];
-    let bestDistance=Infinity;
-    turns.forEach(turn=>{
+    for(const turn of turns){
       const rect=turn.getBoundingClientRect();
-      const distance=Math.abs(rect.top-anchor);
-      if(rect.top<=window.innerHeight*0.75&&rect.bottom>=80&&distance<bestDistance){
-        best=turn;bestDistance=distance;
+      if(rect.top<=anchor){
+        best=turn;
       }
-    });
+      if(rect.bottom>=anchor){
+        break;
+      }
+    }
     const index=Number(best.id.replace('turn-',''));
     if(index===activeOutlineIndex)return;
-    activeOutlineIndex=index;
-    document.querySelectorAll('.outline-item.active').forEach(item=>item.classList.remove('active'));
-    const item=document.querySelector(`.outline-item[data-index="${index}"]`);
-    if(item){
-      item.classList.add('active');
-      item.scrollIntoView({block:'nearest'});
-    }
+    setActiveOutline(index,true);
   });
 }
 
@@ -759,7 +846,7 @@ async function loadSession(path,opts={}){
   }
   try{
     const offset=opts.offset??0;
-    const limit=detailState.limit||50;
+    const limit=opts.limit||detailState.limit||50;
     const r=await apiFetch(`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`);const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
     detailState={path,session:d.session,turns:opts.append?[...detailState.turns,...d.turns]:d.turns,outline:d.outline,relations:d.relations,offset:d.offset,limit:d.limit,total:d.total,hasMore:d.hasMore};
     document.getElementById('topTitle').textContent=d.session.name;
@@ -780,14 +867,14 @@ async function loadMoreTurns(){
 async function jumpToTurn(index){
   if(index==null)return;
   if(!detailState.turns.some(t=>t.index===index)){
-    const pageStart=Math.floor(index/detailState.limit)*detailState.limit;
-    await loadSession(activePath,{offset:pageStart});
+    const maxLimit=200;
+    const offset=index<maxLimit?0:Math.max(0,index-80);
+    const limit=index<maxLimit?Math.max(index+1,detailState.limit||50):Math.min(maxLimit,index-offset+80);
+    await loadSession(activePath,{offset,limit});
   }
-  const el=document.getElementById('turn-'+index);
-  if(el){
-    el.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(syncOutline,260);
-  }
+  setActiveOutline(index,true);
+  scrollContentToTurn(index,'smooth');
+  setTimeout(()=>setActiveOutline(index,true),260);
 }
 
 function openRelationPicker(){
@@ -841,6 +928,7 @@ document.getElementById('searchInput').oninput=(ev)=>{
 document.getElementById('relationClose').onclick=()=>closeRelationPicker();
 document.getElementById('relationPicker').onclick=(ev)=>{if(ev.target.id==='relationPicker')closeRelationPicker();};
 document.getElementById('relationFilter').oninput=(ev)=>renderRelationPicker(ev.target.value);
+document.addEventListener('wheel',containNavWheel,{capture:true,passive:false});
 document.querySelector('.content').addEventListener('scroll',syncOutline,{passive:true});
 window.addEventListener('scroll',syncOutline,{passive:true});
 document.addEventListener('keydown',(ev)=>{
