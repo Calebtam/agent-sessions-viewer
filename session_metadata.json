@@ -5,14 +5,14 @@
   },
   "2026/06/17/rollout-2026-06-17T09-55-41-019ed34a-96b6-72b0-9541-95e15a022158.jsonl": {
     "category": "stable hold",
-    "name": "静止状态原地跳变"
+    "name": "数据分析 dev-workflow开发"
   },
   "2026/06/20/rollout-2026-06-20T12-24-07-019ee345-8eed-7e51-8a05-e3cf9f9e15e3.jsonl": {
     "category": "dev_workflow",
     "name": "优化dev-workflow 6.20"
   },
   "2026/06/20/rollout-2026-06-20T22-08-20-019ee55c-6e0b-7a53-a44d-38263bc99619.jsonl": {
-    "category": "tools"
+    "category": "AI能力增强"
   },
   "2026/06/22/rollout-2026-06-22T19-01-01-019eeefd-a6fd-7403-82f4-f31bdc499140.jsonl": {
     "category": "tools",
@@ -24,17 +24,20 @@
   },
   "2026/06/25/rollout-2026-06-25T10-09-30-019efc8a-1e8b-7423-a1e0-677c261f6581.jsonl": {
     "category": "stable hold",
-    "name": "静止状态稳定参数优化"
+    "name": "参数删减",
+    "pinned": false
   },
   "2026/06/25/rollout-2026-06-25T11-24-42-019efcce-f612-70e0-a63b-dc2332795260.jsonl": {
-    "name": "Vibration Debug"
+    "category": "adaptive noise",
+    "name": "Vibration Develop"
   },
   "2026/06/25/rollout-2026-06-25T17-04-01-019efe05-9be1-7a61-a341-3fe65c9c7641.jsonl": {
     "category": "other",
     "name": "vibe-coding"
   },
   "2026/06/25/rollout-2026-06-25T20-23-10-019efebb-f252-7b63-b408-2d9ad8f882b2.jsonl": {
-    "name": "Vibration debug"
+    "category": "adaptive noise",
+    "name": "Vibration debug param"
   },
   "2026/06/30/rollout-2026-06-30T15-29-05-019f176e-813b-7a23-890e-c124cf33cd4d.jsonl": {
     "category": "tools",
@@ -42,7 +45,7 @@
   },
   "2026/06/30/rollout-2026-06-30T16-54-49-019f17bc-fe7f-7472-b467-59773bb14ee8.jsonl": {
     "category": "adaptive noise",
-    "name": "上下台阶根因分析"
+    "name": "Vibration Root Cause"
   },
   "2026/07/09/rollout-2026-07-09T14-22-18-019f458a-98cb-70f3-83e4-319a700ab015.jsonl": {
     "category": "trajectory consistence",
@@ -58,7 +61,7 @@
   },
   "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl": {
     "category": "stable hold",
-    "name": "static_hold add IMU",
+    "name": "新增imu检测模式",
     "tags": [
       "static hold"
     ]
@@ -85,7 +88,9 @@
       "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl",
       "2026/06/22/rollout-2026-06-22T19-01-01-019eeefd-a6fd-7403-82f4-f31bdc499140.jsonl",
       "2026/06/30/rollout-2026-06-30T15-29-05-019f176e-813b-7a23-890e-c124cf33cd4d.jsonl",
-      "2026/07/09/rollout-2026-07-09T14-22-18-019f458a-98cb-70f3-83e4-319a700ab015.jsonl"
+      "2026/07/09/rollout-2026-07-09T14-22-18-019f458a-98cb-70f3-83e4-319a700ab015.jsonl",
+      "2026/06/25/rollout-2026-06-25T11-24-42-019efcce-f612-70e0-a63b-dc2332795260.jsonl",
+      "2026/06/25/rollout-2026-06-25T20-23-10-019efebb-f252-7b63-b408-2d9ad8f882b2.jsonl"
     ],
     "remoteEnabled": true,
     "remoteToken": "",
@@ -114,6 +119,7 @@
     "trajectory consistence",
     "tools",
     "adaptive noise",
-    "other"
+    "other",
+    "AI能力增强"
   ]
 }

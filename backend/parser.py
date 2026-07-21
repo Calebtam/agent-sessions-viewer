@@ -40,6 +40,10 @@ def _append_assistant(cur, text, kind="answer"):
     return cur
 
 
+def _item_timestamp(obj, payload):
+    return payload.get("timestamp") or obj.get("timestamp") or ""
+
+
 def _compact_turns(turns):
     compacted = []
     for idx, turn in enumerate(turns):
@@ -54,6 +58,7 @@ def _compact_turns(turns):
                 "id": f"turn-{len(compacted)}",
                 "index": len(compacted),
                 "outlineTitle": title,
+                "time": turn.get("time", ""),
                 "user": user,
                 "user_context": turn.get("user_context", ""),
                 "assistant": assistant,
@@ -250,7 +255,7 @@ def load_session(path):
                     text, context = _split_user_context(text)
                     if cur:
                         turns.append(cur)
-                    cur = {"user": text, "user_context": context, "assistant": [], "reasoning": []}
+                    cur = {"user": text, "user_context": context, "time": _item_timestamp(obj, payload), "assistant": [], "reasoning": []}
                     saw_event_messages = True
                 elif payload_type == "agent_message":
                     phase = payload.get("phase")
@@ -292,7 +297,7 @@ def load_session(path):
                 text, context = _split_user_context(text)
                 if cur:
                     turns.append(cur)
-                cur = {"user": text, "user_context": context, "assistant": [], "reasoning": []}
+                cur = {"user": text, "user_context": context, "time": _item_timestamp(obj, payload), "assistant": [], "reasoning": []}
             elif role == "assistant":
                 cur = _append_assistant(cur, text)
     if cur:

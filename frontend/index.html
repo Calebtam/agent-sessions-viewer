@@ -20,17 +20,20 @@ body.sidebar-collapsed .sidebar{width:0;min-width:0;overflow:hidden;border-right
 .brand-dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .side-actions{margin-left:auto;display:flex;gap:6px}
 .icon-btn{min-width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;padding:0;font-weight:750}
-.session-list{overflow:auto;padding:10px;flex:1;min-height:0}
+.session-list{overflow:auto;padding:12px 10px 14px;flex:1;min-height:0}
 .panel-footer{height:46px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;background:var(--surface2);color:var(--faint);font-size:12px;flex:none}
 .side-mode{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--line)}.side-mode button{font-size:12px;padding:5px 7px}.side-mode button.active{border-color:var(--accent);color:var(--accent)}
-.date{margin:16px 8px 7px;color:var(--faint);font-size:12px;font-weight:800;text-transform:uppercase}
-.side-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px;border-radius:12px;cursor:pointer}
-.side-item:hover,.side-item.active{background:var(--hover)}
-.side-item.subagent{margin-left:18px;padding:7px 8px;border-left:2px solid var(--line);grid-template-columns:1fr}.side-item.subagent .side-title{font-size:12px;color:var(--muted)}
+.date{margin:20px 8px 10px;color:var(--faint);font-size:12px;font-weight:800;text-transform:uppercase}
+.side-item{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;border-radius:10px;padding:9px 8px;color:var(--muted);font-size:13px;line-height:1.35;cursor:pointer}
+.side-item>div{min-width:0;flex:1}
+.side-item:hover,.side-item.active{background:var(--hover);color:var(--text)}
+.side-item.active{border-left:3px solid var(--accent);padding-left:9px;font-weight:650}
+.side-item+.side-item{margin-top:4px}
+.side-item.subagent{margin-left:18px;padding:7px 8px 7px 10px}.side-item.subagent .side-title{font-size:12px;color:var(--muted)}
 .side-item.subagent.level-2{margin-left:34px}.side-item.subagent.level-3{margin-left:50px}.side-item.subagent.level-deep{margin-left:66px}
 .side-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
 .side-sub{margin-top:3px;color:var(--faint);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rename{font-size:12px;padding:5px 7px;background:transparent}
+.rename{font-size:12px;padding:5px 7px;background:transparent;flex:none}
 .content{flex:1;min-width:0;height:100%;overflow:auto;background:var(--bg)}
 .topbar{position:sticky;top:0;z-index:4;height:58px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 18px}
 body:not(.sidebar-collapsed) #sideOpen{display:none}
@@ -41,7 +44,12 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:26px}
 .hero h1{margin:0;font-size:32px;letter-spacing:0}.hero p{margin:8px 0 0;color:var(--muted)}
 .stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 13px;color:var(--muted)}.stat strong{color:var(--text)}
-.home-controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 8px}.home-controls button.active{border-color:var(--accent);color:var(--accent)}
+.home-controls{display:flex;flex-direction:column;gap:8px;margin:16px 0 8px}
+.home-control-row{display:flex;gap:8px;flex-wrap:wrap}
+.home-control-row.tools{align-items:center;gap:14px}
+.home-control-row.tools .filter-select{min-width:190px;max-width:280px}
+.home-control-row.tools #newCategory{margin-left:6px}
+.home-controls button.active{border-color:var(--accent);color:var(--accent)}
 .filter-select{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:12px;max-width:220px}
 .side-filter{padding:8px 10px;border-bottom:1px solid var(--line)}.side-filter select{width:100%}
 .access-cta{border-color:color-mix(in srgb,var(--accent) 60%,var(--line));background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
@@ -64,18 +72,21 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .nav-section{margin-bottom:22px}.nav-title{font-size:12px;color:var(--faint);font-weight:800;text-transform:uppercase;margin:0 0 10px}.detail-session-head .side-title{font-size:15px;line-height:1.35;white-space:normal}.detail-session-head .side-sub{margin-top:8px;line-height:1.45;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.detail-session-controls{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .rel-group{margin:10px 0 12px}.rel-group-title{display:flex;align-items:center;justify-content:space-between;color:var(--faint);font-size:11px;font-weight:700;text-transform:uppercase;margin:0 0 5px;padding:0 4px}.rel-count{font-weight:600;color:var(--faint)}.rel-row{display:flex;align-items:center;gap:6px}.rel-kind{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.02em;border:1px solid var(--line);border-radius:999px;padding:3px 6px;color:var(--muted);background:var(--panel)}.rel-kind.subagent{color:#075244;background:#b9f3e2;border-color:#84dfc9}.rel-kind.master{color:#103a68;background:#cfe4ff;border-color:#94bff4}.rel-kind.reference{color:#433406;background:#f7e7a0;border-color:#dec767}
 .rel-row.level-2{margin-left:16px}.rel-row.level-3{margin-left:32px}.rel-row.level-deep{margin-left:48px}
+.nav-section+.nav-section{padding-top:14px;border-top:1px solid var(--line)}
 .rel-item,.outline-item{display:block;width:100%;text-align:left;border:0;background:transparent;border-radius:10px;padding:8px;color:var(--muted);font-size:13px;line-height:1.35}
 .rel-item:hover,.outline-item:hover,.outline-item.active{background:var(--hover);color:var(--text)}
 .outline-item.active{border-left:3px solid var(--accent);padding-left:9px;font-weight:650}
 .outline-progress{color:var(--faint);font-size:11px;font-weight:600}
 .nav-empty{color:var(--faint);font-size:12px;padding:8px}
 .tag-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 7px;color:var(--muted)}
+.tag-row{display:flex;align-items:center;gap:8px;padding:9px 10px;border-bottom:1px solid var(--line)}.tag-row:last-child{border-bottom:0}.tag-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tag-row button{font-size:12px;padding:5px 7px}
 .session-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.session-actions button{font-size:12px;padding:6px 8px}
 .load-more{display:flex;justify-content:center;margin:20px 0}.load-more button{min-width:160px}
 .turn{content-visibility:auto;contain-intrinsic-size:480px}
 .copy-btn{float:right;margin:0 0 8px 10px;font-size:12px;padding:5px 8px;color:var(--muted);background:var(--surface)}
+.turn-meta{display:flex;justify-content:flex-end;margin:0 0 5px;color:var(--faint);font-size:12px}
 .empty,.error{max-width:720px;margin:18vh auto;color:var(--muted);text-align:center}.error{color:var(--danger)}
-.turn{margin:0;padding:18px 0 30px}.turn+.turn{border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}.message{display:flex;margin:16px 0}.message.user{justify-content:flex-end}.message.assistant{justify-content:flex-start}
+.turn{margin:0;padding:18px 0 30px}.turn+.turn{border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}.message{display:flex;margin:16px 0}.message.user{justify-content:flex-end;flex-direction:column;align-items:flex-end}.message.assistant{justify-content:flex-start}
 .bubble{max-width:min(790px,88%);line-height:1.68;font-size:15.5px}.user .bubble{background:var(--user);border:1px solid transparent;border-radius:20px;padding:12px 16px}.assistant .bubble{background:transparent;border:0;border-radius:0;padding:2px 0;width:100%;box-shadow:none}
 .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:3px 12px 0 0;background:linear-gradient(135deg,var(--accent),var(--accent2));font-size:12px;font-weight:900;color:#062b22;flex:none}
 .assistant-wrap{display:flex;width:100%}
@@ -158,12 +169,23 @@ body.layout-three #sideOpen{display:none}
     <div id="relationList" class="picker-list"></div>
   </div>
 </div>
+<div id="tagModal" class="picker-modal">
+  <div class="picker-panel">
+    <div class="picker-head">
+      <input id="tagInput" placeholder="Add tag..." autocomplete="off">
+      <button id="tagAdd">Add</button>
+      <button id="tagClose">Close</button>
+    </div>
+    <div id="tagList" class="picker-list"></div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
 <script>
 let sessions=[];
 let categories=[];
 let activePath='';
+let activeTagPath='';
 let currentView='home';
 let searchTimer=null;
 let detailState={path:'',session:null,turns:[],outline:[],relations:{masters:[],subagents:[],references:[],manual:[]},offset:0,limit:50,total:0,hasMore:false};
@@ -172,6 +194,10 @@ let homeGroupMode=localStorage.getItem('homeGroupMode')||'date';
 let sideGroupMode=localStorage.getItem('sideGroupMode')||homeGroupMode;
 let homeCategoryFilter=localStorage.getItem('homeCategoryFilter')||'';
 let sideCategoryFilter=localStorage.getItem('sideCategoryFilter')||'';
+let homeDateFilter=localStorage.getItem('homeDateFilter')||'';
+let sideDateFilter=localStorage.getItem('sideDateFilter')||'';
+let homeTagFilter=localStorage.getItem('homeTagFilter')||'';
+let sideTagFilter=localStorage.getItem('sideTagFilter')||'';
 let layoutMode=localStorage.getItem('detailLayoutMode')||'two';
 const urlToken=new URLSearchParams(location.search).get('token')||'';
 let accessToken=urlToken||sessionStorage.getItem('accessToken')||'';
@@ -200,15 +226,33 @@ function apiUrl(url){if(!accessToken)return url;const sep=url.includes('?')?'&':
 function apiFetch(url,options){return fetch(apiUrl(url),options);}
 function groupByDate(items){return items.reduce((acc,item)=>{const key=item.date||'unknown';(acc[key]||=[]).push(item);return acc;},{});}
 function groupByCategory(items){return items.reduce((acc,item)=>{const key=item.category||'Uncategorized';(acc[key]||=[]).push(item);return acc;},{});}
+function groupByTag(items){return items.reduce((acc,item)=>{const tags=tagsOf(item);(tags.length?tags:['Untagged']).forEach(tag=>(acc[tag]||=[]).push(item));return acc;},{});}
 function uniqueValues(items,fn){return [...new Set(items.map(fn).filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
+function dateKey(item){return item.date||'unknown';}
+function dateOptionsHtml(items,selected='',allLabel='All dates'){
+  const counts=items.reduce((acc,item)=>{const key=dateKey(item);acc[key]=(acc[key]||0)+1;return acc;},{});
+  const keys=Object.keys(counts).sort().reverse();
+  return `<option value="">${allLabel} (${items.length})</option>`+keys.map(key=>`<option value="${escapeHtml(key)}"${selected===key?' selected':''}>${escapeHtml(key)} (${counts[key]})</option>`).join('');
+}
 function categoryKey(item){return item.category||'Uncategorized';}
 function categoryOptionsHtml(items,selected,allLabel='All categories'){
   const counts=items.reduce((acc,item)=>{const key=categoryKey(item);acc[key]=(acc[key]||0)+1;return acc;},{});
   const keys=Object.keys(counts).sort((a,b)=>a.localeCompare(b));
   return `<option value="">${allLabel} (${items.length})</option>`+keys.map(key=>`<option value="${escapeHtml(key)}"${selected===key?' selected':''}>${escapeHtml(key)} (${counts[key]})</option>`).join('');
 }
+function tagOptionsHtml(items,selected='',allLabel='All tags'){
+  const counts=items.reduce((acc,item)=>{const tags=tagsOf(item);(tags.length?tags:['Untagged']).forEach(tag=>acc[tag]=(acc[tag]||0)+1);return acc;},{});
+  const keys=Object.keys(counts).sort((a,b)=>a.localeCompare(b));
+  return `<option value="">${allLabel} (${items.length})</option>`+keys.map(key=>`<option value="${escapeHtml(key)}"${selected===key?' selected':''}>${escapeHtml(key)} (${counts[key]})</option>`).join('');
+}
 function tagsOf(item){return Array.isArray(item.tags)?item.tags:[];}
 function activeSession(){return sessions.find(s=>s.path===activePath);}
+function formatTurnTime(value){
+  if(!value)return '';
+  const date=new Date(value);
+  if(Number.isNaN(date.getTime()))return String(value).replace('T',' ').slice(0,16);
+  return date.toLocaleString(undefined,{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
+}
 function updateTopActions(){
   document.getElementById('homeBtn').style.display=currentView==='home'?'none':'inline-flex';
   document.getElementById('adminBtn').style.display=accessState.isAdmin?'inline-flex':'none';
@@ -275,7 +319,7 @@ async function refreshAccessState(){
 function renderList(){
   const sb=document.getElementById('sessionList');sb.textContent='';
   const controls=document.createElement('div');controls.className='side-mode';
-  controls.innerHTML='<button data-mode="date">Date</button><button data-mode="category">Category</button>';
+  controls.innerHTML='<button data-mode="date">Date</button><button data-mode="category">Category</button><button data-mode="tag">Tag</button>';
   controls.querySelectorAll('button').forEach(btn=>{
     btn.classList.toggle('active',btn.dataset.mode===sideGroupMode);
     btn.onclick=()=>{sideGroupMode=btn.dataset.mode;localStorage.setItem('sideGroupMode',sideGroupMode);renderList();};
@@ -284,6 +328,14 @@ function renderList(){
   const normal=sessions.filter(s=>s.sessionType!=='subagent');
   const subagents=sessions.filter(s=>s.sessionType==='subagent');
   let visibleNormal=normal;
+  if(sideGroupMode==='date'){
+    const filter=document.createElement('div');
+    filter.className='side-filter';
+    filter.innerHTML=`<select class="filter-select">${dateOptionsHtml(normal,sideDateFilter)}</select>`;
+    filter.querySelector('select').onchange=(ev)=>{sideDateFilter=ev.target.value;localStorage.setItem('sideDateFilter',sideDateFilter);renderList();};
+    sb.appendChild(filter);
+    if(sideDateFilter)visibleNormal=normal.filter(s=>dateKey(s)===sideDateFilter);
+  }
   if(sideGroupMode==='category'){
     const filter=document.createElement('div');
     filter.className='side-filter';
@@ -291,6 +343,13 @@ function renderList(){
     filter.querySelector('select').onchange=(ev)=>{sideCategoryFilter=ev.target.value;localStorage.setItem('sideCategoryFilter',sideCategoryFilter);renderList();};
     sb.appendChild(filter);
     if(sideCategoryFilter)visibleNormal=normal.filter(s=>categoryKey(s)===sideCategoryFilter);
+  }else if(sideGroupMode==='tag'){
+    const filter=document.createElement('div');
+    filter.className='side-filter';
+    filter.innerHTML=`<select class="filter-select">${tagOptionsHtml(normal,sideTagFilter)}</select>`;
+    filter.querySelector('select').onchange=(ev)=>{sideTagFilter=ev.target.value;localStorage.setItem('sideTagFilter',sideTagFilter);renderList();};
+    sb.appendChild(filter);
+    if(sideTagFilter)visibleNormal=normal.filter(s=>sideTagFilter==='Untagged'?!tagsOf(s).length:tagsOf(s).includes(sideTagFilter));
   }
   const byId=normal.reduce((acc,s)=>{if(s.sessionId)acc[s.sessionId]=s;if(s.fileId)acc[s.fileId]=s;if(s.shortName)acc[s.shortName]=s;return acc;},{});
   const parentPathOf=(s)=>s.parentPath||(byId[s.parentThreadId]&&byId[s.parentThreadId].path)||'';
@@ -302,7 +361,7 @@ function renderList(){
     });
   };
   const orphans=subagents.filter(s=>!parentPathOf(s));
-  const grouped=sideGroupMode==='category'?groupByCategory(visibleNormal):groupByDate(visibleNormal);
+  const grouped=sideGroupMode==='category'?groupByCategory(visibleNormal):sideGroupMode==='tag'?groupByTag(visibleNormal):groupByDate(visibleNormal);
   for(const key of Object.keys(grouped).sort().reverse()){
     const header=document.createElement('div');header.className='date';header.textContent=key;sb.appendChild(header);
     grouped[key].forEach(s=>{
@@ -324,10 +383,6 @@ function sideSessionItem(s,isSubagent,depth=0){
   label.querySelector('.side-sub').textContent=isSubagent?`Subagent of ${s.parentName||s.mainAgentName||'unknown'}`:s.originalName;
   e.onclick=()=>loadSession(s.path);
   e.appendChild(label);
-  if(!isSubagent){
-    const btn=document.createElement('button');btn.className='rename';btn.textContent='Rename';btn.onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
-    e.appendChild(btn);
-  }
   return e;
 }
 
@@ -338,24 +393,37 @@ function renderHome(){
   updateTopActions();
   document.getElementById('topTitle').textContent='Session Overview';
   const view=document.getElementById('view');
-  const homeItems=homeGroupMode==='category'&&homeCategoryFilter?sessions.filter(s=>categoryKey(s)===homeCategoryFilter):sessions;
-  const grouped=homeGroupMode==='category'?groupByCategory(homeItems):groupByDate(homeItems);
+  let homeItems=sessions;
+  if(homeGroupMode==='date'&&homeDateFilter)homeItems=sessions.filter(s=>dateKey(s)===homeDateFilter);
+  if(homeGroupMode==='category'&&homeCategoryFilter)homeItems=sessions.filter(s=>categoryKey(s)===homeCategoryFilter);
+  if(homeGroupMode==='tag'&&homeTagFilter)homeItems=sessions.filter(s=>homeTagFilter==='Untagged'?!tagsOf(s).length:tagsOf(s).includes(homeTagFilter));
+  const grouped=homeGroupMode==='category'?groupByCategory(homeItems):homeGroupMode==='tag'?groupByTag(homeItems):groupByDate(homeItems);
   const dates=Object.keys(grouped).sort().reverse();
   const total=sessions.length;
-  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date or category, inspect filenames, and jump into detailed ChatGPT-style views.</p><div class="home-controls"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="newCategory">New category</button><span id="homeCategorySlot"></span></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
+  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date, category, or tag, inspect filenames, and jump into detailed ChatGPT-style views.</p><div class="home-controls"><div class="home-control-row"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="groupTag">By tag</button></div><div id="homeToolsRow" class="home-control-row tools"><span id="homeFilterSlot"></span><button id="newCategory">New category</button></div></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
   document.getElementById('groupDate').classList.toggle('active',homeGroupMode==='date');
   document.getElementById('groupCategory').classList.toggle('active',homeGroupMode==='category');
+  document.getElementById('groupTag').classList.toggle('active',homeGroupMode==='tag');
   document.getElementById('groupDate').onclick=()=>{homeGroupMode='date';sideGroupMode='date';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
   document.getElementById('groupCategory').onclick=()=>{homeGroupMode='category';sideGroupMode='category';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
+  document.getElementById('groupTag').onclick=()=>{homeGroupMode='tag';sideGroupMode='tag';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
   document.getElementById('newCategory').onclick=()=>createCategory();
-  const homeCategorySlot=document.getElementById('homeCategorySlot');
-  if(homeGroupMode==='category'){
-    homeCategorySlot.innerHTML=`<select class="filter-select">${categoryOptionsHtml(sessions,homeCategoryFilter)}</select>`;
-    homeCategorySlot.querySelector('select').onchange=(ev)=>{homeCategoryFilter=ev.target.value;localStorage.setItem('homeCategoryFilter',homeCategoryFilter);renderHome();};
+  document.getElementById('homeToolsRow').style.display='flex';
+  document.getElementById('newCategory').style.display=homeGroupMode==='category'?'inline-flex':'none';
+  const homeFilterSlot=document.getElementById('homeFilterSlot');
+  if(homeGroupMode==='date'){
+    homeFilterSlot.innerHTML=`<select class="filter-select">${dateOptionsHtml(sessions,homeDateFilter)}</select>`;
+    homeFilterSlot.querySelector('select').onchange=(ev)=>{homeDateFilter=ev.target.value;localStorage.setItem('homeDateFilter',homeDateFilter);renderHome();};
+  }else if(homeGroupMode==='category'){
+    homeFilterSlot.innerHTML=`<select class="filter-select">${categoryOptionsHtml(sessions,homeCategoryFilter)}</select>`;
+    homeFilterSlot.querySelector('select').onchange=(ev)=>{homeCategoryFilter=ev.target.value;localStorage.setItem('homeCategoryFilter',homeCategoryFilter);renderHome();};
+  }else if(homeGroupMode==='tag'){
+    homeFilterSlot.innerHTML=`<select class="filter-select">${tagOptionsHtml(sessions,homeTagFilter)}</select>`;
+    homeFilterSlot.querySelector('select').onchange=(ev)=>{homeTagFilter=ev.target.value;localStorage.setItem('homeTagFilter',homeTagFilter);renderHome();};
   }
   const pinned=sessions.filter(s=>s.pinned).length;
   const archived=sessions.filter(s=>s.archived).length;
-  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${homeItems.length}</strong> shown</div><div class="stat"><strong>${dates.length}</strong> ${homeGroupMode==='category'?'groups':'dates'}</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div><div class="stat"><strong>${accessState.remoteEnabled?'Restricted':'Open'}</strong> remote</div>`;
+  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${homeItems.length}</strong> shown</div><div class="stat"><strong>${dates.length}</strong> ${homeGroupMode==='date'?'dates':'groups'}</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div><div class="stat"><strong>${accessState.remoteEnabled?'Restricted':'Open'}</strong> remote</div>`;
   const groups=view.querySelector('#homeGroups');
   for(const date of dates){
     const title=document.createElement('div');title.className='home-date';
@@ -563,11 +631,12 @@ function sessionCard(s){
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
   const agentMeta=s.sessionType==='subagent'?`<div class="file-name">Subagent of ${escapeHtml(s.parentName||'unknown')} · Main ${escapeHtml(s.mainAgentName||s.parentName||'unknown')}</div>`:'';
   const options=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
-  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div>${agentMeta}<div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><span><select class="category-select">${options}</select><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename">Rename</button></span></div>`;
+  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div>${agentMeta}<div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><span><select class="category-select">${options}</select><button class="rename tag-card">Tags</button><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename rename-card">Rename</button></span></div>`;
   card.querySelector('.card-title').textContent=s.name;
   card.querySelector('.file-name').textContent=s.originalName+'.jsonl';
   card.querySelector('.pin').onclick=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{pinned:!s.pinned});};
-  card.querySelector('button:not(.pin)').onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
+  card.querySelector('.tag-card').onclick=(ev)=>{ev.stopPropagation();openTagEditor(s);};
+  card.querySelector('.rename-card').onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
   card.querySelector('select').onclick=(ev)=>ev.stopPropagation();
   card.querySelector('select').onchange=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{category:ev.target.value});};
   return card;
@@ -632,11 +701,74 @@ async function renameSession(s){
   await patchSessionMeta(s,{name:next});
 }
 
-async function editTags(s){
-  const next=prompt('Tags, comma separated', (s.tags||[]).join(', '));
-  if(next===null)return;
-  const tags=next.split(',').map(x=>x.trim()).filter(Boolean);
+function openTagEditor(s){
+  activeTagPath=s.path;
+  const modal=document.getElementById('tagModal');
+  modal.classList.add('open');
+  document.getElementById('tagInput').value='';
+  renderTagEditor(s);
+  document.getElementById('tagInput').focus();
+}
+
+function closeTagEditor(){document.getElementById('tagModal').classList.remove('open');activeTagPath='';}
+
+function tagEditorSession(){return sessions.find(s=>s.path===activeTagPath)||activeSession();}
+function renderTagEditor(s=tagEditorSession()){
+  const list=document.getElementById('tagList');
+  if(!list||!s)return;
+  const tags=tagsOf(s);
+  list.textContent='';
+  if(!tags.length){
+    const empty=document.createElement('div');
+    empty.className='nav-empty';
+    empty.textContent='No tags';
+    list.appendChild(empty);
+    return;
+  }
+  tags.forEach(tag=>{
+    const row=document.createElement('div');
+    row.className='tag-row';
+    row.innerHTML='<span class="tag-name"></span><button class="rename-tag">Rename</button><button class="remove-tag">Remove</button>';
+    row.querySelector('.tag-name').textContent=tag;
+    row.querySelector('.rename-tag').onclick=async()=>{
+      const next=prompt('Rename tag',tag);
+      if(next===null)return;
+      const clean=next.trim();
+      if(!clean||clean===tag)return;
+      const updated=[...new Set(tags.map(item=>item===tag?clean:item))];
+      await patchSessionMeta(s,{tags:updated});
+      renderTagEditor(tagEditorSession());
+    };
+    row.querySelector('.remove-tag').onclick=async()=>{
+      await patchSessionMeta(s,{tags:tags.filter(item=>item!==tag)});
+      renderTagEditor(tagEditorSession());
+    };
+    list.appendChild(row);
+  });
+}
+
+async function addTagToActive(){
+  const s=tagEditorSession();
+  const input=document.getElementById('tagInput');
+  if(!s||!input)return;
+  const tag=input.value.trim();
+  if(!tag)return;
+  const tags=[...new Set([...tagsOf(s),tag])];
+  input.value='';
   await patchSessionMeta(s,{tags});
+  renderTagEditor(tagEditorSession());
+}
+
+async function copyResumeCommand(s){
+  const id=s.sessionId||s.fileId||s.shortName||'';
+  if(!id)return;
+  const text=`codex resume ${id}`;
+  try{
+    if(navigator.clipboard)await navigator.clipboard.writeText(text);
+    else prompt('Copy resume command',text);
+  }catch(err){
+    prompt('Copy resume command',text);
+  }
 }
 
 async function patchSessionMeta(s,patch){
@@ -644,6 +776,7 @@ async function patchSessionMeta(s,patch){
   if(!r.ok){alert('Update failed');return;}
   await loadList({renderHome:false});
   if(currentView==='detail'&&activePath===s.path)loadSession(s.path,{preserve:true});
+  if(currentView==='home')renderHome();
 }
 
 function addMarkdown(target,text){const body=document.createElement('div');body.className='md';body.innerHTML=renderMarkdown(text);target.appendChild(body);highlightIn(body);enhanceReading(body,text);return body;}
@@ -668,6 +801,13 @@ function addUser(root,turn){
   row.className='message user';
   const bubble=document.createElement('div');
   bubble.className='bubble';
+  const time=formatTurnTime(turn.time);
+  if(time){
+    const meta=document.createElement('div');
+    meta.className='turn-meta';
+    meta.textContent=time;
+    row.appendChild(meta);
+  }
   if(context){
     const details=document.createElement('details');
     details.className='context-box';
@@ -688,9 +828,10 @@ function renderDetailNav(){
   const s=detailState.session||{};
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
   const categoryOptions=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
-  nav.innerHTML=`<div class="nav-section detail-session-head"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><div class="detail-session-controls"><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="renameBtn">Rename</button><button id="tagBtn">Tags</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline <span id="outlineProgress" class="outline-progress"></span></div><div id="outlineList"></div></div>`;
+  nav.innerHTML=`<div class="nav-section detail-session-head"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><div class="detail-session-controls"><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="renameBtn">Rename</button><button id="tagBtn">Tags</button><button id="copyResumeBtn">Copy resume</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline <span id="outlineProgress" class="outline-progress"></span></div><div id="outlineList" class="outline-list"></div></div>`;
   document.getElementById('renameBtn').onclick=()=>renameSession(s);
-  document.getElementById('tagBtn').onclick=()=>editTags(s);
+  document.getElementById('tagBtn').onclick=()=>openTagEditor(s);
+  document.getElementById('copyResumeBtn').onclick=()=>copyResumeCommand(s);
   document.getElementById('pinBtn').onclick=()=>patchSessionMeta(s,{pinned:!s.pinned});
   document.getElementById('archiveBtn').onclick=()=>patchSessionMeta(s,{archived:!s.archived});
   document.getElementById('detailCategory').onchange=(ev)=>patchSessionMeta(s,{category:ev.target.value});
@@ -928,12 +1069,16 @@ document.getElementById('searchInput').oninput=(ev)=>{
 document.getElementById('relationClose').onclick=()=>closeRelationPicker();
 document.getElementById('relationPicker').onclick=(ev)=>{if(ev.target.id==='relationPicker')closeRelationPicker();};
 document.getElementById('relationFilter').oninput=(ev)=>renderRelationPicker(ev.target.value);
+document.getElementById('tagClose').onclick=()=>closeTagEditor();
+document.getElementById('tagAdd').onclick=()=>addTagToActive();
+document.getElementById('tagInput').onkeydown=(ev)=>{if(ev.key==='Enter')addTagToActive();};
+document.getElementById('tagModal').onclick=(ev)=>{if(ev.target.id==='tagModal')closeTagEditor();};
 document.addEventListener('wheel',containNavWheel,{capture:true,passive:false});
 document.querySelector('.content').addEventListener('scroll',syncOutline,{passive:true});
 window.addEventListener('scroll',syncOutline,{passive:true});
 document.addEventListener('keydown',(ev)=>{
   if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();openSearch();}
-  if(ev.key==='Escape')closeSearch();
+  if(ev.key==='Escape'){closeSearch();closeRelationPicker();closeTagEditor();}
 });
 updateThemeButton();
 applyLayout(layoutMode);
