@@ -10,6 +10,12 @@ v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column readin
 
 ### Highlights
 
+- Interface language
+  - The web UI supports Chinese and English.
+  - Chinese is the default interface language.
+  - A language switch is available in the top-right toolbar.
+  - The selected language is stored in `localStorage`.
+
 - Category management
   - Home page supports grouping by date or category.
   - Categories can be created, renamed, and deleted.
@@ -69,6 +75,7 @@ v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column readin
 - Search across visible session content.
 - Rename displayed session names without changing original session files.
 - Toggle between dark and light themes.
+- Switch the interface between Chinese and English, with Chinese enabled by default.
 - Configure remote visibility with guest access and scoped tokens.
 
 ## Project Structure
@@ -97,7 +104,7 @@ v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column readin
    The server runs at:
 
    ```text
-   http://127.0.0.1:9000/
+   http://127.0.0.1:9001/
    ```
 
 3. Use a custom session directory
@@ -112,13 +119,13 @@ v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column readin
 Open the admin page locally:
 
 ```text
-http://127.0.0.1:9000/admin
+http://127.0.0.1:9001/admin
 ```
 
 Remote admin access uses an admin token:
 
 ```text
-http://<server-ip>:9000/admin?token=<admin-token>
+http://<server-ip>:9001/admin?token=<admin-token>
 ```
 
 Access model:

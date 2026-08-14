@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Codex Session Viewer</title>
+<title>Codex 会话查看器</title>
 <link id="hlTheme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
 <style>
 :root{color-scheme:dark;--bg:#212121;--surface:#2b2b2b;--surface2:#171717;--card:#212121;--hover:#2f2f2f;--text:#ececec;--muted:#b4b4b4;--faint:#8b8b8b;--line:#3b3b3b;--user:#303030;--think:#252525;--think-line:#565656;--accent:#10a37f;--accent2:#38bdf8;--blue:#8ab4f8;--danger:#ffb4ab;--shadow:none;--code-bg:#0d1117;--inline-code:#2f2f2f}
@@ -119,19 +119,20 @@ body.layout-three #sideOpen{display:none}
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="brand"><span class="brand-dot"></span><span>Sessions</span><div class="side-actions"><button id="sideClose" class="icon-btn" title="Collapse sidebar">‹</button></div></div>
+    <div class="brand"><span class="brand-dot"></span><span id="brandText">会话</span><div class="side-actions"><button id="sideClose" class="icon-btn" title="收起侧边栏">‹</button></div></div>
     <div id="sessionList" class="session-list"></div>
-    <div id="sessionFooter" class="panel-footer"><span>Sessions</span></div>
+    <div id="sessionFooter" class="panel-footer"><span>会话</span></div>
   </aside>
   <main class="content">
     <div class="topbar">
-      <button id="sideOpen" class="icon-btn" title="Open sidebar">☰</button>
-      <div id="topTitle" class="top-title">Codex Session Viewer</div>
+      <button id="sideOpen" class="icon-btn" title="打开侧边栏">☰</button>
+      <div id="topTitle" class="top-title">Codex 会话查看器</div>
       <div class="top-spacer"></div>
-      <button id="searchBtn" title="Search sessions">Search</button>
-      <button id="adminBtn" class="access-cta" title="Access settings">Admin</button>
-      <button id="homeBtn" title="Home">Home</button>
-      <button id="themeToggle" title="Toggle theme">Light</button>
+      <button id="searchBtn" title="搜索会话">搜索</button>
+      <button id="adminBtn" class="access-cta" title="访问设置">管理</button>
+      <button id="homeBtn" title="首页">首页</button>
+      <button id="langToggle" title="切换语言">English</button>
+      <button id="themeToggle" title="切换主题">浅色</button>
     </div>
     <div id="view"></div>
   </main>
@@ -140,8 +141,8 @@ body.layout-three #sideOpen{display:none}
 <div id="searchModal" class="search-modal">
   <div class="search-panel">
     <div class="search-head">
-      <input id="searchInput" placeholder="Search sessions, questions, answers, thinking..." autocomplete="off">
-      <button id="searchClose">Close</button>
+      <input id="searchInput" placeholder="搜索会话、问题、回答、思考过程..." autocomplete="off">
+      <button id="searchClose">关闭</button>
     </div>
     <div id="searchResults" class="search-results"></div>
   </div>
@@ -149,8 +150,8 @@ body.layout-three #sideOpen{display:none}
 <div id="relationPicker" class="picker-modal">
   <div class="picker-panel">
     <div class="picker-head">
-      <input id="relationFilter" placeholder="Find a reference session..." autocomplete="off">
-      <button id="relationClose">Close</button>
+      <input id="relationFilter" placeholder="查找引用会话..." autocomplete="off">
+      <button id="relationClose">关闭</button>
     </div>
     <div id="relationList" class="picker-list"></div>
   </div>
@@ -168,6 +169,84 @@ let accessState={remoteEnabled:false,isAdmin:false,publicPaths:[]};
 let homeGroupMode=localStorage.getItem('homeGroupMode')||'date';
 let sideGroupMode=localStorage.getItem('sideGroupMode')||homeGroupMode;
 let layoutMode=localStorage.getItem('detailLayoutMode')||'two';
+const I18N={
+  'zh-CN':{
+    appTitle:'Codex 会话查看器',sessions:'会话',search:'搜索',admin:'管理',home:'首页',light:'浅色',dark:'深色',
+    openSidebar:'打开侧边栏',collapseSidebar:'收起侧边栏',toggleTheme:'切换主题',switchLanguage:'Switch language',
+    searchSessions:'搜索会话',searchPlaceholder:'搜索会话、问题、回答、思考过程...',close:'关闭',
+    relationPlaceholder:'查找引用会话...',unknown:'未知',uncategorized:'未分类',
+    date:'日期',category:'分类',unlinkedSubagents:'未关联的子代理',subagentOf:'子代理，父级：{name}',
+    sessionOverview:'会话总览',homeIntro:'按日期或分类浏览对话、查看文件名，并进入类似 ChatGPT 的详情阅读视图。',
+    byDate:'按日期',byCategory:'按分类',newCategory:'新建分类',groups:'分组',dates:'日期',pinned:'已置顶',
+    archivedHidden:'已隐藏归档',restricted:'已限制',open:'开放',remote:'远程访问',
+    rename:'重命名',delete:'删除',newCategoryName:'新分类名称',renameCategory:'重命名分类',
+    deleteCategoryConfirm:'确定删除分类“{name}”吗？其中的会话会变为未分类。',
+    createCategoryFailed:'创建分类失败',renameCategoryFailed:'重命名分类失败',deleteCategoryFailed:'删除分类失败',
+    accessSettings:'访问设置',adminRequired:'需要管理员权限。请在本机打开，或使用带 ?token=... 的 URL。',
+    accessIntro:'管理访客访问和限定范围的令牌。先在左侧选择主体，再在右侧分配可见会话。',
+    clearToken:'清除令牌',remotePolicy:'远程策略',remoteRestriction:'远程访问限制',
+    remoteRestrictionHelp:'启用后，远程访客只能看到访客或其令牌允许访问的会话。',
+    subjects:'主体',newToken:'新建令牌',deleteToken:'删除令牌',guestAccess:'访客访问',
+    generateToken:'生成令牌',saveChanges:'保存更改',filterSessions:'筛选会话...',
+    restrictedRemote:'远程已限制',openRemote:'远程开放',disable:'停用',enable:'启用',
+    guest:'访客',token:'令牌',viewer:'查看者',allowed:'已允许',sessionCount:'{count} 个会话',
+    tokenName:'令牌名称',tokenValue:'令牌值',
+    guestHelp:'访客设置适用于没有令牌的远程访问者。',
+    tokenHelp:'查看者令牌只能读取允许的会话。管理员令牌可以打开 /admin 并管理访问设置。',
+    deleteTokenConfirm:'确定删除这个令牌吗？',accessSaved:'访问设置已保存',
+    accessUnavailable:'访问设置不可用',updateAccessFailed:'更新访问设置失败',generateTokenFailed:'生成令牌失败',
+    subagent:'子代理',main:'主会话',noPreview:'没有预览问题',pin:'置顶',unpin:'取消置顶',
+    searching:'正在搜索...',searchEmpty:'输入关键词，搜索可见会话内容。',displayName:'展示名称',
+    tagsComma:'标签，用英文逗号分隔',updateFailed:'更新失败',copy:'复制',ideContext:'IDE 上下文',
+    thinking:'思考过程',visibleLines:'{count} 行可见内容',detail:'详情',relations:'关系',outline:'大纲',
+    tags:'标签',archive:'归档',unarchive:'取消归档',addReference:'添加引用',masters:'主会话',
+    subagents:'子代理',references:'引用',master:'主会话',reference:'引用',remove:'移除',
+    noMasters:'没有主会话',noSubagents:'没有子代理',noReferences:'没有引用',noOutline:'没有大纲',
+    removeReferenceFailed:'移除引用失败',copyTurn:'复制回合',loadMore:'加载更多',sessionDetail:'会话详情',
+    loadFailed:'加载失败',noVisibleMessages:'没有可见消息',addReferenceFailed:'添加引用失败',
+    forbidden:'无权访问',notFound:'未找到',targetNotFound:'目标未找到',emptyCategory:'分类不能为空',
+    categoryNotFound:'分类不存在',oneColumn:'1 列',twoColumns:'2 列',threeColumns:'3 列',switchLayout:'切换布局'
+  },
+  'en-US':{
+    appTitle:'Codex Session Viewer',sessions:'Sessions',search:'Search',admin:'Admin',home:'Home',light:'Light',dark:'Dark',
+    openSidebar:'Open sidebar',collapseSidebar:'Collapse sidebar',toggleTheme:'Toggle theme',switchLanguage:'切换语言',
+    searchSessions:'Search sessions',searchPlaceholder:'Search sessions, questions, answers, thinking...',close:'Close',
+    relationPlaceholder:'Find a reference session...',unknown:'unknown',uncategorized:'Uncategorized',
+    date:'Date',category:'Category',unlinkedSubagents:'Unlinked subagents',subagentOf:'Subagent of {name}',
+    sessionOverview:'Session Overview',homeIntro:'Browse conversations by date or category, inspect filenames, and jump into detailed ChatGPT-style views.',
+    byDate:'By date',byCategory:'By category',newCategory:'New category',groups:'groups',dates:'dates',pinned:'pinned',
+    archivedHidden:'archived hidden',restricted:'Restricted',open:'Open',remote:'remote',
+    rename:'Rename',delete:'Delete',newCategoryName:'New category name',renameCategory:'Rename category',
+    deleteCategoryConfirm:'Delete category "{name}"? Sessions in it will become Uncategorized.',
+    createCategoryFailed:'Create category failed',renameCategoryFailed:'Rename category failed',deleteCategoryFailed:'Delete category failed',
+    accessSettings:'Access Settings',adminRequired:'Admin access is required. Open locally or use a URL with ?token=...',
+    accessIntro:'Manage guest access and scoped tokens. Select a subject on the left, then assign visible sessions on the right.',
+    clearToken:'Clear token',remotePolicy:'Remote Policy',remoteRestriction:'Remote restriction',
+    remoteRestrictionHelp:'When enabled, remote visitors only see sessions allowed by Guest or their token.',
+    subjects:'Subjects',newToken:'New token',deleteToken:'Delete token',guestAccess:'Guest access',
+    generateToken:'Generate token',saveChanges:'Save changes',filterSessions:'Filter sessions...',
+    restrictedRemote:'Restricted remote',openRemote:'Open remote',disable:'Disable',enable:'Enable',
+    guest:'Guest',token:'Token',viewer:'viewer',allowed:'allowed',sessionCount:'{count} sessions',
+    tokenName:'Token name',tokenValue:'Token value',
+    guestHelp:'Guest applies to remote visitors without a token.',
+    tokenHelp:'Viewer tokens only read allowed sessions. Admin tokens can open /admin and manage access.',
+    deleteTokenConfirm:'Delete this token?',accessSaved:'Access saved',
+    accessUnavailable:'Access settings unavailable',updateAccessFailed:'Update access failed',generateTokenFailed:'Generate token failed',
+    subagent:'Subagent',main:'Main',noPreview:'No preview question',pin:'Pin',unpin:'Unpin',
+    searching:'Searching...',searchEmpty:'Type to search across visible session content.',displayName:'Display name',
+    tagsComma:'Tags, comma separated',updateFailed:'Update failed',copy:'Copy',ideContext:'IDE context',
+    thinking:'Thinking',visibleLines:'{count} visible lines',detail:'Detail',relations:'Relations',outline:'Outline',
+    tags:'Tags',archive:'Archive',unarchive:'Unarchive',addReference:'Add reference',masters:'Masters',
+    subagents:'Subagents',references:'References',master:'Master',reference:'Reference',remove:'Remove',
+    noMasters:'No masters',noSubagents:'No subagents',noReferences:'No references',noOutline:'No outline',
+    removeReferenceFailed:'Remove reference failed',copyTurn:'Copy turn',loadMore:'Load more',sessionDetail:'Session Detail',
+    loadFailed:'load failed',noVisibleMessages:'No visible messages',addReferenceFailed:'Add reference failed',
+    forbidden:'Forbidden',notFound:'Not found',targetNotFound:'Target not found',emptyCategory:'Empty category',
+    categoryNotFound:'Category not found',oneColumn:'1 column',twoColumns:'2 columns',threeColumns:'3 columns',switchLayout:'Switch layout'
+  }
+};
+let currentLang=localStorage.getItem('viewerLang')||'zh-CN';
+if(!I18N[currentLang])currentLang='zh-CN';
 const urlToken=new URLSearchParams(location.search).get('token')||'';
 let accessToken=urlToken||sessionStorage.getItem('accessToken')||'';
 if(urlToken)sessionStorage.setItem('accessToken',urlToken);
@@ -175,9 +254,48 @@ localStorage.removeItem('accessToken');
 const savedTheme=localStorage.getItem('viewerTheme')||'dark';
 document.body.dataset.theme=savedTheme;
 
+function t(key,vars={}){
+  const text=(I18N[currentLang]&&I18N[currentLang][key])||I18N['en-US'][key]||key;
+  return String(text).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??'');
+}
+function uiUnknown(value){return value||t('unknown');}
+function categoryLabel(value){return value||t('uncategorized');}
+function errorText(error){
+  const map={forbidden:'forbidden','not found':'notFound','target not found':'targetNotFound','empty category':'emptyCategory','category not found':'categoryNotFound'};
+  return t(map[error]||error||'loadFailed');
+}
+function updateStaticText(){
+  document.documentElement.lang=currentLang==='zh-CN'?'zh-CN':'en-US';
+  document.title=t('appTitle');
+  document.getElementById('brandText').textContent=t('sessions');
+  document.getElementById('sideClose').title=t('collapseSidebar');
+  document.getElementById('sideOpen').title=t('openSidebar');
+  document.getElementById('searchBtn').textContent=t('search');
+  document.getElementById('searchBtn').title=t('searchSessions');
+  document.getElementById('adminBtn').textContent=t('admin');
+  document.getElementById('adminBtn').title=t('accessSettings');
+  document.getElementById('homeBtn').textContent=t('home');
+  document.getElementById('homeBtn').title=t('home');
+  document.getElementById('langToggle').textContent=currentLang==='zh-CN'?'English':'中文';
+  document.getElementById('langToggle').title=t('switchLanguage');
+  document.getElementById('themeToggle').title=t('toggleTheme');
+  document.getElementById('searchInput').placeholder=t('searchPlaceholder');
+  document.getElementById('searchClose').textContent=t('close');
+  document.getElementById('relationFilter').placeholder=t('relationPlaceholder');
+  document.getElementById('relationClose').textContent=t('close');
+  updateThemeButton();
+}
+function rerenderCurrentView(){
+  updateStaticText();
+  if(currentView==='home')renderHome();
+  else if(currentView==='access')renderAccessPage();
+  else if(currentView==='detail'&&activePath)loadSession(activePath,{preserve:true});
+  else updateTopActions();
+}
+
 function updateThemeButton(){
   const light=document.body.dataset.theme==='light';
-  document.getElementById('themeToggle').textContent=light?'Dark':'Light';
+  document.getElementById('themeToggle').textContent=light?t('dark'):t('light');
   document.getElementById('hlTheme').href=light
     ?'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css'
     :'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css';
@@ -193,8 +311,8 @@ function highlightIn(root){
 function sessionUrl(path){return path.split('/').map(encodeURIComponent).join('/');}
 function apiUrl(url){if(!accessToken)return url;const sep=url.includes('?')?'&':'?';return `${url}${sep}token=${encodeURIComponent(accessToken)}`;}
 function apiFetch(url,options){return fetch(apiUrl(url),options);}
-function groupByDate(items){return items.reduce((acc,item)=>{const key=item.date||'unknown';(acc[key]||=[]).push(item);return acc;},{});}
-function groupByCategory(items){return items.reduce((acc,item)=>{const key=item.category||'Uncategorized';(acc[key]||=[]).push(item);return acc;},{});}
+function groupByDate(items){return items.reduce((acc,item)=>{const key=item.date||t('unknown');(acc[key]||=[]).push(item);return acc;},{});}
+function groupByCategory(items){return items.reduce((acc,item)=>{const key=categoryLabel(item.category);(acc[key]||=[]).push(item);return acc;},{});}
 function activeSession(){return sessions.find(s=>s.path===activePath);}
 function updateTopActions(){
   document.getElementById('homeBtn').style.display=currentView==='home'?'none':'inline-flex';
@@ -214,22 +332,22 @@ function nextLayout(){
   applyLayout(order[(order.indexOf(layoutMode)+1)%order.length]);
 }
 function layoutLabel(){
-  return layoutMode==='one'?'1 column':layoutMode==='two'?'2 columns':'3 columns';
+  return layoutMode==='one'?t('oneColumn'):layoutMode==='two'?t('twoColumns'):t('threeColumns');
 }
 function layoutIcon(){
   const count=layoutMode==='one'?1:layoutMode==='two'?2:3;
   return `<span></span>`.repeat(count);
 }
 function layoutSwitchHtml(){
-  return `<div class="layout-switch"><span class="layout-switch-label">${layoutLabel()}</span><button id="layoutCycle" class="layout-toggle" title="Switch layout"><span class="layout-icon">${layoutIcon()}</span></button></div>`;
+  return `<div class="layout-switch"><span class="layout-switch-label">${layoutLabel()}</span><button id="layoutCycle" class="layout-toggle" title="${t('switchLayout')}"><span class="layout-icon">${layoutIcon()}</span></button></div>`;
 }
 function placeLayoutSwitch(){
   const floating=document.getElementById('floatingLayout');
   const sessionFooter=document.getElementById('sessionFooter');
   const detailFooter=document.getElementById('detailFooter');
   if(floating)floating.innerHTML='';
-  if(sessionFooter)sessionFooter.innerHTML='<span>Sessions</span>';
-  if(detailFooter)detailFooter.innerHTML='<span>Detail</span>';
+  if(sessionFooter)sessionFooter.innerHTML=`<span>${t('sessions')}</span>`;
+  if(detailFooter)detailFooter.innerHTML=`<span>${t('detail')}</span>`;
   if(currentView!=='detail'){
     if(floating)floating.style.display='none';
     return;
@@ -262,7 +380,7 @@ async function refreshAccessState(){
 function renderList(){
   const sb=document.getElementById('sessionList');sb.textContent='';
   const controls=document.createElement('div');controls.className='side-mode';
-  controls.innerHTML='<button data-mode="date">Date</button><button data-mode="category">Category</button>';
+  controls.innerHTML=`<button data-mode="date">${t('date')}</button><button data-mode="category">${t('category')}</button>`;
   controls.querySelectorAll('button').forEach(btn=>{
     btn.classList.toggle('active',btn.dataset.mode===sideGroupMode);
     btn.onclick=()=>{sideGroupMode=btn.dataset.mode;localStorage.setItem('sideGroupMode',sideGroupMode);renderList();};
@@ -289,7 +407,7 @@ function renderList(){
     });
   }
   if(orphans.length){
-    const header=document.createElement('div');header.className='date';header.textContent='Unlinked subagents';sb.appendChild(header);
+    const header=document.createElement('div');header.className='date';header.textContent=t('unlinkedSubagents');sb.appendChild(header);
     orphans.forEach(s=>sb.appendChild(sideSessionItem(s,true,1)));
   }
 }
@@ -299,11 +417,11 @@ function sideSessionItem(s,isSubagent,depth=0){
   const e=document.createElement('div');e.className='side-item'+(isSubagent?' subagent'+level:'')+(s.path===activePath?' active':'');
   const label=document.createElement('div');label.innerHTML='<div class="side-title"></div><div class="side-sub"></div>';
   label.querySelector('.side-title').textContent=(isSubagent?'↳ ':'')+s.name;
-  label.querySelector('.side-sub').textContent=isSubagent?`Subagent of ${s.parentName||s.mainAgentName||'unknown'}`:s.originalName;
+  label.querySelector('.side-sub').textContent=isSubagent?t('subagentOf',{name:uiUnknown(s.parentName||s.mainAgentName)}):s.originalName;
   e.onclick=()=>loadSession(s.path);
   e.appendChild(label);
   if(!isSubagent){
-    const btn=document.createElement('button');btn.className='rename';btn.textContent='Rename';btn.onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
+    const btn=document.createElement('button');btn.className='rename';btn.textContent=t('rename');btn.onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
     e.appendChild(btn);
   }
   return e;
@@ -314,12 +432,12 @@ function renderHome(){
   document.body.classList.remove('layout-one','layout-two','layout-three');
   placeLayoutSwitch();
   updateTopActions();
-  document.getElementById('topTitle').textContent='Session Overview';
+  document.getElementById('topTitle').textContent=t('sessionOverview');
   const view=document.getElementById('view');
   const grouped=homeGroupMode==='category'?groupByCategory(sessions):groupByDate(sessions);
   const dates=Object.keys(grouped).sort().reverse();
   const total=sessions.length;
-  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date or category, inspect filenames, and jump into detailed ChatGPT-style views.</p><div class="home-controls"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="newCategory">New category</button></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
+  view.innerHTML=`<div class="home"><section class="hero"><div><h1>${t('sessionOverview')}</h1><p>${t('homeIntro')}</p><div class="home-controls"><button id="groupDate">${t('byDate')}</button><button id="groupCategory">${t('byCategory')}</button><button id="newCategory">${t('newCategory')}</button></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>`;
   document.getElementById('groupDate').classList.toggle('active',homeGroupMode==='date');
   document.getElementById('groupCategory').classList.toggle('active',homeGroupMode==='category');
   document.getElementById('groupDate').onclick=()=>{homeGroupMode='date';sideGroupMode='date';localStorage.setItem('homeGroupMode',homeGroupMode);localStorage.setItem('sideGroupMode',sideGroupMode);renderHome();};
@@ -327,15 +445,15 @@ function renderHome(){
   document.getElementById('newCategory').onclick=()=>createCategory();
   const pinned=sessions.filter(s=>s.pinned).length;
   const archived=sessions.filter(s=>s.archived).length;
-  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> sessions</div><div class="stat"><strong>${dates.length}</strong> ${homeGroupMode==='category'?'groups':'dates'}</div><div class="stat"><strong>${pinned}</strong> pinned</div><div class="stat"><strong>${archived}</strong> archived hidden</div><div class="stat"><strong>${accessState.remoteEnabled?'Restricted':'Open'}</strong> remote</div>`;
+  view.querySelector('.stats').innerHTML=`<div class="stat"><strong>${total}</strong> ${t('sessions')}</div><div class="stat"><strong>${dates.length}</strong> ${homeGroupMode==='category'?t('groups'):t('dates')}</div><div class="stat"><strong>${pinned}</strong> ${t('pinned')}</div><div class="stat"><strong>${archived}</strong> ${t('archivedHidden')}</div><div class="stat"><strong>${accessState.remoteEnabled?t('restricted'):t('open')}</strong> ${t('remote')}</div>`;
   const groups=view.querySelector('#homeGroups');
   for(const date of dates){
     const title=document.createElement('div');title.className='home-date';
     title.innerHTML='<span></span><span class="home-date-actions"></span>';
     title.querySelector('span').textContent=date;
     const actions=title.querySelector('.home-date-actions');
-    if(homeGroupMode==='category'&&date!=='Uncategorized'){
-      actions.innerHTML='<button class="rename-category">Rename</button><button class="delete-category">Delete</button>';
+    if(homeGroupMode==='category'&&date!==t('uncategorized')){
+      actions.innerHTML=`<button class="rename-category">${t('rename')}</button><button class="delete-category">${t('delete')}</button>`;
       actions.querySelector('.rename-category').onclick=()=>renameCategory(date);
       actions.querySelector('.delete-category').onclick=()=>deleteCategory(date);
     }
@@ -347,48 +465,48 @@ function renderHome(){
 }
 
 async function createCategory(){
-  const name=prompt('New category name');
+  const name=prompt(t('newCategoryName'));
   if(!name)return;
   const r=await apiFetch('/api/categories',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
-  if(!r.ok){alert('Create category failed');return;}
+  if(!r.ok){alert(t('createCategoryFailed'));return;}
   await loadList({renderHome:false});
   renderHome();
 }
 
 async function renameCategory(oldName){
-  const name=prompt('Rename category',oldName);
+  const name=prompt(t('renameCategory'),oldName);
   if(name===null)return;
   const next=name.trim();
   if(!next||next===oldName)return;
   const r=await apiFetch('/api/categories',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({oldName,name:next})});
-  if(!r.ok){alert('Rename category failed');return;}
+  if(!r.ok){alert(t('renameCategoryFailed'));return;}
   await loadList({renderHome:false});
   renderHome();
 }
 
 async function deleteCategory(name){
-  if(!confirm(`Delete category "${name}"? Sessions in it will become Uncategorized.`))return;
+  if(!confirm(t('deleteCategoryConfirm',{name})))return;
   const r=await apiFetch('/api/categories',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
-  if(!r.ok){alert('Delete category failed');return;}
+  if(!r.ok){alert(t('deleteCategoryFailed'));return;}
   await loadList({renderHome:false});
   renderHome();
 }
 
 async function fetchAccess(){
   const r=await apiFetch('/api/access');
-  if(!r.ok){alert('Access settings unavailable');return null;}
+  if(!r.ok){alert(t('accessUnavailable'));return null;}
   return r.json();
 }
 
 async function patchAccess(patch){
   const r=await apiFetch('/api/access',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
-  if(!r.ok){alert('Update access failed');return null;}
+  if(!r.ok){alert(t('updateAccessFailed'));return null;}
   return r.json();
 }
 
 async function generateAccessToken(){
   const r=await apiFetch('/api/access',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({generateToken:true})});
-  if(!r.ok){alert('Generate token failed');return '';}
+  if(!r.ok){alert(t('generateTokenFailed'));return '';}
   const data=await r.json();
   return data.token||'';
 }
@@ -398,13 +516,13 @@ async function renderAccessPage(){
   document.body.classList.remove('layout-one','layout-two','layout-three');
   placeLayoutSwitch();
   updateTopActions();
-  document.getElementById('topTitle').textContent='Access Settings';
+  document.getElementById('topTitle').textContent=t('accessSettings');
   const access=await fetchAccess();
   if(!access)return;
   accessState=access;
   const view=document.getElementById('view');
   if(!access.isAdmin){
-    view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Access Settings</h1><p>Admin access is required. Open locally or use a URL with ?token=...</p></div><button id="backHome">Home</button></div></div>';
+    view.innerHTML=`<div class="access-panel"><div class="access-head"><div><h1>${t('accessSettings')}</h1><p>${t('adminRequired')}</p></div><button id="backHome">${t('home')}</button></div></div>`;
     document.getElementById('backHome').onclick=()=>renderHome();
     return;
   }
@@ -412,17 +530,17 @@ async function renderAccessPage(){
   let tokens=(access.tokens||[]).map(t=>({...t,publicSessions:[...(t.publicSessions||[])]}));
   let selectedKind='guest';
   let selectedIndex=-1;
-  view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Access Settings</h1><p>Manage guest access and scoped tokens. Select a subject on the left, then assign visible sessions on the right.</p></div><div><button id="clearToken">Clear token</button> <button id="backHome">Home</button></div></div><div class="access-grid"><section class="access-box"><h2>Remote Policy</h2><div class="access-row"><div><div>Remote restriction</div><div class="access-muted">When enabled, remote visitors only see sessions allowed by Guest or their token.</div></div><button id="accessToggle"></button></div><div class="access-row"><span id="accessStatus"></span><span class="access-muted" id="publicCount"></span></div><h2>Subjects</h2><div id="subjectList" class="access-list"></div><div class="access-token"><button id="addToken">New token</button><button id="deleteToken">Delete token</button></div></section><section class="access-box"><h2 id="subjectTitle">Guest access</h2><div id="tokenFields"></div><div class="access-token"><button id="generateToken">Generate token</button><button id="saveAccess">Save changes</button></div><input id="accessFilter" class="access-filter" placeholder="Filter sessions..."><div id="accessList" class="access-list"></div></section></div></div>';
+  view.innerHTML=`<div class="access-panel"><div class="access-head"><div><h1>${t('accessSettings')}</h1><p>${t('accessIntro')}</p></div><div><button id="clearToken">${t('clearToken')}</button> <button id="backHome">${t('home')}</button></div></div><div class="access-grid"><section class="access-box"><h2>${t('remotePolicy')}</h2><div class="access-row"><div><div>${t('remoteRestriction')}</div><div class="access-muted">${t('remoteRestrictionHelp')}</div></div><button id="accessToggle"></button></div><div class="access-row"><span id="accessStatus"></span><span class="access-muted" id="publicCount"></span></div><h2>${t('subjects')}</h2><div id="subjectList" class="access-list"></div><div class="access-token"><button id="addToken">${t('newToken')}</button><button id="deleteToken">${t('deleteToken')}</button></div></section><section class="access-box"><h2 id="subjectTitle">${t('guestAccess')}</h2><div id="tokenFields"></div><div class="access-token"><button id="generateToken">${t('generateToken')}</button><button id="saveAccess">${t('saveChanges')}</button></div><input id="accessFilter" class="access-filter" placeholder="${t('filterSessions')}"><div id="accessList" class="access-list"></div></section></div></div>`;
   document.getElementById('backHome').onclick=()=>renderHome();
   document.getElementById('clearToken').onclick=()=>{sessionStorage.removeItem('accessToken');accessToken='';location.href=location.pathname;};
   const status=document.getElementById('accessStatus');
   status.className='access-status '+(access.remoteEnabled?'on':'off');
-  status.textContent=access.remoteEnabled?'Restricted remote':'Open remote';
+  status.textContent=access.remoteEnabled?t('restrictedRemote'):t('openRemote');
   const toggle=document.getElementById('accessToggle');
-  toggle.textContent=access.remoteEnabled?'Disable':'Enable';
+  toggle.textContent=access.remoteEnabled?t('disable'):t('enable');
   toggle.onclick=async()=>{await patchAccess({remoteEnabled:!access.remoteEnabled});await refreshAccessState();renderAccessPage();};
   const selectedSubject=()=>selectedKind==='guest'
-    ?{name:'Guest',role:'guest',publicSessions:guestPublicPaths}
+    ?{name:t('guest'),role:'guest',publicSessions:guestPublicPaths}
     :tokens[selectedIndex];
   const saveAccess=async()=>{
     const saved=await patchAccess({publicSessions:guestPublicPaths,tokens});
@@ -435,21 +553,21 @@ async function renderAccessPage(){
     root.textContent='';
     const guest=document.createElement('button');
     guest.className='rel-item'+(selectedKind==='guest'?' active':'');
-    guest.textContent=`Guest · ${guestPublicPaths.length} sessions`;
+    guest.textContent=`${t('guest')} · ${t('sessionCount',{count:guestPublicPaths.length})}`;
     guest.onclick=()=>{selectedKind='guest';selectedIndex=-1;renderSubjects();renderEditor();renderPublicList();};
     root.appendChild(guest);
     tokens.forEach((token,idx)=>{
       const btn=document.createElement('button');
       btn.className='rel-item'+(selectedKind==='token'&&selectedIndex===idx?' active':'');
-      btn.textContent=`${token.name||'Token'} · ${token.role||'viewer'} · ${(token.publicSessions||[]).length}`;
+      btn.textContent=`${token.name||t('token')} · ${token.role||t('viewer')} · ${(token.publicSessions||[]).length}`;
       btn.onclick=()=>{selectedKind='token';selectedIndex=idx;renderSubjects();renderEditor();renderPublicList();};
       root.appendChild(btn);
     });
   };
   const renderEditor=()=>{
     const subject=selectedSubject();
-    document.getElementById('subjectTitle').textContent=selectedKind==='guest'?'Guest access':subject.name||'Token';
-    document.getElementById('publicCount').textContent=`${(subject.publicSessions||[]).length} allowed`;
+    document.getElementById('subjectTitle').textContent=selectedKind==='guest'?t('guestAccess'):subject.name||t('token');
+    document.getElementById('publicCount').textContent=`${(subject.publicSessions||[]).length} ${t('allowed')}`;
     const fields=document.getElementById('tokenFields');
     fields.textContent='';
     document.getElementById('generateToken').style.display=selectedKind==='token'?'inline-flex':'none';
@@ -457,11 +575,11 @@ async function renderAccessPage(){
     if(selectedKind==='guest'){
       const note=document.createElement('div');
       note.className='access-muted';
-      note.textContent='Guest applies to remote visitors without a token.';
+      note.textContent=t('guestHelp');
       fields.appendChild(note);
       return;
     }
-    fields.innerHTML='<div class="access-token"><input id="tokenName" placeholder="Token name"></div><div class="access-token"><input id="tokenValue" placeholder="Token value"></div><div class="access-token"><select id="tokenRole" class="access-filter"><option value="viewer">Viewer</option><option value="admin">Admin</option></select></div><div class="access-muted">Viewer tokens only read allowed sessions. Admin tokens can open /admin and manage access.</div>';
+    fields.innerHTML=`<div class="access-token"><input id="tokenName" placeholder="${t('tokenName')}"></div><div class="access-token"><input id="tokenValue" placeholder="${t('tokenValue')}"></div><div class="access-token"><select id="tokenRole" class="access-filter"><option value="viewer">${t('viewer')}</option><option value="admin">${t('admin')}</option></select></div><div class="access-muted">${t('tokenHelp')}</div>`;
     document.getElementById('tokenName').value=subject.name||'';
     document.getElementById('tokenValue').value=subject.token||'';
     document.getElementById('tokenRole').value=subject.role||'viewer';
@@ -485,24 +603,24 @@ async function renderAccessPage(){
         if(input.checked)publicSet.add(s.path);else publicSet.delete(s.path);
         subject.publicSessions=[...publicSet];
         if(selectedKind==='guest')guestPublicPaths=subject.publicSessions;
-        document.getElementById('publicCount').textContent=`${publicSet.size} allowed`;
+        document.getElementById('publicCount').textContent=`${publicSet.size} ${t('allowed')}`;
         renderSubjects();
       };
       row.querySelector('.access-item-title').textContent=s.name;
-      row.querySelector('.access-item-meta').textContent=`${s.date||'unknown'} · ${s.category||'Uncategorized'} · ${s.originalName}.jsonl`;
+      row.querySelector('.access-item-meta').textContent=`${uiUnknown(s.date)} · ${categoryLabel(s.category)} · ${s.originalName}.jsonl`;
       root.appendChild(row);
     });
   };
   document.getElementById('addToken').onclick=async()=>{
     const token=await generateAccessToken();
-    tokens.push({name:`Viewer ${tokens.length+1}`,token,role:'viewer',publicSessions:[]});
+    tokens.push({name:`${t('viewer')} ${tokens.length+1}`,token,role:'viewer',publicSessions:[]});
     selectedKind='token';selectedIndex=tokens.length-1;
     renderSubjects();renderEditor();renderPublicList();
     await saveAccess();
   };
   document.getElementById('generateToken').onclick=async()=>{if(selectedKind!=='token')return;const token=await generateAccessToken();if(!token)return;tokens[selectedIndex].token=token;renderEditor();};
-  document.getElementById('deleteToken').onclick=()=>{if(selectedKind!=='token')return;if(!confirm('Delete this token?'))return;tokens.splice(selectedIndex,1);selectedKind='guest';selectedIndex=-1;renderSubjects();renderEditor();renderPublicList();};
-  document.getElementById('saveAccess').onclick=async()=>{const ok=await saveAccess();if(ok)alert('Access saved');};
+  document.getElementById('deleteToken').onclick=()=>{if(selectedKind!=='token')return;if(!confirm(t('deleteTokenConfirm')))return;tokens.splice(selectedIndex,1);selectedKind='guest';selectedIndex=-1;renderSubjects();renderEditor();renderPublicList();};
+  document.getElementById('saveAccess').onclick=async()=>{const ok=await saveAccess();if(ok)alert(t('accessSaved'));};
   document.getElementById('accessFilter').oninput=renderPublicList;
   renderSubjects();
   renderEditor();
@@ -513,9 +631,9 @@ function sessionCard(s){
   const card=document.createElement('article');card.className='card';card.onclick=()=>loadSession(s.path);
   const preview=(s.previewQuestions||[]).map(q=>`<li>${escapeHtml(q)}</li>`).join('');
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
-  const agentMeta=s.sessionType==='subagent'?`<div class="file-name">Subagent of ${escapeHtml(s.parentName||'unknown')} · Main ${escapeHtml(s.mainAgentName||s.parentName||'unknown')}</div>`:'';
-  const options=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
-  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div>${agentMeta}<div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><span><select class="category-select">${options}</select><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename">Rename</button></span></div>`;
+  const agentMeta=s.sessionType==='subagent'?`<div class="file-name">${t('subagentOf',{name:escapeHtml(uiUnknown(s.parentName))})} · ${t('main')} ${escapeHtml(uiUnknown(s.mainAgentName||s.parentName))}</div>`:'';
+  const options=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(categoryLabel(c))}</option>`).join('');
+  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div>${agentMeta}<div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||`<li>${t('noPreview')}</li>`}</ul><div class="card-foot"><span>${escapeHtml(uiUnknown(s.date))}</span><span><select class="category-select">${options}</select><button class="rename pin">${s.pinned?t('unpin'):t('pin')}</button><button class="rename">${t('rename')}</button></span></div>`;
   card.querySelector('.card-title').textContent=s.name;
   card.querySelector('.file-name').textContent=s.originalName+'.jsonl';
   card.querySelector('.pin').onclick=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{pinned:!s.pinned});};
@@ -545,7 +663,7 @@ function renderSearchResults(items, loading=false){
     const div=document.createElement('div');
     div.className='search-result-meta';
     div.style.padding='14px';
-    div.textContent='Searching...';
+    div.textContent=t('searching');
     root.appendChild(div);
     return;
   }
@@ -553,7 +671,7 @@ function renderSearchResults(items, loading=false){
     const div=document.createElement('div');
     div.className='search-result-meta';
     div.style.padding='14px';
-    div.textContent='Type to search across visible session content.';
+    div.textContent=t('searchEmpty');
     root.appendChild(div);
     return;
   }
@@ -562,7 +680,7 @@ function renderSearchResults(items, loading=false){
     row.className='search-result';
     row.innerHTML='<div class="search-result-title"></div><div class="search-result-meta"></div><div class="search-snippet"></div>';
     row.querySelector('.search-result-title').textContent=item.name;
-    row.querySelector('.search-result-meta').textContent=`${item.date} · ${item.matchType} · ${item.originalName}.jsonl`;
+    row.querySelector('.search-result-meta').textContent=`${uiUnknown(item.date)} · ${item.matchType} · ${item.originalName}.jsonl`;
     row.querySelector('.search-snippet').textContent=item.snippet || '';
     row.onclick=()=>{closeSearch();loadSession(item.path,{turnIndex:item.turnIndex});};
     root.appendChild(row);
@@ -579,13 +697,13 @@ async function runSearch(query){
 }
 
 async function renameSession(s){
-  const next=prompt('Display name',s.name);
+  const next=prompt(t('displayName'),s.name);
   if(next===null)return;
   await patchSessionMeta(s,{name:next});
 }
 
 async function editTags(s){
-  const next=prompt('Tags, comma separated', (s.tags||[]).join(', '));
+  const next=prompt(t('tagsComma'), (s.tags||[]).join(', '));
   if(next===null)return;
   const tags=next.split(',').map(x=>x.trim()).filter(Boolean);
   await patchSessionMeta(s,{tags});
@@ -593,7 +711,7 @@ async function editTags(s){
 
 async function patchSessionMeta(s,patch){
   const r=await apiFetch('/api/session-meta/'+sessionUrl(s.path),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
-  if(!r.ok){alert('Update failed');return;}
+  if(!r.ok){alert(t('updateFailed'));return;}
   await loadList({renderHome:false});
   if(currentView==='detail'&&activePath===s.path)loadSession(s.path,{preserve:true});
 }
@@ -605,7 +723,7 @@ function enhanceReading(root,rawText){
     wrap.className='code-wrap';
     const btn=document.createElement('button');
     btn.className='code-copy';
-    btn.textContent='Copy';
+    btn.textContent=t('copy');
     btn.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(pre.innerText);
     pre.parentNode.insertBefore(wrap,pre);
     wrap.appendChild(pre);
@@ -623,7 +741,7 @@ function addUser(root,turn){
   if(context){
     const details=document.createElement('details');
     details.className='context-box';
-    details.innerHTML='<summary>IDE context</summary><div class="context-content"></div>';
+    details.innerHTML=`<summary>${t('ideContext')}</summary><div class="context-content"></div>`;
     addMarkdown(details.querySelector('.context-content'),context);
     bubble.appendChild(details);
   }
@@ -631,7 +749,7 @@ function addUser(root,turn){
   row.appendChild(bubble);
   root.appendChild(row);
 }
-function addThinking(root,text){if(!text)return;const details=document.createElement('details');details.className='think-box';const lines=String(text).split(/\r?\n/).filter(Boolean).length;details.innerHTML=`<summary>Thinking <span class="think-meta">${lines} visible lines</span></summary><div class="think-content"></div>`;addMarkdown(details.querySelector('.think-content'),text);root.appendChild(details);}
+function addThinking(root,text){if(!text)return;const details=document.createElement('details');details.className='think-box';const lines=String(text).split(/\r?\n/).filter(Boolean).length;details.innerHTML=`<summary>${t('thinking')} <span class="think-meta">${t('visibleLines',{count:lines})}</span></summary><div class="think-content"></div>`;addMarkdown(details.querySelector('.think-content'),text);root.appendChild(details);}
 function addAssistant(root,text){if(!text)return;const row=document.createElement('div');row.className='message assistant';const wrap=document.createElement('div');wrap.className='assistant-wrap';const avatar=document.createElement('div');avatar.className='avatar';avatar.textContent='AI';const bubble=document.createElement('div');bubble.className='bubble';addMarkdown(bubble,text);wrap.appendChild(avatar);wrap.appendChild(bubble);row.appendChild(wrap);root.appendChild(row);}
 
 function renderDetailNav(){
@@ -639,8 +757,8 @@ function renderDetailNav(){
   if(!nav)return;
   const s=detailState.session||{};
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
-  const categoryOptions=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
-  nav.innerHTML=`<div class="nav-section"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="tagBtn">Tags</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline</div><div id="outlineList"></div></div>`;
+  const categoryOptions=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(categoryLabel(c))}</option>`).join('');
+  nav.innerHTML=`<div class="nav-section"><div class="nav-title">${t('sessions')}</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="tagBtn">${t('tags')}</button><button id="pinBtn">${s.pinned?t('unpin'):t('pin')}</button><button id="archiveBtn">${s.archived?t('unarchive'):t('archive')}</button></div></div><div class="nav-section"><div class="nav-title">${t('relations')}</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">${t('addReference')}</button></div></div><div class="nav-section"><div class="nav-title">${t('outline')}</div><div id="outlineList"></div></div>`;
   document.getElementById('tagBtn').onclick=()=>editTags(s);
   document.getElementById('pinBtn').onclick=()=>patchSessionMeta(s,{pinned:!s.pinned});
   document.getElementById('archiveBtn').onclick=()=>patchSessionMeta(s,{archived:!s.archived});
@@ -657,11 +775,11 @@ function renderDetailNav(){
   const appendRelRow=(group,item,kind,removable,depth=1)=>{
     const row=document.createElement('div');
     row.className='rel-row'+(depth>=4?' level-deep':depth>1?` level-${depth}`:'');
-    const pill=document.createElement('span');pill.className='rel-kind '+kind;pill.textContent=kind==='subagent'?'Subagent':kind==='master'?'Master':'Reference';
+    const pill=document.createElement('span');pill.className='rel-kind '+kind;pill.textContent=kind==='subagent'?t('subagent'):kind==='master'?t('master'):t('reference');
     const btn=document.createElement('button');btn.className='rel-item';btn.textContent=item.name;btn.onclick=()=>loadSession(item.path);
     row.appendChild(pill);row.appendChild(btn);
     if(removable){
-      const remove=document.createElement('button');remove.className='rename';remove.textContent='Remove';remove.onclick=()=>removeRelation(item.path);row.appendChild(remove);
+      const remove=document.createElement('button');remove.className='rename';remove.textContent=t('remove');remove.onclick=()=>removeRelation(item.path);row.appendChild(remove);
     }
     group.appendChild(row);
     if(kind==='subagent')(item.children||[]).forEach(child=>appendRelRow(group,child,kind,removable,depth+1));
@@ -676,11 +794,11 @@ function renderDetailNav(){
     items.forEach(item=>appendRelRow(group,item,kind,removable));
     related.appendChild(group);
   };
-  renderRelGroup('Masters',masters.length,'No masters',masters,'master',false);
-  renderRelGroup('Subagents',countTree(subagents),'No subagents',subagents,'subagent',false);
-  renderRelGroup('References',references.length,'No references',references,'reference',true);
+  renderRelGroup(t('masters'),masters.length,t('noMasters'),masters,'master',false);
+  renderRelGroup(t('subagents'),countTree(subagents),t('noSubagents'),subagents,'subagent',false);
+  renderRelGroup(t('references'),references.length,t('noReferences'),references,'reference',true);
   const outline=document.getElementById('outlineList');
-  if(!detailState.outline.length){outline.innerHTML='<div class="nav-empty">No outline</div>';}else{
+  if(!detailState.outline.length){outline.innerHTML=`<div class="nav-empty">${t('noOutline')}</div>`;}else{
     detailState.outline.forEach(item=>{
       const b=document.createElement('button');b.className='outline-item';b.dataset.index=item.index;b.textContent=`${item.index+1}. ${item.title}`;b.onclick=()=>jumpToTurn(item.index);outline.appendChild(b);
     });
@@ -720,7 +838,7 @@ function syncOutline(){
 
 async function removeRelation(path){
   const r=await apiFetch('/api/session-relations/'+sessionUrl(activePath),{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({path})});
-  if(!r.ok){alert('Remove reference failed');return;}
+  if(!r.ok){alert(t('removeReferenceFailed'));return;}
   loadSession(activePath,{preserve:true});
 }
 
@@ -728,22 +846,22 @@ function renderTurns(append=false){
   const chat=document.getElementById('chat');
   if(!chat)return;
   if(!append)chat.textContent='';
-  detailState.turns.forEach(t=>{
-    if(document.getElementById('turn-'+t.index))return;
+  detailState.turns.forEach(turnData=>{
+    if(document.getElementById('turn-'+turnData.index))return;
     const turn=document.createElement('section');
     turn.className='turn';
-    turn.id='turn-'+t.index;
+    turn.id='turn-'+turnData.index;
     const copy=document.createElement('button');
     copy.className='copy-btn';
-    copy.textContent='Copy turn';
-    copy.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText([t.user,t.reasoning,t.assistant].filter(Boolean).join('\\n\\n'));
+    copy.textContent=t('copyTurn');
+    copy.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText([turnData.user,turnData.reasoning,turnData.assistant].filter(Boolean).join('\\n\\n'));
     turn.appendChild(copy);
-    addUser(turn,t);addThinking(turn,t.reasoning);addAssistant(turn,t.assistant);chat.appendChild(turn);
+    addUser(turn,turnData);addThinking(turn,turnData.reasoning);addAssistant(turn,turnData.assistant);chat.appendChild(turn);
   });
   let more=document.getElementById('loadMore');
   if(more)more.remove();
   if(detailState.hasMore){
-    more=document.createElement('div');more.id='loadMore';more.className='load-more';more.innerHTML='<button>Load more</button>';more.querySelector('button').onclick=()=>loadMoreTurns();chat.appendChild(more);
+    more=document.createElement('div');more.id='loadMore';more.className='load-more';more.innerHTML=`<button>${t('loadMore')}</button>`;more.querySelector('button').onclick=()=>loadMoreTurns();chat.appendChild(more);
   }
 }
 
@@ -752,21 +870,21 @@ async function loadSession(path,opts={}){
   if(!opts.append)activeOutlineIndex=null;
   applyLayout(layoutMode);
   updateTopActions();
-  const s=activeSession();document.getElementById('topTitle').textContent=s?s.name:'Session Detail';
+  const s=activeSession();document.getElementById('topTitle').textContent=s?s.name:t('sessionDetail');
   const view=document.getElementById('view');
   if(!opts.append){
-    view.innerHTML='<div class="detail-shell"><aside id="detailNav" class="detail-nav"><div id="detailNavBody" class="detail-nav-body"></div><div id="detailFooter" class="panel-footer"><span>Detail</span></div></aside><div class="detail-main"><div id="chat" class="chat"></div></div></div>';
+    view.innerHTML=`<div class="detail-shell"><aside id="detailNav" class="detail-nav"><div id="detailNavBody" class="detail-nav-body"></div><div id="detailFooter" class="panel-footer"><span>${t('detail')}</span></div></aside><div class="detail-main"><div id="chat" class="chat"></div></div></div>`;
   }
   try{
     const offset=opts.offset??0;
     const limit=detailState.limit||50;
-    const r=await apiFetch(`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`);const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
+    const r=await apiFetch(`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`);const d=await r.json();if(!r.ok)throw new Error(errorText(d.error));
     detailState={path,session:d.session,turns:opts.append?[...detailState.turns,...d.turns]:d.turns,outline:d.outline,relations:d.relations,offset:d.offset,limit:d.limit,total:d.total,hasMore:d.hasMore};
     document.getElementById('topTitle').textContent=d.session.name;
     renderDetailNav();
     placeLayoutSwitch();
     const chat=document.getElementById('chat');
-    if(!detailState.turns.length){chat.innerHTML='<div class="empty">No visible messages</div>';return;}
+    if(!detailState.turns.length){chat.innerHTML=`<div class="empty">${t('noVisibleMessages')}</div>`;return;}
     renderTurns(opts.append);
     syncOutline();
     if(opts.turnIndex!=null)jumpToTurn(opts.turnIndex);
@@ -805,9 +923,9 @@ function renderRelationPicker(filter){
   const q=filter.trim().toLowerCase();
   root.textContent='';
   sessions.filter(s=>s.path!==activePath).filter(s=>!q||[s.name,s.originalName,s.cwd,...(s.previewQuestions||[])].join(' ').toLowerCase().includes(q)).forEach(s=>{
-    const row=document.createElement('div');row.className='picker-row';row.innerHTML='<div><div class="picker-title"></div><div class="picker-sub"></div></div><button>Add reference</button>';
+    const row=document.createElement('div');row.className='picker-row';row.innerHTML=`<div><div class="picker-title"></div><div class="picker-sub"></div></div><button>${t('addReference')}</button>`;
     row.querySelector('.picker-title').textContent=s.name;
-    row.querySelector('.picker-sub').textContent=`${s.date} · ${s.originalName}`;
+    row.querySelector('.picker-sub').textContent=`${uiUnknown(s.date)} · ${s.originalName}`;
     row.querySelector('button').onclick=()=>addRelation(s.path);
     root.appendChild(row);
   });
@@ -815,12 +933,13 @@ function renderRelationPicker(filter){
 
 async function addRelation(path){
   const r=await apiFetch('/api/session-relations/'+sessionUrl(activePath),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path})});
-  if(!r.ok){alert('Add reference failed');return;}
+  if(!r.ok){alert(t('addReferenceFailed'));return;}
   closeRelationPicker();
   loadSession(activePath,{preserve:true});
 }
 
 document.getElementById('themeToggle').onclick=()=>{const next=document.body.dataset.theme==='light'?'dark':'light';document.body.dataset.theme=next;localStorage.setItem('viewerTheme',next);updateThemeButton();};
+document.getElementById('langToggle').onclick=()=>{currentLang=currentLang==='zh-CN'?'en-US':'zh-CN';localStorage.setItem('viewerLang',currentLang);rerenderCurrentView();};
 document.getElementById('sideClose').onclick=()=>{
   if(currentView==='detail')applyLayout(layoutMode==='three'?'two':'one');
   else document.body.classList.add('sidebar-collapsed');
@@ -847,7 +966,7 @@ document.addEventListener('keydown',(ev)=>{
   if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();openSearch();}
   if(ev.key==='Escape')closeSearch();
 });
-updateThemeButton();
+updateStaticText();
 applyLayout(layoutMode);
 loadList({renderHome:location.pathname!=='/admin'}).then(()=>{if(location.pathname==='/admin')renderAccessPage();});
 </script>
