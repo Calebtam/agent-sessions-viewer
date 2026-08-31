@@ -1,96 +1,224 @@
 {
   "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl": {
-    "category": "other",
+    "category": "Deep",
     "name": "yolov5 python源码"
   },
+  "2026/06/16/rollout-2026-06-16T16-31-09-019ecf8e-49d5-78c0-9422-b337678c4e28.jsonl": {
+    "category": "-other"
+  },
+  "2026/06/16/rollout-2026-06-16T17-00-54-019ecfa9-8875-7c52-a72b-846241c820d0.jsonl": {
+    "category": "-other"
+  },
+  "2026/06/16/rollout-2026-06-16T21-54-02-019ed0b5-e6b7-7951-aa2f-f0d802b04150.jsonl": {
+    "category": "-other"
+  },
   "2026/06/17/rollout-2026-06-17T09-55-41-019ed34a-96b6-72b0-9541-95e15a022158.jsonl": {
-    "category": "stable hold",
-    "name": "数据分析 dev-workflow开发"
+    "category": "Mins",
+    "name": "static hold - 数据分析 dev-workflow开发"
+  },
+  "2026/06/17/rollout-2026-06-17T16-22-58-019ed4ad-2a37-7720-bdad-e80e3f6a103f.jsonl": {
+    "category": "-other"
   },
   "2026/06/20/rollout-2026-06-20T12-24-07-019ee345-8eed-7e51-8a05-e3cf9f9e15e3.jsonl": {
-    "category": "dev_workflow",
+    "category": "Skill Plugin and other",
     "name": "优化dev-workflow 6.20"
   },
   "2026/06/20/rollout-2026-06-20T22-08-20-019ee55c-6e0b-7a53-a44d-38263bc99619.jsonl": {
-    "category": "AI能力增强"
+    "category": "Skill Plugin and other",
+    "name": "Person-AI-Use"
   },
   "2026/06/22/rollout-2026-06-22T19-01-01-019eeefd-a6fd-7403-82f4-f31bdc499140.jsonl": {
-    "category": "tools",
-    "name": "upload脚本自动ip选择"
+    "category": "Mins",
+    "name": "tools - upload脚本自动ip选择"
   },
   "2026/06/24/rollout-2026-06-24T11-41-14-019ef7b7-bc91-7390-95cd-ec4a87204196.jsonl": {
-    "category": "dev_workflow",
+    "category": "Skill Plugin and other",
     "name": "dev-workflow 调用失败修复"
   },
   "2026/06/25/rollout-2026-06-25T10-09-30-019efc8a-1e8b-7423-a1e0-677c261f6581.jsonl": {
-    "category": "stable hold",
-    "name": "参数删减",
+    "category": "Mins",
+    "name": "static hold -参数删减",
     "pinned": false
   },
   "2026/06/25/rollout-2026-06-25T11-24-42-019efcce-f612-70e0-a63b-dc2332795260.jsonl": {
-    "category": "adaptive noise",
-    "name": "Vibration Develop"
+    "category": "Mins",
+    "name": "adaptive noise - Vibration Develop"
+  },
+  "2026/06/25/rollout-2026-06-25T13-48-42-019efd52-cd64-7f10-81d6-dd60aac9d80f.jsonl": {
+    "category": "Mins"
   },
   "2026/06/25/rollout-2026-06-25T17-04-01-019efe05-9be1-7a61-a341-3fe65c9c7641.jsonl": {
-    "category": "other",
+    "category": "Skill Plugin and other",
     "name": "vibe-coding"
   },
   "2026/06/25/rollout-2026-06-25T20-23-10-019efebb-f252-7b63-b408-2d9ad8f882b2.jsonl": {
-    "category": "adaptive noise",
-    "name": "Vibration debug param"
+    "category": "Mins",
+    "name": "adaptive noise -Vibration debug param"
   },
   "2026/06/30/rollout-2026-06-30T15-29-05-019f176e-813b-7a23-890e-c124cf33cd4d.jsonl": {
-    "category": "tools",
-    "name": "state_16dof_trace"
+    "category": "Mins",
+    "name": "tools -state_16dof_trace"
   },
   "2026/06/30/rollout-2026-06-30T16-54-49-019f17bc-fe7f-7472-b467-59773bb14ee8.jsonl": {
-    "category": "adaptive noise",
-    "name": "Vibration Root Cause"
+    "category": "Mins",
+    "name": "adaptive noise -Vibration Root Cause"
   },
   "2026/07/09/rollout-2026-07-09T14-22-18-019f458a-98cb-70f3-83e4-319a700ab015.jsonl": {
-    "category": "trajectory consistence",
+    "category": "Mins",
     "name": "轨迹不一致问题分析"
   },
   "2026/07/14/rollout-2026-07-14T15-00-24-019f5f6d-4706-7773-ba57-8d10d8aab10a.jsonl": {
-    "category": "dev_workflow",
+    "category": "Skill Plugin and other",
     "name": "only read dev-workflow"
   },
   "2026/07/14/rollout-2026-07-14T16-02-57-019f5fa6-8922-7063-ba79-a610ecea8e49.jsonl": {
-    "category": "dev_workflow",
+    "category": "Skill Plugin and other",
     "name": "优化dev-workflow 7.14"
   },
   "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl": {
-    "category": "stable hold",
-    "name": "新增imu检测模式",
+    "category": "Mins",
+    "name": "static hold -新增imu检测模式",
     "tags": [
       "static hold"
     ]
   },
   "2026/07/17/rollout-2026-07-17T17-06-05-019f6f53-6bb8-7e71-ab6e-e73a4083a6e9.jsonl": {
-    "category": "dev_workflow",
+    "category": "Skill Plugin and other",
     "name": "agent-sessions-viewer",
     "pinned": false,
     "relations": [],
     "tags": []
   },
+  "2026/07/25/rollout-2026-07-25T12-37-56-019f9790-c9e2-72a2-b5e3-094444bd09bc.jsonl": {
+    "category": "Skill Plugin and other",
+    "name": "agent-browser and matt-pocock"
+  },
+  "2026/07/26/rollout-2026-07-26T10-23-48-019f9c3c-58d5-7021-ba90-657bd2bafcae.jsonl": {
+    "category": "Mins"
+  },
+  "2026/07/29/rollout-2026-07-29T21-58-34-019fae2b-81c0-7321-a290-b828e3ee3345.jsonl": {
+    "tags": [
+      "融合感知"
+    ]
+  },
+  "2026/07/31/rollout-2026-07-31T17-38-13-019fb789-ddf7-7b70-bda4-75397f0d9e9e.jsonl": {
+    "tags": [
+      "融合感知"
+    ]
+  },
+  "2026/08/01/rollout-2026-08-01T10-59-01-019fbb42-c086-7802-9604-28f7a13cc254.jsonl": {
+    "tags": [
+      "融合感知"
+    ]
+  },
+  "2026/08/03/rollout-2026-08-03T13-49-40-019fc62b-b450-71a3-8ef5-f331289c56d7.jsonl": {
+    "category": "Mins",
+    "name": "TeamBition",
+    "tags": [
+      "teambition"
+    ]
+  },
+  "2026/08/04/rollout-2026-08-04T09-13-11-019fd9c8-030a-7483-8984-b37bb884dcc9.jsonl": {
+    "category": "Perception - fastDEM"
+  },
+  "2026/08/04/rollout-2026-08-04T10-00-13-019fca7f-feab-7982-a7a4-b7ee0f52acd7.jsonl": {
+    "tags": [
+      "融合感知方案设计",
+      "融合感知"
+    ]
+  },
+  "2026/08/04/rollout-2026-08-04T11-39-25-019fcada-d0b3-7a81-8f38-32da30227fcc.jsonl": {
+    "category": "Perception - fastDEM",
+    "name": "高草-悬崖-悬空-斜坡",
+    "tags": []
+  },
+  "2026/08/04/rollout-2026-08-04T12-59-12-019fcb23-dcd7-7552-836e-56e727797cec.jsonl": {
+    "category": "Perception - fastDEM"
+  },
+  "2026/08/04/rollout-2026-08-04T12-59-13-019fcb23-dd3b-7183-a23b-616cc39f3e2b.jsonl": {
+    "category": "Perception - fastDEM"
+  },
+  "2026/08/04/rollout-2026-08-04T12-59-13-019fcb23-dd9e-7cb2-b83f-ca9de513185e.jsonl": {
+    "category": "Perception - fastDEM"
+  },
+  "2026/08/04/rollout-2026-08-04T14-32-00-019fcb78-d0ee-7a13-a33c-8d18576dda0d.jsonl": {
+    "category": "Perception - fastDEM",
+    "name": "cliff / negative obstacle / drop-off"
+  },
+  "2026/08/07/rollout-2026-08-07T09-13-11-019fd9c8-030a-7483-8984-b37bb884dcc9.jsonl": {
+    "category": "Perception - fastDEM",
+    "tags": [
+      "融合感知"
+    ]
+  },
+  "2026/08/08/rollout-2026-08-08T14-34-00-019fe014-163c-7e12-ade7-72e679263288.jsonl": {
+    "tags": [
+      "融合感知"
+    ]
+  },
+  "2026/08/09/rollout-2026-08-09T12-00-08-019fe4ad-950f-7832-b9b2-2592218010f4.jsonl": {
+    "name": "4f 假草误检分析",
+    "tags": [
+      "融合感知"
+    ]
+  },
+  "2026/08/11/rollout-2026-08-11T13-44-38-019fef59-f57e-7b32-af9f-7a55c133bc28.jsonl": {
+    "name": "dynamic / ground remove/ global mapping",
+    "tags": [
+      "dynamic_obstacle",
+      "ground_remove",
+      "global_mapping_overview",
+      "融合感知"
+    ]
+  },
+  "2026/08/12/rollout-2026-08-12T13-59-37-019ff48e-0b48-75f2-a69d-569b526bba71.jsonl": {
+    "category": "Skill Plugin and other"
+  },
+  "2026/08/13/rollout-2026-08-13T11-39-26-019ff934-10f0-72e2-ba1e-a4f994cc5239.jsonl": {
+    "name": "global_mapping"
+  },
+  "2026/08/17/rollout-2026-08-17T17-26-30-01a00f0b-40d9-7c33-899a-492d02fa0648.jsonl": {
+    "category": "Perception - fastDEM",
+    "name": "三种语义Voxel  科陆误判",
+    "tags": [
+      "Voxel语义判定"
+    ]
+  },
+  "2026/08/21/rollout-2026-08-21T17-06-05-01a02391-feea-7d12-898d-8616e555764f.jsonl": {
+    "category": "Perception - fastDEM",
+    "name": "顺德秋千探索"
+  },
+  "2026/08/22/rollout-2026-08-22T00-48-19-01a02539-2d8f-7691-bd61-75f752180863.jsonl": {
+    "category": "Perception - fastDEM",
+    "name": "顺德秋千误判修复"
+  },
+  "2026/08/24/rollout-2026-08-24T15-38-37-01a032b5-0014-7431-b6fc-14c159eb7c33.jsonl": {
+    "name": "global_mapping2"
+  },
+  "2026/08/25/rollout-2026-08-25T14-20-55-01a03794-3770-7c42-adfa-5df88479a373.jsonl": {
+    "name": "tcp调试1"
+  },
+  "2026/08/25/rollout-2026-08-25T14-53-19-01a037b1-e13e-7b52-9b1d-60fa3c08391d.jsonl": {
+    "name": "tcp调试3"
+  },
+  "2026/08/25/rollout-2026-08-25T15-11-56-01a037c2-eadb-7261-9ba5-ed9d46e8482a.jsonl": {
+    "name": "tcp调试2"
+  },
+  "2026/08/26/rollout-2026-08-26T13-00-14-01a03c70-b694-7f33-8ea1-3c2d04aa3e30.jsonl": {
+    "name": "tcp调试4"
+  },
+  "2026/08/26/rollout-2026-08-26T15-58-38-01a03d14-085a-7760-ab7a-4cff8928eaa0.jsonl": {
+    "name": "tcp调试5"
+  },
+  "2026/08/27/rollout-2026-08-27T16-11-21-01a04246-0bce-70b3-b591-706938d7ecd3.jsonl": {
+    "name": "global_mapping4"
+  },
+  "2026/08/27/rollout-2026-08-27T16-36-22-01a0425c-f057-7082-b843-90f41547e556.jsonl": {
+    "name": "global_mapping3"
+  },
   "_access": {
     "publicSessions": [
-      "2026/06/30/rollout-2026-06-30T16-54-49-019f17bc-fe7f-7472-b467-59773bb14ee8.jsonl",
-      "2026/06/20/rollout-2026-06-20T12-24-07-019ee345-8eed-7e51-8a05-e3cf9f9e15e3.jsonl",
-      "2026/06/24/rollout-2026-06-24T11-41-14-019ef7b7-bc91-7390-95cd-ec4a87204196.jsonl",
-      "2026/07/14/rollout-2026-07-14T15-00-24-019f5f6d-4706-7773-ba57-8d10d8aab10a.jsonl",
-      "2026/07/14/rollout-2026-07-14T16-02-57-019f5fa6-8922-7063-ba79-a610ecea8e49.jsonl",
-      "2026/07/17/rollout-2026-07-17T17-06-05-019f6f53-6bb8-7e71-ab6e-e73a4083a6e9.jsonl",
-      "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl",
-      "2026/06/25/rollout-2026-06-25T17-04-01-019efe05-9be1-7a61-a341-3fe65c9c7641.jsonl",
-      "2026/06/17/rollout-2026-06-17T09-55-41-019ed34a-96b6-72b0-9541-95e15a022158.jsonl",
-      "2026/06/25/rollout-2026-06-25T10-09-30-019efc8a-1e8b-7423-a1e0-677c261f6581.jsonl",
-      "2026/07/15/rollout-2026-07-15T10-43-52-019f63a8-c58d-7412-a866-dcdc45b556a2.jsonl",
-      "2026/06/22/rollout-2026-06-22T19-01-01-019eeefd-a6fd-7403-82f4-f31bdc499140.jsonl",
-      "2026/06/30/rollout-2026-06-30T15-29-05-019f176e-813b-7a23-890e-c124cf33cd4d.jsonl",
-      "2026/07/09/rollout-2026-07-09T14-22-18-019f458a-98cb-70f3-83e4-319a700ab015.jsonl",
-      "2026/06/25/rollout-2026-06-25T11-24-42-019efcce-f612-70e0-a63b-dc2332795260.jsonl",
-      "2026/06/25/rollout-2026-06-25T20-23-10-019efebb-f252-7b63-b408-2d9ad8f882b2.jsonl"
+      "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl"
     ],
     "remoteEnabled": true,
     "remoteToken": "",
@@ -114,12 +242,10 @@
     ]
   },
   "_categories": [
-    "dev_workflow",
-    "stable hold",
-    "trajectory consistence",
-    "tools",
-    "adaptive noise",
-    "other",
-    "AI能力增强"
+    "Skill Plugin and other",
+    "Mins",
+    "Deep",
+    "-other",
+    "Perception - fastDEM"
   ]
 }

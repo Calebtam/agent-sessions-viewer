@@ -268,39 +268,25 @@ def all_session_infos(metadata=None):
 def subagent_tree(root_info, all_infos):
     children_by_parent = {}
     for item in all_infos:
-        parent_id = item.get("parentThreadId")
-        if item.get("sessionType") == "subagent" and parent_id:
-            children_by_parent.setdefault(parent_id, []).append(item)
+        parent_path = item.get("parentPath")
+        if item.get("sessionType") == "subagent" and parent_path:
+            children_by_parent.setdefault(parent_path, []).append(item)
     for children in children_by_parent.values():
         children.sort(key=lambda item: (item.get("date", ""), item.get("name", "")))
 
-    def build(parent_id, depth, seen):
+    def build(parent_path, depth, seen):
         result = []
-        for item in children_by_parent.get(parent_id, []):
+        for item in children_by_parent.get(parent_path, []):
             node_id = item.get("path") or item.get("fileId") or item.get("sessionId")
             if not node_id or node_id in seen or item.get("path") == root_info.get("path"):
                 continue
             node = dict(item)
             node["subagentDepth"] = depth
-            child_parent_ids = [value for value in id_aliases(item) if value]
-            children = []
             next_seen = seen | {node_id, item.get("path")}
-            for child_parent_id in child_parent_ids:
-                children.extend(build(child_parent_id, depth + 1, next_seen))
-            deduped = []
-            child_seen = set()
-            for child in children:
-                child_id = child.get("path") or child.get("fileId") or child.get("sessionId")
-                if child_id in child_seen:
-                    continue
-                child_seen.add(child_id)
-                deduped.append(child)
-            node["children"] = deduped
+            node["children"] = build(item.get("path"), depth + 1, next_seen)
             result.append(node)
         return result
 
-    root_ids = [value for value in id_aliases(root_info) if value]
-    subagents = []
     seen = {
         value
         for value in (
@@ -310,17 +296,30 @@ def subagent_tree(root_info, all_infos):
         )
         if value
     }
-    for root_id in root_ids:
-        subagents.extend(build(root_id, 1, seen))
-    deduped = []
-    child_seen = set()
-    for item in subagents:
-        node_id = item.get("path") or item.get("fileId") or item.get("sessionId")
-        if node_id in child_seen:
-            continue
-        child_seen.add(node_id)
-        deduped.append(item)
-    return deduped
+    return build(root_info.get("path"), 1, seen)
+
+
+def descendant_subagent_paths(root_path, all_infos):
+    children_by_parent = {}
+    for item in all_infos:
+        parent_path = item.get("parentPath")
+        if item.get("sessionType") == "subagent" and parent_path:
+            children_by_parent.setdefault(parent_path, []).append(item)
+
+    result = []
+    seen = {root_path}
+
+    def visit(parent_path):
+        for item in children_by_parent.get(parent_path, []):
+            path = item.get("path")
+            if not path or path in seen:
+                continue
+            seen.add(path)
+            result.append(path)
+            visit(path)
+
+    visit(root_path)
+    return result
 
 # app=Flask(__name__)
 # BASE=os.path.expanduser("~/.codex/sessions")
@@ -472,7 +471,8 @@ def update_session_meta(sp):
             entry[field] = bool(data[field])
     if "tags" in data:
         tags = data.get("tags") or []
-        entry["tags"] = [str(tag).strip() for tag in tags if str(tag).strip()]
+        clean_tags = [str(tag).strip() for tag in tags if str(tag).strip()]
+        entry["tags"] = clean_tags
     if "category" in data:
         category = str(data.get("category", "")).strip()
         if category:
@@ -483,6 +483,17 @@ def update_session_meta(sp):
             entry["category"] = category
         else:
             entry.pop("category", None)
+    if "tags" in data or "category" in data:
+        descendant_paths = descendant_subagent_paths(key, all_session_infos(metadata))
+        for child_key in descendant_paths:
+            child_entry = metadata.setdefault(child_key, {})
+            if "tags" in data:
+                child_entry["tags"] = list(clean_tags)
+            if "category" in data:
+                if category:
+                    child_entry["category"] = category
+                else:
+                    child_entry.pop("category", None)
     save_metadata(metadata)
     return jsonify(session_info(file, metadata))
 
