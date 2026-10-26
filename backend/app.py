@@ -1,5 +1,9 @@
-from flask import Flask, jsonify, send_from_directory, request
+from flask import Flask, Response, jsonify, send_from_directory, request
 from parser import load_session, load_session_meta, load_session_preview
+from providers.vscode_chat import VSCodeChatProvider
+from providers.codex import CodexProvider
+from providers.copilot_cli import CopilotCLIProvider
+from registry import SessionRegistry
 from pathlib import Path
 import argparse
 import json
@@ -16,6 +20,18 @@ parser.add_argument(
     default="~/.codex/sessions",
     help="Codex session directory"
 )
+parser.add_argument(
+    "--vscode_user_dir",
+    default="~/.config/Code/User",
+    help="VS Code user data directory (read-only diagnostics)",
+)
+parser.add_argument(
+    "--copilot_session_dir",
+    default="~/.copilot/session-state",
+    help="Copilot CLI session-state directory (read-only)",
+)
+parser.add_argument("--host", default="127.0.0.1", help="HTTP listen address")
+parser.add_argument("--port", default=9001, type=int, help="HTTP listen port")
 
 args = parser.parse_args()
 
@@ -23,6 +39,10 @@ BASE = Path(args.session_dir).expanduser()
 FRONTEND_DIR = Path(__file__).resolve().parents[1] / "frontend"
 METADATA_FILE = Path(__file__).resolve().parents[1] / "session_metadata.json"
 SESSION_CACHE = {}
+VSCODE_PROVIDER = VSCodeChatProvider(Path(args.vscode_user_dir))
+CODEX_PROVIDER = CodexProvider(BASE)
+COPILOT_PROVIDER = CopilotCLIProvider(Path(args.copilot_session_dir))
+REGISTRY = SessionRegistry([CODEX_PROVIDER, COPILOT_PROVIDER, VSCODE_PROVIDER])
 
 
 def load_metadata():
@@ -138,6 +158,15 @@ def require_admin(metadata):
     if is_admin_request(metadata):
         return None
     return jsonify({"error": "forbidden"}), 403
+
+
+def public_session_info(item):
+    """Remove local source details from normal API responses."""
+    result = dict(item)
+    result.pop("source_path", None)
+    result.pop("sourceFingerprint", None)
+    result.pop("source_id", None)
+    return result
 
 
 def cached_session(path):
@@ -265,6 +294,45 @@ def all_session_infos(metadata=None):
     return infos
 
 
+def unified_codex_info(item):
+    result = dict(item)
+    result.update({
+        "id": f"codex:{item['path']}",
+        "provider": "codex",
+        "providerLabel": "Codex",
+        "title": item.get("name", ""),
+        "workspace": item.get("cwd", ""),
+        "workspaceId": "",
+        "created_at": None,
+        "updated_at": None,
+        "source_path": str(BASE / item["path"]),
+        "content_status": "full",
+        "has_transcript": True,
+        "turn_count": None,
+        "updatedAt": None,
+        "contentStatus": "full",
+        "hasTranscript": True,
+        "turnCount": None,
+        "readOnlyMetadata": False,
+    })
+    return result
+
+
+def apply_viewer_metadata(item, metadata):
+    result = dict(item)
+    key = result.get("legacyPath") or result.get("path")
+    entry = session_entry(metadata, key)
+    if not entry and result.get("id"):
+        entry = session_entry(metadata, result["id"])
+    result["name"] = entry.get("name") or result.get("name") or result.get("title", "")
+    result["title"] = result["name"]
+    result["tags"] = entry.get("tags", result.get("tags", []))
+    result["category"] = entry.get("category", result.get("category", ""))
+    result["pinned"] = bool(entry.get("pinned", result.get("pinned", False)))
+    result["archived"] = bool(entry.get("archived", result.get("archived", False)))
+    return result
+
+
 def subagent_tree(root_info, all_infos):
     children_by_parent = {}
     for item in all_infos:
@@ -343,6 +411,276 @@ def sessions():
         "sessions": infos,
         "categories": metadata_categories(metadata),
     })
+
+
+@app.route("/api/v2/diagnostics")
+def diagnostics():
+    metadata = load_metadata()
+    denied = require_admin(metadata)
+    if denied:
+        return denied
+    return jsonify({"providers": [VSCODE_PROVIDER.discover()]})
+
+
+@app.route("/api/v2/sessions")
+def v2_sessions():
+    metadata = load_metadata()
+    include_archived = request.args.get("archived") == "1"
+    combined = [apply_viewer_metadata(item, metadata) for item in REGISTRY.discover()]
+    combined = visible_session_infos(combined, metadata)
+    if not include_archived:
+        combined = [item for item in combined if not item.get("archived")]
+    provider = request.args.get("provider", "").strip()
+    workspace = request.args.get("workspace", "").strip()
+    content_status = request.args.get("content_status", "").strip()
+    category = request.args.get("category", "").strip()
+    tag = request.args.get("tag", "").strip()
+    if provider:
+        combined = [item for item in combined if item.get("provider") == provider]
+    if workspace:
+        combined = [item for item in combined if item.get("workspace") == workspace]
+    if content_status:
+        combined = [item for item in combined if item.get("contentStatus") == content_status]
+    if category:
+        combined = [item for item in combined if item.get("category") == category]
+    if tag:
+        combined = [item for item in combined if tag in item.get("tags", [])]
+    combined.sort(key=lambda item: item.get("name") or "")
+    combined.sort(
+        key=lambda item: item.get("updatedAt") or item.get("date") or "",
+        reverse=True,
+    )
+    combined.sort(key=lambda item: bool(item.get("pinned")), reverse=True)
+    try:
+        offset = max(0, int(request.args.get("offset", 0)))
+        limit = min(max(int(request.args.get("limit", 200)), 1), 200)
+    except ValueError:
+        offset, limit = 0, 200
+    total = len(combined)
+    workspaces = sorted({item.get("workspace") for item in combined if item.get("workspace")})
+    page = combined[offset:offset + limit]
+    return jsonify({
+        "sessions": [public_session_info(item) for item in page],
+        "categories": metadata_categories(metadata),
+        "providers": REGISTRY.provider_infos(),
+        "workspaces": workspaces,
+        "contentStatuses": ["full", "partial", "index_only", "error"],
+        "offset": offset,
+        "limit": limit,
+        "total": total,
+        "hasMore": offset + limit < total,
+    })
+
+
+@app.route("/api/v2/sessions/<session_id>")
+def v2_session(session_id):
+    metadata = load_metadata()
+    visible = visible_session_infos(REGISTRY.discover(), metadata)
+    if session_id not in {item.get("id") for item in visible}:
+        return jsonify({"error": "not found"}), 404
+    try:
+        detail = REGISTRY.load(session_id)
+    except (OSError, UnicodeDecodeError, ValueError):
+        return jsonify({"error": "session parse failed", "code": "provider_parse_error"}), 422
+    if detail is None:
+        return jsonify({"error": "not found"}), 404
+    try:
+        offset = max(0, int(request.args.get("offset", 0)))
+        limit = min(max(int(request.args.get("limit", 50)), 1), 200)
+    except ValueError:
+        offset, limit = 0, 50
+    turns = detail.get("turns", [])
+    detail["turns"] = turns[offset:offset + limit]
+    detail["offset"] = offset
+    detail["limit"] = limit
+    detail["total"] = len(turns)
+    detail["hasMore"] = offset + limit < len(turns)
+    detail["session"] = public_session_info(
+        apply_viewer_metadata(detail["session"], metadata)
+    )
+    return jsonify(detail)
+
+
+@app.route("/api/v2/sessions/<session_id>", methods=["DELETE"])
+def v2_delete_session(session_id):
+    metadata = load_metadata()
+    denied = require_admin(metadata)
+    if denied:
+        return denied
+    discovered = {item.get("id"): item for item in REGISTRY.discover()}
+    session_item = discovered.get(session_id)
+    if session_item is None:
+        return jsonify({"error": "not found"}), 404
+    if not session_item.get("canDelete"):
+        return jsonify({
+            "error": "provider does not support per-session deletion",
+            "code": "delete_not_supported",
+        }), 409
+    try:
+        result = REGISTRY.delete(session_id)
+    except (OSError, ValueError) as exc:
+        return jsonify({
+            "error": "session could not be moved to trash",
+            "code": type(exc).__name__,
+        }), 409
+    if result is None:
+        return jsonify({"error": "not found"}), 404
+    return jsonify(result)
+
+
+@app.route("/api/v2/sessions/<session_id>/metadata", methods=["PATCH"])
+def v2_session_metadata(session_id):
+    metadata = load_metadata()
+    denied = require_admin(metadata)
+    if denied:
+        return denied
+    discovered = {item.get("id"): item for item in REGISTRY.discover()}
+    session_item = discovered.get(session_id)
+    if session_item is None:
+        return jsonify({"error": "not found"}), 404
+    data = request.get_json(silent=True) or {}
+    allowed = {"name", "tags", "category", "pinned", "archived"}
+    unknown = set(data) - allowed
+    if unknown:
+        return jsonify({"error": "unsupported fields", "fields": sorted(unknown)}), 400
+    entry = metadata.setdefault(session_id, {})
+    if "name" in data:
+        value = str(data.get("name", "")).strip()
+        if value:
+            entry["name"] = value
+        else:
+            entry.pop("name", None)
+    if "tags" in data:
+        values = data.get("tags") if isinstance(data.get("tags"), list) else []
+        entry["tags"] = list(dict.fromkeys(
+            str(value).strip() for value in values if str(value).strip()
+        ))
+    if "category" in data:
+        category = str(data.get("category", "")).strip()
+        if category:
+            entry["category"] = category
+            categories = metadata_categories(metadata)
+            if category not in categories:
+                metadata["_categories"] = categories + [category]
+        else:
+            entry.pop("category", None)
+    for field in ("pinned", "archived"):
+        if field in data:
+            entry[field] = bool(data[field])
+    save_metadata(metadata)
+    return jsonify(public_session_info(apply_viewer_metadata(session_item, metadata)))
+
+
+@app.route("/api/v2/search")
+def v2_search():
+    query = request.args.get("q", "").strip().lower()
+    if not query:
+        return jsonify([])
+    metadata = load_metadata()
+    sessions = [apply_viewer_metadata(item, metadata) for item in REGISTRY.discover()]
+    sessions = visible_session_infos(sessions, metadata)
+    results = []
+    for info in sessions:
+        if info.get("archived") and request.args.get("archived") != "1":
+            continue
+        summary_fields = [
+            ("title", info.get("name", "")),
+            ("provider", info.get("providerLabel", info.get("provider", ""))),
+            ("workspace", info.get("workspace", "")),
+            ("tag", " ".join(info.get("tags", []))),
+            ("category", info.get("category", "")),
+        ]
+        matched = None
+        for label, value in summary_fields:
+            text = str(value or "")
+            if query in text.lower():
+                matched = (label, text, None)
+                break
+        if matched is None and info.get("has_transcript"):
+            try:
+                detail = REGISTRY.load(info["id"])
+            except (OSError, UnicodeDecodeError, ValueError):
+                detail = None
+            for turn in (detail or {}).get("turns", []):
+                for label, value in (
+                    ("user", turn.get("user", "")),
+                    ("assistant", turn.get("assistant", "")),
+                    ("reasoning", turn.get("reasoning", "")),
+                ):
+                    text = str(value or "")
+                    if query in text.lower():
+                        matched = (label, text, turn.get("index"))
+                        break
+                if matched:
+                    break
+        if not matched:
+            continue
+        label, text, turn_index = matched
+        position = text.lower().find(query)
+        start = max(0, position - 90)
+        end = min(len(text), position + len(query) + 140)
+        results.append({
+            **public_session_info(info),
+            "matchType": label,
+            "snippet": " ".join(text[start:end].split()),
+            "turnIndex": turn_index,
+        })
+        if len(results) >= 50:
+            break
+    return jsonify(results)
+
+
+@app.route("/api/v2/export/<session_id>")
+def v2_export(session_id):
+    export_format = request.args.get("format", "markdown").strip().lower()
+    if export_format not in ("markdown", "json"):
+        return jsonify({"error": "unsupported format"}), 400
+    metadata = load_metadata()
+    visible = visible_session_infos(REGISTRY.discover(), metadata)
+    if session_id not in {item.get("id") for item in visible}:
+        return jsonify({"error": "not found"}), 404
+    try:
+        detail = REGISTRY.load(session_id)
+    except (OSError, UnicodeDecodeError, ValueError):
+        detail = None
+    if detail is None:
+        return jsonify({"error": "not found"}), 404
+    detail = dict(detail)
+    session_data = public_session_info(
+        apply_viewer_metadata(detail.get("session", {}), metadata)
+    )
+    detail["session"] = session_data
+    if export_format == "json":
+        response = jsonify(detail)
+        response.headers["Content-Disposition"] = "attachment; filename=session.json"
+        return response
+    lines = [
+        f"# {session_data.get('name') or session_data.get('title') or 'Session'}",
+        "",
+        f"- Provider: {session_data.get('providerLabel') or session_data.get('provider')}",
+        f"- Workspace: {session_data.get('workspace') or ''}",
+        f"- Status: {session_data.get('content_status') or session_data.get('contentStatus')}",
+        "",
+    ]
+    turns = detail.get("turns", [])
+    if not turns:
+        lines.extend(["_Transcript not available._", ""])
+    for index, turn in enumerate(turns, start=1):
+        lines.extend([f"## Interaction {index}", ""])
+        if turn.get("user"):
+            lines.extend(["### User", "", str(turn["user"]), ""])
+        if turn.get("assistant"):
+            lines.extend(["### Assistant", "", str(turn["assistant"]), ""])
+        if turn.get("reasoning"):
+            lines.extend([
+                "<details><summary>Reasoning and tools</summary>", "",
+                str(turn["reasoning"]), "", "</details>", "",
+            ])
+    return Response(
+        "\n".join(lines),
+        content_type="text/markdown; charset=utf-8",
+        headers={"Content-Disposition": "attachment; filename=session.md"},
+    )
 
 
 @app.route("/api/categories", methods=["POST", "PATCH", "DELETE"])
@@ -562,7 +900,8 @@ def access():
     if request.method == "GET":
         public = set(config["publicSessions"])
         sessions_public = [
-            item for item in all_session_infos(metadata)
+            public_session_info(apply_viewer_metadata(item, metadata))
+            for item in REGISTRY.discover()
             if item.get("path") in public
         ]
         return jsonify({
@@ -587,13 +926,21 @@ def access():
         return jsonify({"token": secrets.token_urlsafe(24)})
     if "publicSessions" in data:
         paths = data.get("publicSessions") or []
-        existing = {str(p.relative_to(BASE)) for p in BASE.rglob("*.jsonl")}
+        discovered = REGISTRY.discover()
+        existing = {
+            value for item in discovered for value in (item.get("path"), item.get("id"))
+            if value
+        }
         next_config["publicSessions"] = [
             str(path) for path in paths
             if str(path) in existing
         ]
     if "tokens" in data:
-        existing = {str(p.relative_to(BASE)) for p in BASE.rglob("*.jsonl")}
+        discovered = REGISTRY.discover()
+        existing = {
+            value for item in discovered for value in (item.get("path"), item.get("id"))
+            if value
+        }
         tokens = []
         for item in data.get("tokens") or []:
             if not isinstance(item, dict):
@@ -680,5 +1027,4 @@ def session(sp):
         },
     })
 if __name__=="__main__":
-    # app.run(port=8080)  # 等价于 app.run(host="127.0.0.1", port=8080)
-    app.run(host="0.0.0.0", port=9001)
+    app.run(host=args.host, port=args.port)

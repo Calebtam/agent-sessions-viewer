@@ -97,7 +97,7 @@ v0.0.3 基于 v0.0.2 继续增强，重点完善会话分类、详情页阅读�
    默认访问地址：
 
    ```text
-   http://127.0.0.1:9000/
+   http://127.0.0.1:9001/
    ```
 
 3. 指定其他 session 目录
@@ -112,13 +112,13 @@ v0.0.3 基于 v0.0.2 继续增强，重点完善会话分类、详情页阅读�
 本机打开管理员页面：
 
 ```text
-http://127.0.0.1:9000/admin
+http://127.0.0.1:9001/admin
 ```
 
 远程管理员访问需要 admin token：
 
 ```text
-http://<server-ip>:9000/admin?token=<admin-token>
+http://<server-ip>:9001/admin?token=<admin-token>
 ```
 
 权限模型：
@@ -126,6 +126,18 @@ http://<server-ip>:9000/admin?token=<admin-token>
 - `Guest`：控制无 token 远程访客可见的 session。
 - `Viewer token`：远程只读访问指定 session 集合。
 - `Admin token`：可远程进入 `/admin` 并管理访问配置。
+
+管理员会话列表提供 `Delete` 操作。为避免误删，它不会永久清除源数据：
+
+- Codex：把选中的 JSONL 文件移动到会话根目录下的
+  `.agent-sessions-viewer-trash/<批次>/`。
+- Copilot CLI：把包含 `events.jsonl` 和 `workspace.yaml` 的整个会话目录移动到
+  `session-state/.agent-sessions-viewer-trash/<批次>/`。
+- VS Code Chat：多个会话共用 `state.vscdb`，不支持单会话删除，界面显示
+  `Shared index`。
+
+删除操作只允许本机管理员或 admin token，执行前需要二次确认。回收站不会被 Provider
+再次扫描；如需恢复，可在服务停止后把对应文件或目录移回原位置。
 
 如果远程限制关闭，远程访客可以看到所有未归档 session。如果远程限制开启，远程可见范围由 Guest 或当前 token 决定。
 
@@ -153,16 +165,71 @@ agent-sessions-viewer/session_metadata.json
 运行 parser 测试：
 
 ```bash
-python3 -m unittest tests/test_parser.py
+python3 -m unittest discover -s tests -v
 ```
 
 检查后端文件语法：
 
 ```bash
-python3 -m py_compile agent-sessions-viewer/backend/app.py agent-sessions-viewer/backend/parser.py
+python3 -m py_compile backend/app.py backend/parser.py backend/discovery.py
+```
+
+## VS Code 诊断（P1）
+
+以下仅管理员可访问的接口会以只读方式扫描 VS Code 工作区数据库。它只返回
+工作区 ID、工作区位置、相关 Key 名称、Value 类型和字节数，不返回 Value
+原文或聊天内容。
+
+```text
+GET http://127.0.0.1:9001/api/v2/diagnostics
+```
+
+如需检查其他 VS Code 用户数据目录：
+
+```bash
+python3 backend/app.py --vscode_user_dir /path/to/Code/User
+```
+
+服务默认只监听本机。只有在确实需要网络访问并复核访问控制配置后，才显式传入
+`--host 0.0.0.0`。
+
+## 多来源索引视图（P2）
+
+主页现在会合并展示 Codex 正文会话与经过真实格式验证的 VS Code Chat 索引。
+可以按来源、工作区和正文状态筛选。VS Code 条目会明确标记为 `index only`；
+打开后会说明尚未定位聊天正文，不会生成虚构消息。
+
+会话卡片、左侧列表和详情标题会明确显示 `CODEX`、`VS CODE` 或
+`COPILOT CLI` 来源。主页还提供两个独立且会自动保存的显示选项：
+
+- 隐藏所有 VS Code `index only` 会话。
+- 只隐藏标题精确为 `New chat` 的 VS Code 占位会话。
+
+两个选项默认关闭；同时开启时，以范围更大的 `index only` 过滤为准。
+
+```text
+GET /api/v2/sessions
+GET /api/v2/sessions?provider=vscode-chat&content_status=index_only
+GET /api/v2/sessions/<stable-id>
+```
+
+## Codex 与 Copilot CLI 双 Provider
+
+当前版本可同时读取 Codex JSONL 和 Copilot CLI 的
+`~/.copilot/session-state/*/events.jsonl`。Copilot CLI 使用经过本机真实数据验证的
+`interactionId → turnId → toolCallId` 关联规则，支持用户消息、助手回复、推理、
+工具执行、附件摘要、跨来源搜索和 Markdown/JSON 导出。
+
+```bash
+python3 scripts/copilot_cli_format_inventory.py
+python3 scripts/verify_dual_providers.py
 ```
 
 ## 说明
 
 - Session 文件需要是配置目录下的 JSONL 文件。
 - Flask 服务定位为轻量本地工具。如果需要暴露到网络，请开启远程限制，并谨慎配置 admin/viewer token。
+- P0–P2 的命令、调查过程、安全规则和复用脚本集中记录在
+  [`docs/p0-p2-playbook.zh-CN.md`](docs/p0-p2-playbook.zh-CN.md)。
+- 最新的总体改造设计和工程实施计划见
+  [`docs/README.zh-CN.md`](docs/README.zh-CN.md)。

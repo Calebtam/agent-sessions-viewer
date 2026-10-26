@@ -51,6 +51,8 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .home-control-row.tools #newCategory{margin-left:6px}
 .home-controls button.active{border-color:var(--accent);color:var(--accent)}
 .filter-select{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:12px;max-width:220px}
+.filter-toggle{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;cursor:pointer;white-space:nowrap}.filter-toggle input{accent-color:var(--accent)}
+.access-item{grid-template-columns:auto 1fr auto}.session-delete{font-size:12px;padding:5px 8px;color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,var(--line))}.session-delete:disabled{color:var(--faint);cursor:not-allowed}
 .side-filter{padding:8px 10px;border-bottom:1px solid var(--line)}.side-filter select{width:100%}
 .access-cta{border-color:color-mix(in srgb,var(--accent) 60%,var(--line));background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
 #adminBtn{display:none}
@@ -59,7 +61,7 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);cursor:pointer;min-height:210px;display:flex;flex-direction:column}
 .card:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));transform:translateY(-1px)}
-.card-head{display:flex;gap:10px;align-items:flex-start}.badge{font-size:12px;color:#062b22;background:linear-gradient(135deg,#7ee7c8,#8ed8ff);padding:4px 8px;border-radius:999px;font-weight:800}
+.card-head{display:flex;gap:10px;align-items:flex-start}.badge{font-size:11px;color:#062b22;background:linear-gradient(135deg,#7ee7c8,#8ed8ff);padding:4px 8px;border-radius:999px;font-weight:800;white-space:nowrap}.badge.provider-vscode-chat{color:#103a68;background:#cfe4ff}.badge.provider-copilot-cli{color:#433406;background:#f7e7a0}.badge.provider-codex{color:#075244;background:#b9f3e2}
 .card-title{font-weight:800;line-height:1.3;overflow-wrap:anywhere}.file-name{margin-top:5px;color:var(--faint);font-size:12px;overflow-wrap:anywhere}
 .preview{margin:14px 0 0;padding:0;list-style:none;color:var(--muted);font-size:13px}.preview li{margin:8px 0;padding-left:12px;border-left:2px solid color-mix(in srgb,var(--accent) 45%,var(--line));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:12px}
@@ -198,6 +200,13 @@ let homeDateFilter=localStorage.getItem('homeDateFilter')||'';
 let sideDateFilter=localStorage.getItem('sideDateFilter')||'';
 let homeTagFilter=localStorage.getItem('homeTagFilter')||'';
 let sideTagFilter=localStorage.getItem('sideTagFilter')||'';
+let providerFilter=localStorage.getItem('providerFilter')||'';
+let workspaceFilter=localStorage.getItem('workspaceFilter')||'';
+let statusFilter=localStorage.getItem('statusFilter')||'';
+let hideVscodeIndexOnly=localStorage.getItem('hideVscodeIndexOnly')==='1';
+let hideVscodeNewChat=localStorage.getItem('hideVscodeNewChat')==='1';
+let providerOptions=[];
+let workspaceOptions=[];
 let layoutMode=localStorage.getItem('detailLayoutMode')||'two';
 const urlToken=new URLSearchParams(location.search).get('token')||'';
 let accessToken=urlToken||sessionStorage.getItem('accessToken')||'';
@@ -246,6 +255,10 @@ function tagOptionsHtml(items,selected='',allLabel='All tags'){
   return `<option value="">${allLabel} (${items.length})</option>`+keys.map(key=>`<option value="${escapeHtml(key)}"${selected===key?' selected':''}>${escapeHtml(key)} (${counts[key]})</option>`).join('');
 }
 function tagsOf(item){return Array.isArray(item.tags)?item.tags:[];}
+function providerBadgeLabel(item){return item.provider==='vscode-chat'?'VS CODE':item.provider==='copilot-cli'?'COPILOT CLI':item.provider==='codex'?'CODEX':String(item.providerLabel||item.provider||'UNKNOWN').toUpperCase();}
+function isVscodeNewChat(item){return item.provider==='vscode-chat'&&(item.isNewChat===true||String(item.title||item.name||'').trim().toLowerCase()==='new chat');}
+function sourceFilteredSessions(){return sessions.filter(s=>(!providerFilter||s.provider===providerFilter)&&(!workspaceFilter||s.workspace===workspaceFilter)&&(!statusFilter||s.contentStatus===statusFilter)&&!(hideVscodeIndexOnly&&s.provider==='vscode-chat'&&s.contentStatus==='index_only')&&!(hideVscodeNewChat&&isVscodeNewChat(s)));}
+function selectOptions(items,selected,allLabel,labelFn=x=>x){return `<option value="">${escapeHtml(allLabel)}</option>`+items.map(item=>`<option value="${escapeHtml(item)}"${selected===item?' selected':''}>${escapeHtml(labelFn(item))}</option>`).join('');}
 function activeSession(){return sessions.find(s=>s.path===activePath);}
 function formatTurnTime(value){
   if(!value)return '';
@@ -299,10 +312,12 @@ function placeLayoutSwitch(){
 }
 
 async function loadList(opts={}){
-  const r=await apiFetch('/api/sessions');
+  const r=await apiFetch('/api/v2/sessions');
   const data=await r.json();
   sessions=Array.isArray(data)?data:data.sessions;
   categories=[...new Set(Array.isArray(data)?[]:(data.categories||[]))].sort((a,b)=>a.localeCompare(b));
+  providerOptions=(data.providers||[]);
+  workspaceOptions=(data.workspaces||[]);
   await refreshAccessState();
   renderList();
   if(opts.renderHome!==false)renderHome();
@@ -325,8 +340,9 @@ function renderList(){
     btn.onclick=()=>{sideGroupMode=btn.dataset.mode;localStorage.setItem('sideGroupMode',sideGroupMode);renderList();};
   });
   sb.appendChild(controls);
-  const normal=sessions.filter(s=>s.sessionType!=='subagent');
-  const subagents=sessions.filter(s=>s.sessionType==='subagent');
+  const filtered=sourceFilteredSessions();
+  const normal=filtered.filter(s=>s.sessionType!=='subagent');
+  const subagents=filtered.filter(s=>s.sessionType==='subagent');
   let visibleNormal=normal;
   if(sideGroupMode==='date'){
     const filter=document.createElement('div');
@@ -380,7 +396,7 @@ function sideSessionItem(s,isSubagent,depth=0){
   const e=document.createElement('div');e.className='side-item'+(isSubagent?' subagent'+level:'')+(s.path===activePath?' active':'');
   const label=document.createElement('div');label.innerHTML='<div class="side-title"></div><div class="side-sub"></div>';
   label.querySelector('.side-title').textContent=(isSubagent?'↳ ':'')+s.name;
-  label.querySelector('.side-sub').textContent=isSubagent?`Subagent of ${s.parentName||s.mainAgentName||'unknown'}`:s.originalName;
+  label.querySelector('.side-sub').textContent=`${providerBadgeLabel(s)} · ${isSubagent?`Subagent of ${s.parentName||s.mainAgentName||'unknown'}`:s.originalName}`;
   e.onclick=()=>loadSession(s.path);
   e.appendChild(label);
   return e;
@@ -393,14 +409,30 @@ function renderHome(){
   updateTopActions();
   document.getElementById('topTitle').textContent='Session Overview';
   const view=document.getElementById('view');
-  let homeItems=sessions;
-  if(homeGroupMode==='date'&&homeDateFilter)homeItems=sessions.filter(s=>dateKey(s)===homeDateFilter);
-  if(homeGroupMode==='category'&&homeCategoryFilter)homeItems=sessions.filter(s=>categoryKey(s)===homeCategoryFilter);
-  if(homeGroupMode==='tag'&&homeTagFilter)homeItems=sessions.filter(s=>homeTagFilter==='Untagged'?!tagsOf(s).length:tagsOf(s).includes(homeTagFilter));
+  const filtered=sourceFilteredSessions();
+  let homeItems=filtered;
+  if(homeGroupMode==='date'&&homeDateFilter)homeItems=filtered.filter(s=>dateKey(s)===homeDateFilter);
+  if(homeGroupMode==='category'&&homeCategoryFilter)homeItems=filtered.filter(s=>categoryKey(s)===homeCategoryFilter);
+  if(homeGroupMode==='tag'&&homeTagFilter)homeItems=filtered.filter(s=>homeTagFilter==='Untagged'?!tagsOf(s).length:tagsOf(s).includes(homeTagFilter));
   const grouped=homeGroupMode==='category'?groupByCategory(homeItems):homeGroupMode==='tag'?groupByTag(homeItems):groupByDate(homeItems);
   const dates=Object.keys(grouped).sort().reverse();
   const total=sessions.length;
-  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse conversations by date, category, or tag, inspect filenames, and jump into detailed ChatGPT-style views.</p><div class="home-controls"><div class="home-control-row"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="groupTag">By tag</button></div><div id="homeToolsRow" class="home-control-row tools"><span id="homeFilterSlot"></span><button id="newCategory">New category</button></div></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
+  view.innerHTML='<div class="home"><section class="hero"><div><h1>Session Overview</h1><p>Browse Codex, Copilot CLI and VS Code Chat sessions. Every session is marked with its source.</p><div class="home-controls"><div class="home-control-row"><button id="groupDate">By date</button><button id="groupCategory">By category</button><button id="groupTag">By tag</button></div><div id="sourceToolsRow" class="home-control-row tools"><select id="providerFilter" class="filter-select"></select><select id="workspaceFilter" class="filter-select"></select><select id="statusFilter" class="filter-select"></select></div><div class="home-control-row tools"><label class="filter-toggle"><input id="hideVscodeIndexOnly" type="checkbox"> Hide VS Code index only</label><label class="filter-toggle"><input id="hideVscodeNewChat" type="checkbox"> Hide VS Code New chat</label></div><div id="homeToolsRow" class="home-control-row tools"><span id="homeFilterSlot"></span><button id="newCategory">New category</button></div></div></div><div class="stats"></div></section><div id="homeGroups"></div></div>';
+  const providerSelect=document.getElementById('providerFilter');
+  providerSelect.innerHTML='<option value="">All sources</option>'+providerOptions.map(p=>`<option value="${escapeHtml(p.id)}"${providerFilter===p.id?' selected':''}>${escapeHtml(p.label)}</option>`).join('');
+  providerSelect.onchange=ev=>{providerFilter=ev.target.value;localStorage.setItem('providerFilter',providerFilter);renderHome();};
+  const workspaceSelect=document.getElementById('workspaceFilter');
+  workspaceSelect.innerHTML=selectOptions(workspaceOptions,workspaceFilter,'All workspaces');
+  workspaceSelect.onchange=ev=>{workspaceFilter=ev.target.value;localStorage.setItem('workspaceFilter',workspaceFilter);renderHome();};
+  const statusSelect=document.getElementById('statusFilter');
+  statusSelect.innerHTML=selectOptions(['full','partial','index_only','error'],statusFilter,'All content states',x=>x.replace('_',' '));
+  statusSelect.onchange=ev=>{statusFilter=ev.target.value;localStorage.setItem('statusFilter',statusFilter);renderHome();};
+  const indexOnlyToggle=document.getElementById('hideVscodeIndexOnly');
+  indexOnlyToggle.checked=hideVscodeIndexOnly;
+  indexOnlyToggle.onchange=ev=>{hideVscodeIndexOnly=ev.target.checked;localStorage.setItem('hideVscodeIndexOnly',hideVscodeIndexOnly?'1':'0');renderHome();};
+  const newChatToggle=document.getElementById('hideVscodeNewChat');
+  newChatToggle.checked=hideVscodeNewChat;
+  newChatToggle.onchange=ev=>{hideVscodeNewChat=ev.target.checked;localStorage.setItem('hideVscodeNewChat',hideVscodeNewChat?'1':'0');renderHome();};
   document.getElementById('groupDate').classList.toggle('active',homeGroupMode==='date');
   document.getElementById('groupCategory').classList.toggle('active',homeGroupMode==='category');
   document.getElementById('groupTag').classList.toggle('active',homeGroupMode==='tag');
@@ -412,13 +444,13 @@ function renderHome(){
   document.getElementById('newCategory').style.display=homeGroupMode==='category'?'inline-flex':'none';
   const homeFilterSlot=document.getElementById('homeFilterSlot');
   if(homeGroupMode==='date'){
-    homeFilterSlot.innerHTML=`<select class="filter-select">${dateOptionsHtml(sessions,homeDateFilter)}</select>`;
+    homeFilterSlot.innerHTML=`<select class="filter-select">${dateOptionsHtml(filtered,homeDateFilter)}</select>`;
     homeFilterSlot.querySelector('select').onchange=(ev)=>{homeDateFilter=ev.target.value;localStorage.setItem('homeDateFilter',homeDateFilter);renderHome();};
   }else if(homeGroupMode==='category'){
-    homeFilterSlot.innerHTML=`<select class="filter-select">${categoryOptionsHtml(sessions,homeCategoryFilter)}</select>`;
+    homeFilterSlot.innerHTML=`<select class="filter-select">${categoryOptionsHtml(filtered,homeCategoryFilter)}</select>`;
     homeFilterSlot.querySelector('select').onchange=(ev)=>{homeCategoryFilter=ev.target.value;localStorage.setItem('homeCategoryFilter',homeCategoryFilter);renderHome();};
   }else if(homeGroupMode==='tag'){
-    homeFilterSlot.innerHTML=`<select class="filter-select">${tagOptionsHtml(sessions,homeTagFilter)}</select>`;
+    homeFilterSlot.innerHTML=`<select class="filter-select">${tagOptionsHtml(filtered,homeTagFilter)}</select>`;
     homeFilterSlot.querySelector('select').onchange=(ev)=>{homeTagFilter=ev.target.value;localStorage.setItem('homeTagFilter',homeTagFilter);renderHome();};
   }
   const pinned=sessions.filter(s=>s.pinned).length;
@@ -581,7 +613,7 @@ async function renderAccessPage(){
     visibleSessions.forEach(s=>{
       const row=document.createElement('label');
       row.className='access-item';
-      row.innerHTML='<input type="checkbox"><div><div class="access-item-title"></div><div class="access-item-meta"></div></div>';
+      row.innerHTML='<input type="checkbox"><div><div class="access-item-title"></div><div class="access-item-meta"></div></div><button type="button" class="session-delete"></button>';
       const input=row.querySelector('input');
       input.checked=publicSet.has(s.path);
       input.onchange=()=>{
@@ -592,7 +624,29 @@ async function renderAccessPage(){
         renderSubjects();
       };
       row.querySelector('.access-item-title').textContent=s.name;
-      row.querySelector('.access-item-meta').textContent=`${s.date||'unknown'} · ${s.category||'Uncategorized'} · ${s.originalName}.jsonl`;
+      row.querySelector('.access-item-meta').textContent=`${providerBadgeLabel(s)} · ${s.date||'unknown'} · ${s.category||'Uncategorized'} · ${s.originalName}`;
+      const deleteBtn=row.querySelector('.session-delete');
+      deleteBtn.textContent=s.canDelete?'Delete':'Shared index';
+      deleteBtn.disabled=!s.canDelete;
+      deleteBtn.title=s.canDelete?'Move this parsed session source to the recoverable trash':'VS Code sessions share one index database and cannot be deleted individually';
+      deleteBtn.onclick=async ev=>{
+        ev.preventDefault();ev.stopPropagation();
+        if(!s.canDelete)return;
+        const source=providerBadgeLabel(s);
+        if(!confirm(`Delete "${s.name}" from ${source}?\n\nThe source will be moved to a recoverable trash folder.`))return;
+        deleteBtn.disabled=true;deleteBtn.textContent='Deleting...';
+        const response=await apiFetch('/api/v2/sessions/'+encodeURIComponent(s.id),{method:'DELETE'});
+        if(!response.ok){
+          const error=await response.json().catch(()=>({}));
+          alert(error.error||'Delete failed');
+          deleteBtn.disabled=false;deleteBtn.textContent='Delete';
+          return;
+        }
+        sessions=sessions.filter(item=>item.id!==s.id);
+        guestPublicPaths=guestPublicPaths.filter(path=>path!==s.path&&path!==s.id);
+        tokens.forEach(token=>token.publicSessions=(token.publicSessions||[]).filter(path=>path!==s.path&&path!==s.id));
+        renderList();renderSubjects();renderEditor();renderPublicList();
+      };
       root.appendChild(row);
     });
     root.dataset.visiblePaths=JSON.stringify(visibleSessions.map(s=>s.path));
@@ -631,14 +685,19 @@ function sessionCard(s){
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
   const agentMeta=s.sessionType==='subagent'?`<div class="file-name">Subagent of ${escapeHtml(s.parentName||'unknown')} · Main ${escapeHtml(s.mainAgentName||s.parentName||'unknown')}</div>`:'';
   const options=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
-  card.innerHTML=`<div class="card-head"><span class="badge">${s.sessionType==='subagent'?'SUB':'019'}</span><div><div class="card-title"></div><div class="file-name"></div>${agentMeta}<div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||'<li>No preview question</li>'}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')}</span><span><select class="category-select">${options}</select><button class="rename tag-card">Tags</button><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename rename-card">Rename</button></span></div>`;
+  const badge=providerBadgeLabel(s)+(s.sessionType==='subagent'?' · SUB':'');
+  const sourceMeta=`${s.providerLabel||s.provider||'Unknown'} · ${(s.contentStatus||'unknown').replace('_',' ')}`;
+  const actions=s.readOnlyMetadata?'':`<select class="category-select">${options}</select><button class="rename tag-card">Tags</button><button class="rename pin">${s.pinned?'Unpin':'Pin'}</button><button class="rename rename-card">Rename</button>`;
+  card.innerHTML=`<div class="card-head"><span class="badge provider-${escapeHtml(s.provider||'unknown')}">${escapeHtml(badge)}</span><div><div class="card-title"></div><div class="file-name"></div>${agentMeta}<div class="tag-list">${tags}</div></div></div><ul class="preview">${preview||`<li>${s.contentStatus==='index_only'?'Index found; transcript not located':'No preview question'}</li>`}</ul><div class="card-foot"><span>${escapeHtml(s.date||'unknown')} · ${escapeHtml(sourceMeta)}</span><span>${actions}</span></div>`;
   card.querySelector('.card-title').textContent=s.name;
-  card.querySelector('.file-name').textContent=s.originalName+'.jsonl';
-  card.querySelector('.pin').onclick=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{pinned:!s.pinned});};
-  card.querySelector('.tag-card').onclick=(ev)=>{ev.stopPropagation();openTagEditor(s);};
-  card.querySelector('.rename-card').onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
-  card.querySelector('select').onclick=(ev)=>ev.stopPropagation();
-  card.querySelector('select').onchange=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{category:ev.target.value});};
+  card.querySelector('.file-name').textContent=s.provider==='codex'?s.originalName+'.jsonl':(s.workspace||s.originalName||'Unknown workspace');
+  if(!s.readOnlyMetadata){
+    card.querySelector('.pin').onclick=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{pinned:!s.pinned});};
+    card.querySelector('.tag-card').onclick=(ev)=>{ev.stopPropagation();openTagEditor(s);};
+    card.querySelector('.rename-card').onclick=(ev)=>{ev.stopPropagation();renameSession(s);};
+    card.querySelector('select').onclick=(ev)=>ev.stopPropagation();
+    card.querySelector('select').onchange=(ev)=>{ev.stopPropagation();patchSessionMeta(s,{category:ev.target.value});};
+  }
   return card;
 }
 
@@ -679,7 +738,7 @@ function renderSearchResults(items, loading=false){
     row.className='search-result';
     row.innerHTML='<div class="search-result-title"></div><div class="search-result-meta"></div><div class="search-snippet"></div>';
     row.querySelector('.search-result-title').textContent=item.name;
-    row.querySelector('.search-result-meta').textContent=`${item.date} · ${item.matchType} · ${item.originalName}.jsonl`;
+    row.querySelector('.search-result-meta').textContent=`${item.date} · ${item.providerLabel||item.provider} · ${item.matchType}`;
     row.querySelector('.search-snippet').textContent=item.snippet || '';
     row.onclick=()=>{closeSearch();loadSession(item.path,{turnIndex:item.turnIndex});};
     root.appendChild(row);
@@ -690,7 +749,7 @@ async function runSearch(query){
   const q=query.trim();
   if(!q){renderSearchResults([]);return;}
   renderSearchResults([],true);
-  const r=await apiFetch('/api/search?q='+encodeURIComponent(q));
+  const r=await apiFetch('/api/v2/search?q='+encodeURIComponent(q));
   const data=await r.json();
   renderSearchResults(data);
 }
@@ -772,7 +831,8 @@ async function copyResumeCommand(s){
 }
 
 async function patchSessionMeta(s,patch){
-  const r=await apiFetch('/api/session-meta/'+sessionUrl(s.path),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
+  const endpoint=s.provider==='codex'?'/api/session-meta/'+sessionUrl(s.path):'/api/v2/sessions/'+encodeURIComponent(s.id)+'/metadata';
+  const r=await apiFetch(endpoint,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
   if(!r.ok){alert('Update failed');return;}
   await loadList({renderHome:false});
   if(currentView==='detail'&&activePath===s.path)loadSession(s.path,{preserve:true});
@@ -828,14 +888,24 @@ function renderDetailNav(){
   const s=detailState.session||{};
   const tags=(s.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('');
   const categoryOptions=['',...categories].map(c=>`<option value="${escapeHtml(c)}"${(s.category||'')===c?' selected':''}>${escapeHtml(c||'Uncategorized')}</option>`).join('');
-  nav.innerHTML=`<div class="nav-section detail-session-head"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><div class="detail-session-controls"><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="renameBtn">Rename</button><button id="tagBtn">Tags</button><button id="copyResumeBtn">Copy resume</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline <span id="outlineProgress" class="outline-progress"></span></div><div id="outlineList" class="outline-list"></div></div>`;
+  nav.innerHTML=`<div class="nav-section detail-session-head"><div class="nav-title">Session</div><div class="side-title">${escapeHtml(s.name||'')}</div><div class="side-sub">${escapeHtml(s.cwd||s.originalName||'')}</div><div class="tag-list"><span class="tag">${escapeHtml(providerBadgeLabel(s))}</span><span class="tag">${escapeHtml((s.contentStatus||'unknown').replace('_',' '))}</span></div><div class="detail-session-controls"><select id="detailCategory" class="category-select">${categoryOptions}</select><div class="tag-list">${tags}</div><div class="session-actions"><button id="renameBtn">Rename</button><button id="tagBtn">Tags</button><button id="exportBtn">Export</button><button id="copyResumeBtn">Copy resume</button><button id="pinBtn">${s.pinned?'Unpin':'Pin'}</button><button id="archiveBtn">${s.archived?'Unarchive':'Archive'}</button></div></div></div><div class="nav-section"><div class="nav-title">Relations</div><div id="relatedList"></div><div class="session-actions"><button id="addRelationBtn">Add reference</button></div></div><div class="nav-section"><div class="nav-title">Outline <span id="outlineProgress" class="outline-progress"></span></div><div id="outlineList" class="outline-list"></div></div>`;
+  if(s.readOnlyMetadata){
+    nav.querySelector('.detail-session-controls').innerHTML='<div class="access-muted">Read-only source metadata</div>';
+    document.getElementById('addRelationBtn').style.display='none';
+  }else{
   document.getElementById('renameBtn').onclick=()=>renameSession(s);
   document.getElementById('tagBtn').onclick=()=>openTagEditor(s);
+  document.getElementById('exportBtn').onclick=()=>window.open(apiUrl('/api/v2/export/'+encodeURIComponent(s.id)+'?format=markdown'),'_blank');
   document.getElementById('copyResumeBtn').onclick=()=>copyResumeCommand(s);
   document.getElementById('pinBtn').onclick=()=>patchSessionMeta(s,{pinned:!s.pinned});
   document.getElementById('archiveBtn').onclick=()=>patchSessionMeta(s,{archived:!s.archived});
   document.getElementById('detailCategory').onchange=(ev)=>patchSessionMeta(s,{category:ev.target.value});
   document.getElementById('addRelationBtn').onclick=()=>openRelationPicker();
+  if(s.provider!=='codex'){
+    document.getElementById('copyResumeBtn').style.display='none';
+    document.getElementById('addRelationBtn').style.display='none';
+  }
+  }
   const related=document.getElementById('relatedList');
   const notSelf=(item)=>item&&item.path!==activePath;
   const cleanTree=(items)=>(items||[]).filter(notSelf).map(item=>({...item,children:cleanTree(item.children||[])}));
@@ -980,7 +1050,7 @@ async function loadSession(path,opts={}){
   if(!opts.append)activeOutlineIndex=null;
   applyLayout(layoutMode);
   updateTopActions();
-  const s=activeSession();document.getElementById('topTitle').textContent=s?s.name:'Session Detail';
+  const s=activeSession();document.getElementById('topTitle').textContent=s?`${providerBadgeLabel(s)} · ${s.name}`:'Session Detail';
   const view=document.getElementById('view');
   if(!opts.append){
     view.innerHTML='<div class="detail-shell"><aside id="detailNav" class="detail-nav"><div id="detailNavBody" class="detail-nav-body"></div><div id="detailFooter" class="panel-footer"><span>Detail</span></div></aside><div class="detail-main"><div id="chat" class="chat"></div></div></div>';
@@ -988,13 +1058,16 @@ async function loadSession(path,opts={}){
   try{
     const offset=opts.offset??0;
     const limit=opts.limit||detailState.limit||50;
-    const r=await apiFetch(`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`);const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
+    const selected=activeSession();
+    const endpoint=selected&&selected.provider!=='codex'?`/api/v2/sessions/${encodeURIComponent(selected.id)}?offset=${offset}&limit=${limit}`:`/api/session/${sessionUrl(path)}?offset=${offset}&limit=${limit}`;
+    const r=await apiFetch(endpoint);const d=await r.json();if(!r.ok)throw new Error(d.error||'load failed');
+    if(selected)d.session={...selected,...d.session,id:selected.id,provider:selected.provider,providerLabel:selected.providerLabel};
     detailState={path,session:d.session,turns:opts.append?[...detailState.turns,...d.turns]:d.turns,outline:d.outline,relations:d.relations,offset:d.offset,limit:d.limit,total:d.total,hasMore:d.hasMore};
-    document.getElementById('topTitle').textContent=d.session.name;
+    document.getElementById('topTitle').textContent=`${providerBadgeLabel(d.session)} · ${d.session.name}`;
     renderDetailNav();
     placeLayoutSwitch();
     const chat=document.getElementById('chat');
-    if(!detailState.turns.length){chat.innerHTML='<div class="empty">No visible messages</div>';return;}
+    if(!detailState.turns.length){chat.innerHTML='<div class="empty"></div>';chat.querySelector('.empty').textContent=d.notice||'No visible messages';return;}
     renderTurns(opts.append);
     syncOutline();
     if(opts.turnIndex!=null)jumpToTurn(opts.turnIndex);

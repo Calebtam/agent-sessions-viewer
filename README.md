@@ -97,7 +97,7 @@ v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column readin
    The server runs at:
 
    ```text
-   http://127.0.0.1:9000/
+   http://127.0.0.1:9001/
    ```
 
 3. Use a custom session directory
@@ -112,13 +112,13 @@ v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column readin
 Open the admin page locally:
 
 ```text
-http://127.0.0.1:9000/admin
+http://127.0.0.1:9001/admin
 ```
 
 Remote admin access uses an admin token:
 
 ```text
-http://<server-ip>:9000/admin?token=<admin-token>
+http://<server-ip>:9001/admin?token=<admin-token>
 ```
 
 Access model:
@@ -126,6 +126,14 @@ Access model:
 - `Guest`: controls what remote visitors can see without a token.
 - `Viewer token`: allows remote read-only access to a configured session set.
 - `Admin token`: allows remote access to `/admin` and access configuration.
+
+The admin session list provides a `Delete` action. It is recoverable rather than
+permanent: Codex JSONL files and complete Copilot CLI session directories are
+moved under `.agent-sessions-viewer-trash/<batch>/` inside their configured
+session roots. Providers do not scan that trash directory. VS Code Chat rows
+show `Shared index` because multiple sessions share one `state.vscdb` and cannot
+be deleted individually. Only local admins or admin tokens can perform this
+operation, and the UI requires confirmation.
 
 When remote restriction is disabled, remote visitors can see all non-archived sessions. When enabled, remote visibility is limited by Guest or the active token.
 
@@ -153,16 +161,68 @@ The original Codex `.jsonl` session files are never modified.
 Run parser tests:
 
 ```bash
-python3 -m unittest tests/test_parser.py
+python3 -m unittest discover -s tests -v
 ```
 
 Compile backend files:
 
 ```bash
-python3 -m py_compile agent-sessions-viewer/backend/app.py agent-sessions-viewer/backend/parser.py
+python3 -m py_compile backend/app.py backend/parser.py backend/discovery.py
+```
+
+## VS Code diagnostics (P1)
+
+The admin-only endpoint below scans VS Code workspace databases in read-only
+mode. It reports workspace IDs, workspace locations, relevant key names, value
+types and byte sizes, but never returns stored values or chat content.
+
+```text
+GET http://127.0.0.1:9001/api/v2/diagnostics
+```
+
+Use another VS Code user-data directory when needed:
+
+```bash
+python3 backend/app.py --vscode_user_dir /path/to/Code/User
+```
+
+The server binds to localhost by default. Explicitly pass `--host 0.0.0.0` only
+when network access is intended and access-control settings have been reviewed.
+
+## Multi-source index view (P2)
+
+The home page now combines Codex transcripts with verified VS Code Chat index
+entries. Filter by source, workspace, or content state. VS Code entries are
+clearly marked `index only`; opening one explains that its transcript has not
+yet been located.
+
+Session cards, sidebar rows, and detail titles explicitly identify their source
+as `CODEX`, `VS CODE`, or `COPILOT CLI`. Two independent, persisted display
+options can hide all VS Code `index only` sessions or only VS Code placeholder
+sessions whose title is exactly `New chat`. Both options are off by default.
+
+```text
+GET /api/v2/sessions
+GET /api/v2/sessions?provider=vscode-chat&content_status=index_only
+GET /api/v2/sessions/<stable-id>
+```
+
+## Codex and Copilot CLI providers
+
+The viewer can read both Codex JSONL sessions and Copilot CLI
+`~/.copilot/session-state/*/events.jsonl` sessions. The Copilot parser uses the
+verified `interactionId → turnId → toolCallId` relationship and supports
+messages, reasoning, tools, attachment summaries, cross-provider search, and
+Markdown/JSON export.
+
+```bash
+python3 scripts/copilot_cli_format_inventory.py
+python3 scripts/verify_dual_providers.py
 ```
 
 ## Notes
 
 - Session files are expected to be JSONL files under the configured session directory.
 - The Flask app is a lightweight local tool. If exposed to a network, enable remote restriction and use admin/viewer tokens deliberately.
+- P0-P2 commands, investigation history, safety rules, and reusable scripts are
+  documented in [`docs/p0-p2-playbook.md`](docs/p0-p2-playbook.md).
