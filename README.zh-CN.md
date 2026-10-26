@@ -4,7 +4,56 @@
 
 一个轻量级 Web 查看器，用于浏览、整理、搜索和受控分享 Codex Agent 生成的 JSONL 会话日志。
 
-## 版本 v0.0.3
+## 版本 v0.0.4
+
+v0.0.4 基于v0.0.3
+远程访问与会话管理能力继续迭代，新增多 Provider 解析、管理员安全删除、三级正文宽度、
+VS Code 索引过滤和双栏对比，并恢复默认局域网监听行为。
+
+### v0.0.4 主要更新
+
+- Agent Sessions Viewer 解析 VS Code / Copilot 会话
+  - 新增统一 Provider Registry 和稳定的 Provider 前缀 session ID。
+  - `CodexProvider` 继续解析 Codex JSONL 正文。
+  - `CopilotCLIProvider` 解析 `~/.copilot/session-state/*/events.jsonl`，支持消息、
+    reasoning、工具调用和附件摘要。
+  - `VSCodeChatProvider` 只读扫描 VS Code `state.vscdb`，当前明确标记为
+    `index_only`，不虚构未定位的聊天正文。
+  - 会话卡片、Sessions 侧栏和详情页显示 `CODEX`、`COPILOT CLI`、`VS CODE`
+    来源标识。
+
+- 管理员页面删除 Agent 会话
+  - Admin 拆分为 `Access Settings` 和 `Sessions Delete` 两个子页面。
+  - Codex JSONL 和 Copilot CLI 会话目录使用可恢复删除，移动到 Provider 根目录的
+    `.agent-sessions-viewer-trash/<批次>/`。
+  - VS Code 索引记录关联显示具体 session ID 和 workspace，但由于多个 session 共用
+    `state.vscdb`，不会与可删除会话混列，也不支持单条删除。
+  - 删除 API 仅允许本机管理员或 admin token，并进行 Provider 与路径边界校验。
+
+- 三级正文显示宽度
+  - 新增 `Narrow`、`Medium`、`Full` 三档正文宽度并保存到 `localStorage`。
+  - `Full` 填满 Sessions 与 Outline 之外的剩余空间，同时保留页面边距。
+  - 宽度按钮与 `1 column / 2 columns / 3 columns` 布局控件位于同一组。
+
+- VS Code 索引会话屏蔽选项
+  - 可以独立隐藏所有 VS Code `index_only` 会话。
+  - 可以只隐藏标题精确为 `New chat` 的 VS Code 占位会话。
+  - 两个选项默认关闭并持久化到浏览器本地设置。
+
+- Session 双栏对比
+  - 通过 Sessions 侧栏依次选择两个不同会话进入对比。
+  - 复用列布局控制 `1 vs 1`、`2 vs 2` 和 `1 + 2 vs 2` 显示方式。
+  - 两侧 Outline 始终跟随正文并高亮当前 turn。
+  - `Sync` 根据 turn 标题、用户内容和助手内容建立对应关系，连续同步正文进度与
+    Outline；`Exit` 返回普通模式。
+
+- 远程访问兼容性恢复
+  - 恢复 v0.0.3 的默认 `0.0.0.0:9001` 监听行为。
+  - 启动时 Flask 会打印本机回环地址和可用的局域网地址。
+  - `/admin?token=<admin-token>`、Guest、Viewer token 和 Admin token 权限模型保持兼容。
+  - 如需沿用 `9000` 端口，可使用 `python3 app.py --port 9000`。
+
+## 历史版本 v0.0.3
 
 v0.0.3 基于 v0.0.2 继续增强，重点完善会话分类、详情页阅读、subagent 关系建模、远程访问权限和大纲同步体验。
 
@@ -98,7 +147,20 @@ v0.0.3 基于 v0.0.2 继续增强，重点完善会话分类、详情页阅读�
 
    ```text
    http://127.0.0.1:9001/
+   http://<server-ip>:9001/
    ```
+
+   默认监听 `0.0.0.0:9001`。启动日志会列出 `127.0.0.1` 和当前可用的局域网地址。
+   如果需要兼容历史文档中的 9000 端口：
+
+   ```bash
+   python3 app.py --port 9000
+   ```
+
+   仅允许本机访问时使用 `python3 app.py --host 127.0.0.1`。
+
+   默认不信任客户端提供的 `X-Forwarded-For`。只有服务位于已正确配置的可信反向代理
+   后方时，才使用 `--trust_proxy`；否则远程管理员必须提供 admin token。
 
 3. 指定其他 session 目录
 
@@ -120,6 +182,9 @@ http://127.0.0.1:9001/admin
 ```text
 http://<server-ip>:9001/admin?token=<admin-token>
 ```
+
+使用 9000 端口启动时，对应地址为
+`http://<server-ip>:9000/admin?token=<admin-token>`。
 
 权限模型：
 
@@ -196,8 +261,9 @@ GET http://127.0.0.1:9001/api/v2/diagnostics
 python3 backend/app.py --vscode_user_dir /path/to/Code/User
 ```
 
-服务默认只监听本机。只有在确实需要网络访问并复核访问控制配置后，才显式传入
-`--host 0.0.0.0`。
+服务默认监听所有网络接口，以兼容 v0.0.3 的远程访问方式。启动前应复核 Guest、
+Viewer/Admin token、防火墙和可信网络配置。不需要远程访问时应显式传入
+`--host 127.0.0.1`。
 
 ## 多来源索引视图（P2）
 

@@ -30,8 +30,17 @@ parser.add_argument(
     default="~/.copilot/session-state",
     help="Copilot CLI session-state directory (read-only)",
 )
-parser.add_argument("--host", default="127.0.0.1", help="HTTP listen address")
+parser.add_argument(
+    "--host",
+    default="0.0.0.0",
+    help="HTTP listen address (default: all interfaces; use 127.0.0.1 for local-only)",
+)
 parser.add_argument("--port", default=9001, type=int, help="HTTP listen port")
+parser.add_argument(
+    "--trust_proxy", "--trust-proxy",
+    action="store_true",
+    help="Trust X-Forwarded-For from a configured reverse proxy",
+)
 
 args = parser.parse_args()
 
@@ -118,8 +127,9 @@ def access_config(metadata):
 
 
 def is_local_request():
-    remote = request.headers.get("X-Forwarded-For", request.remote_addr or "")
-    remote = remote.split(",", 1)[0].strip()
+    remote = request.remote_addr or ""
+    if args.trust_proxy:
+        remote = request.headers.get("X-Forwarded-For", remote).split(",", 1)[0].strip()
     return remote in ("127.0.0.1", "::1", "localhost")
 
 

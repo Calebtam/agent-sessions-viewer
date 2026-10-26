@@ -4,7 +4,55 @@ English | [中文](README.zh-CN.md)
 
 A lightweight web viewer for browsing, organizing, searching, and sharing Codex agent session logs stored as JSONL files.
 
-## Version v0.0.3
+## Version v0.0.4
+
+v0.0.4 builds on the v0.0.3 remote-access and session-management baseline from
+commit `de9af4d0fb736baf6f0cfcaaf17ba67e78776227`. It adds multi-provider parsing,
+recoverable admin deletion, three content widths, VS Code index filtering,
+side-by-side comparison, and restores default LAN listening.
+
+### v0.0.4 highlights
+
+- VS Code and Copilot session support
+  - Adds a unified Provider Registry and provider-prefixed stable session IDs.
+  - `CodexProvider` parses Codex JSONL transcripts.
+  - `CopilotCLIProvider` parses `~/.copilot/session-state/*/events.jsonl`, including
+    messages, reasoning, tool calls, and attachment summaries.
+  - `VSCodeChatProvider` reads VS Code `state.vscdb` in read-only mode. These entries
+    remain explicitly `index_only`; unavailable transcripts are never fabricated.
+  - Cards, the Sessions sidebar, and details identify `CODEX`, `COPILOT CLI`, and
+    `VS CODE` sources.
+
+- Admin session deletion
+  - Admin is split into `Access Settings` and `Sessions Delete` pages.
+  - Codex JSONL files and Copilot CLI session directories are moved to recoverable
+    `.agent-sessions-viewer-trash/<batch>/` locations.
+  - VS Code rows show their concrete session ID and workspace separately because
+    multiple sessions share `state.vscdb` and cannot be deleted independently.
+  - Deletion requires a local admin or admin token and validates provider/path boundaries.
+
+- Three content widths
+  - Adds persisted `Narrow`, `Medium`, and `Full` modes.
+  - `Full` fills the space outside Sessions and Outline while preserving page margins.
+  - Width and 1/2/3-column controls share one control group.
+
+- VS Code index filtering
+  - Independently hide all VS Code `index_only` entries or only exact `New chat`
+    placeholders. Both options are off by default and persist locally.
+
+- Side-by-side session comparison
+  - Select two different sessions from the Sessions sidebar.
+  - Reuses layout controls for `1 vs 1`, `2 vs 2`, and `1 + 2 vs 2` views.
+  - Each Outline follows and highlights its own content.
+  - `Sync` aligns continuous scrolling using turn titles, user content, and assistant
+    content; `Exit` returns to normal mode.
+
+- Remote-access compatibility
+  - Restores the v0.0.3 default `0.0.0.0:9001` listener and Flask LAN-address logs.
+  - Preserves `/admin?token=<admin-token>` and Guest/Viewer/Admin token behavior.
+  - Use `python3 app.py --port 9000` when port 9000 compatibility is required.
+
+## Previous version v0.0.3
 
 v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column reading, subagent relationship modeling, remote access control, and outline-aware reading.
 
@@ -98,7 +146,14 @@ v0.0.3 builds on v0.0.2 and focuses on session organization, multi-column readin
 
    ```text
    http://127.0.0.1:9001/
+   http://<server-ip>:9001/
    ```
+
+   The default listener is `0.0.0.0:9001`, so Flask logs both loopback and
+   available LAN addresses. Use `python3 app.py --port 9000` for legacy port
+   9000 URLs, or `python3 app.py --host 127.0.0.1` for local-only access.
+   Client-supplied `X-Forwarded-For` is ignored unless `--trust_proxy` is
+   explicitly enabled behind a correctly configured trusted reverse proxy.
 
 3. Use a custom session directory
 
@@ -120,6 +175,9 @@ Remote admin access uses an admin token:
 ```text
 http://<server-ip>:9001/admin?token=<admin-token>
 ```
+
+When started with `--port 9000`, use
+`http://<server-ip>:9000/admin?token=<admin-token>`.
 
 Access model:
 
@@ -186,8 +244,10 @@ Use another VS Code user-data directory when needed:
 python3 backend/app.py --vscode_user_dir /path/to/Code/User
 ```
 
-The server binds to localhost by default. Explicitly pass `--host 0.0.0.0` only
-when network access is intended and access-control settings have been reviewed.
+The server binds to all interfaces by default for v0.0.3 remote-access
+compatibility. Review Guest access, Viewer/Admin tokens, firewall rules, and the
+trusted network before starting it. Pass `--host 127.0.0.1` when remote access
+is not needed.
 
 ## Multi-source index view (P2)
 

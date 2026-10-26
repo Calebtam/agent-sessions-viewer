@@ -106,6 +106,42 @@ def main():
     finally:
         sys.argv = original_argv
     client = app.app.test_client()
+    listen_defaults_ok = app.args.host == "0.0.0.0" and app.args.port == 9001
+    original_load_metadata = app.load_metadata
+    auth_fixture = json.loads(json.dumps(original_load_metadata()))
+    auth_fixture["_access"] = {
+        "remoteEnabled": True,
+        "publicSessions": [],
+        "tokens": [{
+            "name": "Verification admin",
+            "token": "verification-admin-token",
+            "role": "admin",
+            "publicSessions": [],
+        }],
+    }
+    app.load_metadata = lambda: auth_fixture
+    try:
+        remote_admin_page = client.get(
+            "/admin?token=verification-admin-token",
+            environ_base={"REMOTE_ADDR": "10.0.0.2"},
+        )
+        remote_admin_access = client.get(
+            "/api/access?token=verification-admin-token",
+            environ_base={"REMOTE_ADDR": "10.0.0.2"},
+        )
+        spoofed_local = client.get(
+            "/api/access",
+            headers={"X-Forwarded-For": "127.0.0.1"},
+            environ_base={"REMOTE_ADDR": "10.0.0.2"},
+        )
+    finally:
+        app.load_metadata = original_load_metadata
+    remote_admin_compat_ok = (
+        remote_admin_page.status_code == 200
+        and remote_admin_access.status_code == 200
+        and bool((remote_admin_access.get_json() or {}).get("isAdmin"))
+        and not bool((spoofed_local.get_json() or {}).get("isAdmin"))
+    )
     response = client.get("/api/v2/sessions")
     body = response.get_json() or {}
     sessions = body.get("sessions", [])
@@ -181,6 +217,8 @@ def main():
     result = {
         "tests_ok": tests_ok,
         "compile_ok": compile_ok,
+        "listen_defaults_ok": listen_defaults_ok,
+        "remote_admin_compat_ok": remote_admin_compat_ok,
         "list_status": response.status_code,
         "list_is_sanitized": list_is_sanitized,
         "pagination_ok": pagination_ok,
@@ -212,6 +250,8 @@ def main():
     return 0 if (
         tests_ok
         and compile_ok
+        and listen_defaults_ok
+        and remote_admin_compat_ok
         and response.status_code == 200
         and list_is_sanitized
         and pagination_ok
