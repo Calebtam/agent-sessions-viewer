@@ -127,13 +127,13 @@ Access model:
 - `Viewer token`: allows remote read-only access to a configured session set.
 - `Admin token`: allows remote access to `/admin` and access configuration.
 
-The admin session list provides a `Delete` action. It is recoverable rather than
-permanent: Codex JSONL files and complete Copilot CLI session directories are
-moved under `.agent-sessions-viewer-trash/<batch>/` inside their configured
-session roots. Providers do not scan that trash directory. VS Code Chat rows
-show `Shared index` because multiple sessions share one `state.vscdb` and cannot
-be deleted individually. Only local admins or admin tokens can perform this
-operation, and the UI requires confirmation.
+The admin UI has separate `Access Settings` and `Sessions Delete` pages. The
+delete page lists recoverable Codex/Copilot CLI deletion on the left and VS Code
+shared-index records on the right. Each VS Code row is associated with its
+concrete session ID and workspace, but cannot be deleted independently because
+multiple sessions share `state.vscdb`. Codex JSONL files and complete Copilot
+CLI directories are moved under `.agent-sessions-viewer-trash/<batch>/`. Only
+local admins or admin tokens can delete, and the UI requires confirmation.
 
 When remote restriction is disabled, remote visitors can see all non-archived sessions. When enabled, remote visibility is limited by Guest or the active token.
 
@@ -214,6 +214,13 @@ The viewer can read both Codex JSONL sessions and Copilot CLI
 verified `interactionId → turnId → toolCallId` relationship and supports
 messages, reasoning, tools, attachment summaries, cross-provider search, and
 Markdown/JSON export.
+
+## Side-by-side session comparison
+
+Select `Compare`, then choose two different sessions from the Sessions sidebar.
+The existing 1/2/3-column control switches between content-only comparison,
+two Outline+content pairs, and Sessions plus two Outline+content pairs. `Sync`
+aligns scrolling by turn/outline sequence, and `Exit` returns to normal mode.
 
 ```bash
 python3 scripts/copilot_cli_format_inventory.py

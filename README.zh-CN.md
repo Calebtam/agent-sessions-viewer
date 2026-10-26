@@ -127,14 +127,20 @@ http://<server-ip>:9001/admin?token=<admin-token>
 - `Viewer token`：远程只读访问指定 session 集合。
 - `Admin token`：可远程进入 `/admin` 并管理访问配置。
 
-管理员会话列表提供 `Delete` 操作。为避免误删，它不会永久清除源数据：
+管理员界面分为两个子页面：
+
+- `Access Settings`：远程访问、Guest、Viewer/Admin Token 和可见会话配置。
+- `Sessions Delete`：解析源删除与 VS Code 共享索引会话检查。
+
+`Sessions Delete` 左侧只列出支持 `Delete` 的 Codex/Copilot CLI 会话。为避免误删，
+它不会永久清除源数据：
 
 - Codex：把选中的 JSONL 文件移动到会话根目录下的
   `.agent-sessions-viewer-trash/<批次>/`。
 - Copilot CLI：把包含 `events.jsonl` 和 `workspace.yaml` 的整个会话目录移动到
   `session-state/.agent-sessions-viewer-trash/<批次>/`。
-- VS Code Chat：多个会话共用 `state.vscdb`，不支持单会话删除，界面显示
-  `Shared index`。
+- VS Code Chat：右侧独立列表会把索引记录关联到具体 session ID 和 workspace；由于多个
+  session 共用 `state.vscdb`，不支持单会话删除，也不会与可删除会话混在同一列表。
 
 删除操作只允许本机管理员或 admin token，执行前需要二次确认。回收站不会被 Provider
 再次扫描；如需恢复，可在服务停止后把对应文件或目录移回原位置。
@@ -219,6 +225,16 @@ GET /api/v2/sessions/<stable-id>
 `~/.copilot/session-state/*/events.jsonl`。Copilot CLI 使用经过本机真实数据验证的
 `interactionId → turnId → toolCallId` 关联规则，支持用户消息、助手回复、推理、
 工具执行、附件摘要、跨来源搜索和 Markdown/JSON 导出。
+
+## Session 双栏对比
+
+点击顶栏 `Compare`，然后从左侧 Sessions 列表依次选择两个不同会话。对比页面复用
+现有列布局和宽度控件：`1 column` 显示正文对正文，`2 columns` 显示两组
+Outline + 正文，`3 columns` 在此基础上保留 Sessions 侧栏。每侧 Outline 会始终
+跟随正文并高亮当前 turn；`Sync` 根据 turn 内容对应关系连续同步两侧正文和 Outline，
+`Exit` 退出对比模式。
+
+详细说明见 [`docs/Session双栏对比功能.md`](docs/Session双栏对比功能.md)。
 
 ```bash
 python3 scripts/copilot_cli_format_inventory.py

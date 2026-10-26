@@ -27,11 +27,13 @@ body.sidebar-collapsed .sidebar{width:0;min-width:0;overflow:hidden;border-right
 .side-item{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:transparent;border-radius:10px;padding:9px 8px;color:var(--muted);font-size:13px;line-height:1.35;cursor:pointer}
 .side-item>div{min-width:0;flex:1}
 .side-item:hover,.side-item.active{background:var(--hover);color:var(--text)}
+.side-item.compare-selected{box-shadow:inset 0 0 0 1px var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface2))}.compare-order{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#062b22;font-size:11px;font-weight:900;flex:none}
 .side-item.active{border-left:3px solid var(--accent);padding-left:9px;font-weight:650}
 .side-item+.side-item{margin-top:4px}
 .side-item.subagent{margin-left:18px;padding:7px 8px 7px 10px}.side-item.subagent .side-title{font-size:12px;color:var(--muted)}
 .side-item.subagent.level-2{margin-left:34px}.side-item.subagent.level-3{margin-left:50px}.side-item.subagent.level-deep{margin-left:66px}
 .side-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.side-title-row{display:flex;align-items:center;gap:8px;min-width:0}.provider-dot{width:8px;height:8px;border-radius:50%;background:#8b8b8b;box-shadow:0 0 0 2px color-mix(in srgb,#8b8b8b 20%,transparent);flex:none}.provider-dot.codex{background:#10a37f;box-shadow:0 0 0 2px color-mix(in srgb,#10a37f 22%,transparent)}.provider-dot.vscode-chat{background:#3b82f6;box-shadow:0 0 0 2px color-mix(in srgb,#3b82f6 22%,transparent)}.provider-dot.copilot-cli{background:#eab308;box-shadow:0 0 0 2px color-mix(in srgb,#eab308 22%,transparent)}
 .side-sub{margin-top:3px;color:var(--faint);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rename{font-size:12px;padding:5px 7px;background:transparent;flex:none}
 .content{flex:1;min-width:0;height:100%;overflow:auto;background:var(--bg)}
@@ -52,7 +54,8 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .home-controls button.active{border-color:var(--accent);color:var(--accent)}
 .filter-select{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:12px;max-width:220px}
 .filter-toggle{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;cursor:pointer;white-space:nowrap}.filter-toggle input{accent-color:var(--accent)}
-.access-item{grid-template-columns:auto 1fr auto}.session-delete{font-size:12px;padding:5px 8px;color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,var(--line))}.session-delete:disabled{color:var(--faint);cursor:not-allowed}
+.delete-list .access-item{grid-template-columns:1fr auto}.session-delete{font-size:12px;padding:5px 8px;color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,var(--line))}.session-delete:disabled{color:var(--faint);cursor:not-allowed}
+.admin-tabs{display:flex;gap:8px;margin:0 0 16px}.admin-tabs button.active{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--card))}.delete-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.delete-list{margin-top:12px;max-height:62vh;overflow:auto}.delete-list .access-item{border-bottom:1px solid var(--line);border-radius:0}.delete-list .access-item:last-child{border-bottom:0}.shared-session{padding:10px;border-bottom:1px solid var(--line)}.shared-session:last-child{border-bottom:0}.delete-empty{padding:18px 10px;color:var(--faint);font-size:13px}@media(max-width:900px){.delete-grid{grid-template-columns:1fr}}
 .side-filter{padding:8px 10px;border-bottom:1px solid var(--line)}.side-filter select{width:100%}
 .access-cta{border-color:color-mix(in srgb,var(--accent) 60%,var(--line));background:color-mix(in srgb,var(--accent) 12%,var(--card));font-weight:700}
 #adminBtn{display:none}
@@ -67,6 +70,13 @@ body.sidebar-collapsed:not(.layout-one):not(.layout-two):not(.layout-three) #sid
 .card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;color:var(--faint);font-size:12px}
 .category-select{max-width:140px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:12px;line-height:1.2}
 .chat{max-width:960px;margin:0 auto;padding:32px 24px 90px}
+/* FEATURE_ROLLBACK_ANCHOR: content-width-modes (remove these overrides and the matching JS gate to revert). */
+body[data-content-width="medium"] .chat{max-width:1240px}
+body[data-content-width="medium"] .bubble{max-width:min(1040px,94%)}
+body[data-content-width="medium"] details.think-box{max-width:1040px}
+body[data-content-width="full"] .chat{width:100%;max-width:none;margin:0;padding:32px 28px 90px}
+body[data-content-width="full"] .bubble{max-width:100%}
+body[data-content-width="full"] details.think-box{max-width:none}
 .detail-shell{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 58px)}
 .detail-nav{position:sticky;top:58px;height:calc(100vh - 58px);border-right:1px solid var(--line);background:var(--surface2);display:flex;flex-direction:column;min-height:0}
 .detail-nav-body{overflow:auto;padding:16px;flex:1;min-height:0;overscroll-behavior:contain}
@@ -119,6 +129,8 @@ summary:before{content:"";width:8px;height:8px;border-right:2px solid var(--blue
 .picker-list{overflow:auto;padding:8px}.picker-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border-radius:12px}.picker-row:hover{background:var(--hover)}.picker-title{font-weight:650}.picker-sub{color:var(--faint);font-size:12px;margin-top:3px}
 .layout-switch{display:flex;align-items:center;gap:8px}
 .layout-toggle{width:38px;height:30px;border-radius:9px;padding:0;display:flex;align-items:center;justify-content:center}
+.width-toggle{min-width:62px;height:30px;border-radius:9px;padding:0 9px;font-size:12px;font-weight:700}
+.compare-toggle.active,#compareBtn.active{border-color:var(--accent);color:var(--accent)}
 .layout-icon{width:22px;height:16px;border:1.5px solid var(--muted);border-radius:4px;display:flex;align-items:stretch;overflow:hidden}
 .layout-icon span{flex:1;border-left:1.5px solid var(--muted)}.layout-icon span:first-child{border-left:0}
 .layout-switch-label{font-size:12px;color:var(--faint)}
@@ -128,6 +140,7 @@ body.layout-two .sidebar{display:none}body.layout-two .detail-shell{grid-templat
 body.layout-three .sidebar{display:flex}body.layout-three .detail-shell{grid-template-columns:280px 1fr}
 body.layout-one #sideOpen,body.layout-two #sideOpen{display:inline-flex}
 body.layout-three #sideOpen{display:none}
+.compare-shell{height:calc(100vh - 58px);display:flex;flex-direction:column;min-height:0}.compare-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);flex:1;min-height:0}.compare-pane{display:grid;grid-template-columns:220px minmax(0,1fr);min-width:0;min-height:0;border-right:1px solid var(--line)}.compare-pane:last-child{border-right:0}.compare-outline{overflow:auto;background:var(--surface2);border-right:1px solid var(--line);padding:14px}.compare-outline-head{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line)}.compare-outline-title{font-size:13px;font-weight:750;overflow-wrap:anywhere}.compare-outline-meta{margin-top:4px;color:var(--faint);font-size:11px}.compare-content{height:100%;overflow:auto;min-width:0;overscroll-behavior:contain}.compare-chat{max-width:760px;margin:0 auto;padding:24px 24px 80px}.compare-turn{padding:12px 0 24px}.compare-turn+.compare-turn{border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}.compare-footer{flex:none}.compare-empty{padding:18vh 24px;text-align:center;color:var(--muted)}body[data-content-width="medium"] .compare-chat{max-width:1000px}body[data-content-width="full"] .compare-chat{width:100%;max-width:none;margin:0;padding-left:24px;padding-right:24px}body.layout-one .compare-pane{grid-template-columns:minmax(0,1fr)}body.layout-one .compare-outline{display:none}body.layout-two .compare-pane,body.layout-three .compare-pane{grid-template-columns:220px minmax(0,1fr)}
 @media(max-width:980px){.detail-shell{grid-template-columns:1fr}.detail-nav{position:relative;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line)}}
 @media(max-width:860px){.sidebar{position:absolute;z-index:9;height:100%;box-shadow:var(--shadow)}body.sidebar-collapsed .sidebar{transform:translateX(-100%);width:300px;min-width:300px}.hero{align-items:flex-start;flex-direction:column}.chat,.home{padding:20px 14px 64px}.bubble{max-width:94%}details.think-box{margin-left:0}.avatar{display:none}}
 </style>
@@ -145,6 +158,7 @@ body.layout-three #sideOpen{display:none}
       <div id="topTitle" class="top-title">Codex Session Viewer</div>
       <div class="top-spacer"></div>
       <button id="searchBtn" title="Search sessions">Search</button>
+      <button id="compareBtn" title="Select two sessions to compare">Compare</button>
       <button id="adminBtn" class="access-cta" title="Access settings">Admin</button>
       <button id="homeBtn" title="Home">Home</button>
       <button id="themeToggle" title="Toggle theme">Light</button>
@@ -189,6 +203,8 @@ let categories=[];
 let activePath='';
 let activeTagPath='';
 let currentView='home';
+let adminPage='access';
+let compareState={mode:'off',selected:[],details:[],syncScroll:false,syncing:false,alignment:null};
 let searchTimer=null;
 let detailState={path:'',session:null,turns:[],outline:[],relations:{masters:[],subagents:[],references:[],manual:[]},offset:0,limit:50,total:0,hasMore:false};
 let accessState={remoteEnabled:false,isAdmin:false,publicPaths:[]};
@@ -208,6 +224,12 @@ let hideVscodeNewChat=localStorage.getItem('hideVscodeNewChat')==='1';
 let providerOptions=[];
 let workspaceOptions=[];
 let layoutMode=localStorage.getItem('detailLayoutMode')||'two';
+// FEATURE_ROLLBACK_ANCHOR: provider-dots / content-width-modes.
+// Set either gate to false for an immediate rollback without removing implementation code.
+const FEATURE_PROVIDER_DOTS=true;
+const FEATURE_CONTENT_WIDTH_MODES=true;
+const CONTENT_WIDTH_MODES=['narrow','medium','full'];
+let contentWidthMode=CONTENT_WIDTH_MODES.includes(localStorage.getItem('contentWidthMode'))?localStorage.getItem('contentWidthMode'):'narrow';
 const urlToken=new URLSearchParams(location.search).get('token')||'';
 let accessToken=urlToken||sessionStorage.getItem('accessToken')||'';
 if(urlToken)sessionStorage.setItem('accessToken',urlToken);
@@ -269,14 +291,28 @@ function formatTurnTime(value){
 function updateTopActions(){
   document.getElementById('homeBtn').style.display=currentView==='home'?'none':'inline-flex';
   document.getElementById('adminBtn').style.display=accessState.isAdmin?'inline-flex':'none';
+  const compareBtn=document.getElementById('compareBtn');
+  compareBtn.textContent=compareState.mode==='off'?'Compare':'Exit compare';
+  compareBtn.classList.toggle('active',compareState.mode!=='off');
   placeLayoutSwitch();
+}
+function applyContentWidth(mode){
+  contentWidthMode=CONTENT_WIDTH_MODES.includes(mode)?mode:'narrow';
+  document.body.dataset.contentWidth=FEATURE_CONTENT_WIDTH_MODES?contentWidthMode:'narrow';
+  localStorage.setItem('contentWidthMode',contentWidthMode);
+  const btn=document.getElementById('contentWidthCycle');
+  if(btn)btn.textContent=contentWidthMode[0].toUpperCase()+contentWidthMode.slice(1);
+}
+function nextContentWidth(){
+  const index=CONTENT_WIDTH_MODES.indexOf(contentWidthMode);
+  applyContentWidth(CONTENT_WIDTH_MODES[(index+1)%CONTENT_WIDTH_MODES.length]);
 }
 function applyLayout(mode){
   layoutMode=mode;
   localStorage.setItem('detailLayoutMode',mode);
   document.body.classList.remove('layout-one','layout-two','layout-three');
   document.body.classList.remove('sidebar-collapsed');
-  if(currentView==='detail')document.body.classList.add('layout-'+mode);
+  if(currentView==='detail'||currentView==='compare')document.body.classList.add('layout-'+mode);
   placeLayoutSwitch();
 }
 function nextLayout(){
@@ -284,6 +320,9 @@ function nextLayout(){
   applyLayout(order[(order.indexOf(layoutMode)+1)%order.length]);
 }
 function layoutLabel(){
+  if(compareState.mode==='active'){
+    return layoutMode==='one'?'1 column · 1 vs 1':layoutMode==='two'?'2 columns · 2 vs 2':'3 columns · 1 + 2 vs 2';
+  }
   return layoutMode==='one'?'1 column':layoutMode==='two'?'2 columns':'3 columns';
 }
 function layoutIcon(){
@@ -291,24 +330,36 @@ function layoutIcon(){
   return `<span></span>`.repeat(count);
 }
 function layoutSwitchHtml(){
-  return `<div class="layout-switch"><span class="layout-switch-label">${layoutLabel()}</span><button id="layoutCycle" class="layout-toggle" title="Switch layout"><span class="layout-icon">${layoutIcon()}</span></button></div>`;
+  const width=contentWidthMode[0].toUpperCase()+contentWidthMode.slice(1);
+  const widthButton=FEATURE_CONTENT_WIDTH_MODES?`<button id="contentWidthCycle" class="width-toggle" data-feature="content-width-modes" title="Switch content width">${width}</button>`:'';
+  const compareButtons=compareState.mode==='active'?`<button id="syncCompareScroll" class="width-toggle compare-toggle${compareState.syncScroll?' active':''}" title="Synchronize by outline sequence">Sync</button><button id="exitCompare" class="width-toggle" title="Exit comparison">Exit</button>`:'';
+  return `<div class="layout-switch"><span class="layout-switch-label">${layoutLabel()}</span><button id="layoutCycle" class="layout-toggle" title="Switch layout"><span class="layout-icon">${layoutIcon()}</span></button>${widthButton}${compareButtons}</div>`;
 }
 function placeLayoutSwitch(){
   const floating=document.getElementById('floatingLayout');
   const sessionFooter=document.getElementById('sessionFooter');
   const detailFooter=document.getElementById('detailFooter');
+  const compareFooter=document.getElementById('compareFooter');
   if(floating)floating.innerHTML='';
   if(sessionFooter)sessionFooter.innerHTML='<span>Sessions</span>';
   if(detailFooter)detailFooter.innerHTML='<span>Detail</span>';
-  if(currentView!=='detail'){
+  if(compareFooter)compareFooter.innerHTML='<span>Compare</span>';
+  if(currentView!=='detail'&&currentView!=='compare'){
     if(floating)floating.style.display='none';
     return;
   }
   if(floating)floating.style.display=layoutMode==='one'?'block':'none';
-  const target=layoutMode==='three'&&sessionFooter?sessionFooter:(layoutMode==='two'&&detailFooter?detailFooter:floating);
+  const innerFooter=currentView==='compare'?compareFooter:detailFooter;
+  const target=layoutMode==='three'&&sessionFooter?sessionFooter:(layoutMode==='two'&&innerFooter?innerFooter:floating);
   if(target)target.innerHTML=layoutSwitchHtml();
   const btn=document.getElementById('layoutCycle');
   if(btn)btn.onclick=nextLayout;
+  const widthBtn=document.getElementById('contentWidthCycle');
+  if(widthBtn)widthBtn.onclick=nextContentWidth;
+  const syncBtn=document.getElementById('syncCompareScroll');
+  if(syncBtn)syncBtn.onclick=()=>setCompareSync(!compareState.syncScroll);
+  const exitBtn=document.getElementById('exitCompare');
+  if(exitBtn)exitBtn.onclick=exitCompareMode;
 }
 
 async function loadList(opts={}){
@@ -393,16 +444,249 @@ function renderList(){
 
 function sideSessionItem(s,isSubagent,depth=0){
   const level=isSubagent?(depth>=4?' level-deep':` level-${Math.max(1,depth)}`):'';
-  const e=document.createElement('div');e.className='side-item'+(isSubagent?' subagent'+level:'')+(s.path===activePath?' active':'');
-  const label=document.createElement('div');label.innerHTML='<div class="side-title"></div><div class="side-sub"></div>';
+  const compareIndex=compareState.selected.findIndex(item=>item.id===s.id);
+  const e=document.createElement('div');e.className='side-item'+(isSubagent?' subagent'+level:'')+(s.path===activePath?' active':'')+(compareIndex>=0?' compare-selected':'');
+  const label=document.createElement('div');label.innerHTML='<div class="side-title-row" data-feature="provider-dots"><span class="provider-dot"></span><div class="side-title"></div></div><div class="side-sub"></div>';
+  const dot=label.querySelector('.provider-dot');
+  dot.classList.add(s.provider||'unknown');
+  dot.title=s.providerLabel||providerBadgeLabel(s);
+  if(!FEATURE_PROVIDER_DOTS)dot.style.display='none';
   label.querySelector('.side-title').textContent=(isSubagent?'↳ ':'')+s.name;
   label.querySelector('.side-sub').textContent=`${providerBadgeLabel(s)} · ${isSubagent?`Subagent of ${s.parentName||s.mainAgentName||'unknown'}`:s.originalName}`;
-  e.onclick=()=>loadSession(s.path);
+  e.onclick=()=>compareState.mode==='selecting'?selectCompareSession(s):(compareState.mode==='active'?null:loadSession(s.path));
   e.appendChild(label);
+  if(compareIndex>=0){const order=document.createElement('span');order.className='compare-order';order.textContent=String(compareIndex+1);e.appendChild(order);}
   return e;
 }
 
+function startCompareMode(){
+  compareState={mode:'selecting',selected:[],details:[],syncScroll:false,syncing:false,alignment:null,returnPath:activePath};
+  currentView='compare-select';activePath='';
+  document.body.classList.remove('layout-one','layout-two','layout-three','sidebar-collapsed');
+  const view=document.getElementById('view');
+  view.innerHTML='<div class="empty"><h2>Compare sessions</h2><p>Select the first session from the Sessions sidebar, then select a different second session.</p></div>';
+  document.getElementById('topTitle').textContent='Compare · Select session 1 of 2';
+  renderList();updateTopActions();
+}
+
+function exitCompareMode(){
+  const returnPath=compareState.returnPath;
+  compareState={mode:'off',selected:[],details:[],syncScroll:false,syncing:false,alignment:null};
+  if(returnPath&&sessions.some(s=>s.path===returnPath))loadSession(returnPath);
+  else renderHome();
+}
+
+async function selectCompareSession(session){
+  if(compareState.selected.some(item=>item.id===session.id))return;
+  compareState.selected.push(session);
+  renderList();
+  if(compareState.selected.length===1){
+    document.getElementById('topTitle').textContent='Compare · Select session 2 of 2';
+    const view=document.getElementById('view');
+    view.innerHTML=`<div class="empty"><h2>First session selected</h2><p>${escapeHtml(session.name)} · ${escapeHtml(providerBadgeLabel(session))}</p><p>Select a different second session from the Sessions sidebar.</p></div>`;
+    return;
+  }
+  document.getElementById('topTitle').textContent='Compare · Loading';
+  try{
+    compareState.details=await Promise.all(compareState.selected.map(fetchCompleteSessionDetail));
+    compareState.mode='active';
+    renderCompareView();
+  }catch(error){
+    compareState.selected.pop();
+    renderList();
+    document.getElementById('topTitle').textContent='Compare · Select session 2 of 2';
+    alert(error.message||'Unable to load comparison session');
+  }
+}
+
+async function fetchCompleteSessionDetail(session){
+  const limit=200;
+  let offset=0;
+  let detail=null;
+  let turns=[];
+  do{
+    const endpoint=session.provider==='codex'
+      ?`/api/session/${sessionUrl(session.path)}?offset=${offset}&limit=${limit}`
+      :`/api/v2/sessions/${encodeURIComponent(session.id)}?offset=${offset}&limit=${limit}`;
+    const response=await apiFetch(endpoint);
+    const page=await response.json();
+    if(!response.ok)throw new Error(page.error||'Unable to load session');
+    if(!detail)detail=page;
+    turns.push(...(page.turns||[]));
+    offset+=page.turns?.length||0;
+    if(!page.hasMore||!page.turns?.length)break;
+  }while(offset<2000);
+  detail.turns=turns;
+  detail.session={...session,...detail.session,id:session.id,provider:session.provider,providerLabel:session.providerLabel};
+  detail.truncated=Number(detail.total||turns.length)>turns.length;
+  return detail;
+}
+
+function renderCompareView(){
+  currentView='compare';activePath='';
+  const [leftDetail,rightDetail]=compareState.details;
+  compareState.alignment=buildCompareAlignment(leftDetail.turns,rightDetail.turns);
+  document.getElementById('topTitle').textContent=`Compare · ${leftDetail.session.name} vs ${rightDetail.session.name}`;
+  const view=document.getElementById('view');
+  view.innerHTML='<div class="compare-shell"><div id="compareGrid" class="compare-grid"></div><div id="compareFooter" class="panel-footer compare-footer"><span>Compare</span></div></div>';
+  const grid=document.getElementById('compareGrid');
+  compareState.details.forEach((detail,paneIndex)=>grid.appendChild(buildComparePane(detail,paneIndex)));
+  applyLayout(layoutMode);updateTopActions();renderList();bindCompareScroll();
+  document.querySelectorAll('.compare-content').forEach(updateCompareOutlineFromContent);
+}
+
+function buildComparePane(detail,paneIndex){
+  const pane=document.createElement('section');pane.className='compare-pane';pane.dataset.pane=String(paneIndex);
+  const outline=document.createElement('aside');outline.className='compare-outline';
+  outline.innerHTML='<div class="compare-outline-head"><div class="compare-outline-title"></div><div class="compare-outline-meta"></div></div><div class="compare-outline-list"></div>';
+  outline.querySelector('.compare-outline-title').textContent=detail.session.name;
+  outline.querySelector('.compare-outline-meta').textContent=`${providerBadgeLabel(detail.session)} · ${detail.turns.length} turns${detail.truncated?' · first 2000':''}`;
+  const content=document.createElement('div');content.className='compare-content';content.dataset.pane=String(paneIndex);
+  const chat=document.createElement('div');chat.className='compare-chat';content.appendChild(chat);
+  if(!detail.turns.length){chat.innerHTML='<div class="compare-empty">No transcript content is available for this indexed session.</div>';}
+  detail.turns.forEach((turn,arrayIndex)=>{
+    const sequence=turn.index??arrayIndex;
+    const outlineButton=document.createElement('button');outlineButton.className='outline-item';outlineButton.dataset.sequence=String(sequence);
+    outlineButton.textContent=`${Number(sequence)+1}. ${turn.outlineTitle||turn.user||'Interaction'}`;
+    outlineButton.onclick=()=>{
+      const target=chat.querySelector(`.compare-turn[data-sequence="${sequence}"]`);
+      if(target)content.scrollTo({top:target.offsetTop-12,behavior:'smooth'});
+    };
+    outline.querySelector('.compare-outline-list').appendChild(outlineButton);
+    const turnRoot=document.createElement('section');turnRoot.className='compare-turn';turnRoot.dataset.sequence=String(sequence);
+    addUser(turnRoot,turn);addThinking(turnRoot,turn.reasoning);addAssistant(turnRoot,turn.assistant);chat.appendChild(turnRoot);
+  });
+  pane.appendChild(outline);pane.appendChild(content);return pane;
+}
+
+function normalizeCompareText(turn){
+  return [turn.outlineTitle,turn.user,turn.assistant]
+    .filter(Boolean).join(' ').normalize('NFKC').toLowerCase()
+    .replace(/\s+/g,' ').trim().slice(0,5000);
+}
+
+function compareTextTokens(text){
+  const tokens=new Set((text.match(/[\p{L}\p{N}_-]{2,}/gu)||[]).slice(0,400));
+  const han=(text.match(/[\p{Script=Han}]/gu)||[]).join('');
+  for(let index=0;index<Math.min(han.length-1,300);index++)tokens.add(han.slice(index,index+2));
+  return tokens;
+}
+
+function compareContentScore(left,right){
+  if(!left.text||!right.text)return 0;
+  if(left.text===right.text)return 1;
+  let intersection=0;
+  left.tokens.forEach(token=>{if(right.tokens.has(token))intersection++;});
+  const union=left.tokens.size+right.tokens.size-intersection;
+  const overlap=union?intersection/union:0;
+  const prefix=left.text.slice(0,120)===right.text.slice(0,120)?0.35:0;
+  return Math.min(1,overlap+prefix);
+}
+
+function buildCompareAlignment(leftTurns,rightTurns){
+  const describe=turns=>turns.map((turn,index)=>({
+    sequence:String(turn.index??index),
+    text:normalizeCompareText(turn),
+    tokens:null,
+  })).map(item=>({...item,tokens:compareTextTokens(item.text)}));
+  const left=describe(leftTurns),right=describe(rightTurns);
+  const align=(source,target)=>{
+    const mapping=new Map();
+    let cursor=0;
+    source.forEach((item,sourceIndex)=>{
+      if(!target.length)return;
+      const end=Math.min(target.length,cursor+80);
+      let bestIndex=-1,bestScore=0;
+      for(let index=cursor;index<end;index++){
+        const score=compareContentScore(item,target[index]);
+        if(score>bestScore){bestScore=score;bestIndex=index;}
+      }
+      if(bestIndex<0||bestScore<0.08)bestIndex=Math.min(Math.max(cursor,sourceIndex),target.length-1);
+      mapping.set(item.sequence,target[bestIndex].sequence);
+      cursor=Math.min(bestIndex+1,target.length-1);
+    });
+    return mapping;
+  };
+  return [align(left,right),align(right,left)];
+}
+
+function currentComparePosition(content){
+  const turns=content._compareTurns||[...content.querySelectorAll('.compare-turn')];
+  if(!turns.length)return null;
+  const position=content.scrollTop+24;
+  let low=0,high=turns.length-1,current=turns[0];
+  while(low<=high){
+    const middle=(low+high)>>1;
+    if(turns[middle].offsetTop<=position){current=turns[middle];low=middle+1;}
+    else high=middle-1;
+  }
+  const height=Math.max(1,current.offsetHeight);
+  const progress=Math.max(0,Math.min(1,(position-current.offsetTop)/height));
+  return {turn:current,sequence:current.dataset.sequence,progress};
+}
+
+function updateCompareOutline(pane,sequence){
+  const outline=document.querySelector(`.compare-pane[data-pane="${pane}"] .compare-outline`);
+  if(!outline)return;
+  if(outline.dataset.activeSequence===String(sequence))return;
+  outline.dataset.activeSequence=String(sequence);
+  let active=null;
+  outline.querySelectorAll('.outline-item').forEach(button=>{
+    const selected=button.dataset.sequence===String(sequence);
+    button.classList.toggle('active',selected);
+    if(selected)active=button;
+  });
+  if(active)active.scrollIntoView({block:'nearest'});
+}
+
+function updateCompareOutlineFromContent(content){
+  const position=currentComparePosition(content);
+  if(position)updateCompareOutline(content.dataset.pane,position.sequence);
+  return position;
+}
+
+function syncCompareFromContent(source){
+  const position=updateCompareOutlineFromContent(source);
+  if(!position||!compareState.syncScroll||compareState.syncing)return;
+  const sourcePane=Number(source.dataset.pane);
+  const targetPane=sourcePane===0?1:0;
+  const targetSequence=compareState.alignment?.[sourcePane]?.get(position.sequence);
+  const targetContent=document.querySelector(`.compare-content[data-pane="${targetPane}"]`);
+  const target=targetContent?._compareTurnBySequence?.get(String(targetSequence));
+  if(!targetContent||!target)return;
+  compareState.syncing=true;
+  targetContent.scrollTop=Math.max(0,target.offsetTop-24+(target.offsetHeight*position.progress));
+  updateCompareOutline(targetPane,target.dataset.sequence);
+  requestAnimationFrame(()=>{compareState.syncing=false;});
+}
+
+function setCompareSync(enabled){
+  compareState.syncScroll=Boolean(enabled);
+  placeLayoutSwitch();
+  if(compareState.syncScroll){
+    const left=document.querySelector('.compare-content[data-pane="0"]');
+    if(left)syncCompareFromContent(left);
+  }
+}
+
+function bindCompareScroll(){
+  document.querySelectorAll('.compare-content').forEach(source=>{
+    source._compareTurns=[...source.querySelectorAll('.compare-turn')];
+    source._compareTurnBySequence=new Map(source._compareTurns.map(turn=>[turn.dataset.sequence,turn]));
+    let scheduled=false;
+    source.addEventListener('scroll',()=>{
+      if(scheduled)return;
+      scheduled=true;
+      requestAnimationFrame(()=>{
+        scheduled=false;
+        syncCompareFromContent(source);
+      });
+    },{passive:true});
+  });
+}
+
 function renderHome(){
+  if(compareState.mode!=='off')compareState={mode:'off',selected:[],details:[],syncScroll:false,syncing:false,alignment:null};
   currentView='home';activePath='';renderList();
   document.body.classList.remove('layout-one','layout-two','layout-three');
   placeLayoutSwitch();
@@ -521,12 +805,66 @@ async function generateAccessToken(){
   return data.token||'';
 }
 
+function adminTabsHtml(active){
+  return `<div class="admin-tabs"><button id="adminAccessTab" class="${active==='access'?'active':''}">Access Settings</button><button id="adminDeleteTab" class="${active==='delete'?'active':''}">Sessions Delete</button></div>`;
+}
+
+function bindAdminTabs(){
+  document.getElementById('adminAccessTab').onclick=()=>{adminPage='access';renderAccessPage();};
+  document.getElementById('adminDeleteTab').onclick=()=>{adminPage='delete';renderAccessPage();};
+}
+
+function renderSessionDeletePage(){
+  const view=document.getElementById('view');
+  document.getElementById('topTitle').textContent='Sessions Delete';
+  view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Sessions Delete</h1><p>Move parsed Codex or Copilot CLI sources to recoverable trash. VS Code indexed sessions are listed separately because they share state.vscdb.</p></div><div><button id="clearToken">Clear token</button> <button id="backHome">Home</button></div></div>'+adminTabsHtml('delete')+'<div class="access-search-row"><input id="deleteFilter" class="access-filter" placeholder="Search session name, provider, workspace..."></div><div class="delete-grid"><section class="access-box"><h2>Deletable parsed sessions</h2><div class="access-muted">Codex JSONL files and complete Copilot CLI session directories. Delete moves the source to provider trash.</div><div id="deletableSessions" class="delete-list"></div></section><section class="access-box"><h2>VS Code shared index sessions</h2><div class="access-muted">Each row is associated with a concrete indexed session ID, but all rows share workspace state.vscdb files and cannot be deleted independently.</div><div id="sharedIndexSessions" class="delete-list"></div></section></div></div>';
+  bindAdminTabs();
+  document.getElementById('backHome').onclick=()=>renderHome();
+  document.getElementById('clearToken').onclick=()=>{sessionStorage.removeItem('accessToken');accessToken='';location.href=location.pathname;};
+  const renderDeleteLists=()=>{
+    const query=document.getElementById('deleteFilter').value.trim().toLowerCase();
+    const matches=s=>!query||[s.name,s.providerLabel,s.provider,s.workspace,s.sessionId,s.originalName].join(' ').toLowerCase().includes(query);
+    const deletable=sessions.filter(s=>s.canDelete&&matches(s));
+    const shared=sessions.filter(s=>s.provider==='vscode-chat'&&matches(s));
+    const left=document.getElementById('deletableSessions');
+    const right=document.getElementById('sharedIndexSessions');
+    left.textContent='';right.textContent='';
+    if(!deletable.length)left.innerHTML='<div class="delete-empty">No matching deletable sessions.</div>';
+    deletable.forEach(s=>{
+      const row=document.createElement('div');row.className='access-item';
+      row.innerHTML='<div><div class="access-item-title"></div><div class="access-item-meta"></div></div><button type="button" class="session-delete">Delete</button>';
+      row.querySelector('.access-item-title').textContent=s.name;
+      row.querySelector('.access-item-meta').textContent=`${providerBadgeLabel(s)} · ${s.date||'unknown'} · ${s.workspace||s.originalName||''}`;
+      const button=row.querySelector('.session-delete');
+      button.onclick=async()=>{
+        if(!confirm(`Delete "${s.name}" from ${providerBadgeLabel(s)}?\n\nThe source will be moved to a recoverable trash folder.`))return;
+        button.disabled=true;button.textContent='Deleting...';
+        const response=await apiFetch('/api/v2/sessions/'+encodeURIComponent(s.id),{method:'DELETE'});
+        if(!response.ok){const error=await response.json().catch(()=>({}));alert(error.error||'Delete failed');button.disabled=false;button.textContent='Delete';return;}
+        sessions=sessions.filter(item=>item.id!==s.id);
+        renderList();renderDeleteLists();
+      };
+      left.appendChild(row);
+    });
+    if(!shared.length)right.innerHTML='<div class="delete-empty">No matching VS Code indexed sessions.</div>';
+    shared.forEach(s=>{
+      const row=document.createElement('div');row.className='shared-session';
+      row.innerHTML='<div class="access-item-title"></div><div class="access-item-meta"></div>';
+      row.querySelector('.access-item-title').textContent=s.name;
+      row.querySelector('.access-item-meta').textContent=`Session ${s.sessionId||'unknown'} · ${s.workspace||'unknown workspace'} · index only`;
+      right.appendChild(row);
+    });
+  };
+  document.getElementById('deleteFilter').oninput=renderDeleteLists;
+  renderDeleteLists();
+}
+
 async function renderAccessPage(){
   currentView='access';activePath='';renderList();
   document.body.classList.remove('layout-one','layout-two','layout-three');
   placeLayoutSwitch();
   updateTopActions();
-  document.getElementById('topTitle').textContent='Access Settings';
+  document.getElementById('topTitle').textContent=adminPage==='delete'?'Sessions Delete':'Access Settings';
   const access=await fetchAccess();
   if(!access)return;
   accessState=access;
@@ -536,11 +874,17 @@ async function renderAccessPage(){
     document.getElementById('backHome').onclick=()=>renderHome();
     return;
   }
+  if(adminPage==='delete'){
+    renderSessionDeletePage();
+    return;
+  }
   let guestPublicPaths=[...(access.guestPublicPaths||access.publicPaths||[])];
   let tokens=(access.tokens||[]).map(t=>({...t,publicSessions:[...(t.publicSessions||[])]}));
   let selectedKind='guest';
   let selectedIndex=-1;
   view.innerHTML='<div class="access-panel"><div class="access-head"><div><h1>Access Settings</h1><p>Manage guest access and scoped tokens. Select a subject on the left, then assign visible sessions on the right.</p></div><div><button id="clearToken">Clear token</button> <button id="backHome">Home</button></div></div><div class="access-grid"><section class="access-box"><h2>Remote Policy</h2><div class="access-row"><div><div>Remote restriction</div><div class="access-muted">When enabled, remote visitors only see sessions allowed by Guest or their token.</div></div><button id="accessToggle"></button></div><div class="access-row"><span id="accessStatus"></span><span class="access-muted" id="publicCount"></span></div><h2>Subjects</h2><div id="subjectList" class="access-list"></div><div class="access-token"><button id="addToken">New token</button><button id="deleteToken">Delete token</button></div></section><section class="access-box"><h2 id="subjectTitle">Guest access</h2><div id="tokenFields"></div><div class="access-token"><button id="generateToken">Generate token</button></div><div class="access-search-row"><input id="accessFilter" class="access-filter" placeholder="Search sessions..."></div><div class="access-filter-row"><select id="accessCategory" class="access-filter"></select><select id="accessDate" class="access-filter"></select><select id="accessTag" class="access-filter"></select></div><div class="access-bulk"><button id="selectVisible">Select visible</button><button id="unselectVisible">Unselect visible</button><button id="clearAllowed">Clear all</button></div><div id="accessList" class="access-list"></div><div class="access-save-row"><button id="saveAccess" class="access-cta">Save changes</button></div></section></div></div>';
+  view.querySelector('.access-head').insertAdjacentHTML('afterend',adminTabsHtml('access'));
+  bindAdminTabs();
   document.getElementById('backHome').onclick=()=>renderHome();
   document.getElementById('clearToken').onclick=()=>{sessionStorage.removeItem('accessToken');accessToken='';location.href=location.pathname;};
   const status=document.getElementById('accessStatus');
@@ -613,7 +957,7 @@ async function renderAccessPage(){
     visibleSessions.forEach(s=>{
       const row=document.createElement('label');
       row.className='access-item';
-      row.innerHTML='<input type="checkbox"><div><div class="access-item-title"></div><div class="access-item-meta"></div></div><button type="button" class="session-delete"></button>';
+      row.innerHTML='<input type="checkbox"><div><div class="access-item-title"></div><div class="access-item-meta"></div></div>';
       const input=row.querySelector('input');
       input.checked=publicSet.has(s.path);
       input.onchange=()=>{
@@ -625,28 +969,6 @@ async function renderAccessPage(){
       };
       row.querySelector('.access-item-title').textContent=s.name;
       row.querySelector('.access-item-meta').textContent=`${providerBadgeLabel(s)} · ${s.date||'unknown'} · ${s.category||'Uncategorized'} · ${s.originalName}`;
-      const deleteBtn=row.querySelector('.session-delete');
-      deleteBtn.textContent=s.canDelete?'Delete':'Shared index';
-      deleteBtn.disabled=!s.canDelete;
-      deleteBtn.title=s.canDelete?'Move this parsed session source to the recoverable trash':'VS Code sessions share one index database and cannot be deleted individually';
-      deleteBtn.onclick=async ev=>{
-        ev.preventDefault();ev.stopPropagation();
-        if(!s.canDelete)return;
-        const source=providerBadgeLabel(s);
-        if(!confirm(`Delete "${s.name}" from ${source}?\n\nThe source will be moved to a recoverable trash folder.`))return;
-        deleteBtn.disabled=true;deleteBtn.textContent='Deleting...';
-        const response=await apiFetch('/api/v2/sessions/'+encodeURIComponent(s.id),{method:'DELETE'});
-        if(!response.ok){
-          const error=await response.json().catch(()=>({}));
-          alert(error.error||'Delete failed');
-          deleteBtn.disabled=false;deleteBtn.textContent='Delete';
-          return;
-        }
-        sessions=sessions.filter(item=>item.id!==s.id);
-        guestPublicPaths=guestPublicPaths.filter(path=>path!==s.path&&path!==s.id);
-        tokens.forEach(token=>token.publicSessions=(token.publicSessions||[]).filter(path=>path!==s.path&&path!==s.id));
-        renderList();renderSubjects();renderEditor();renderPublicList();
-      };
       root.appendChild(row);
     });
     root.dataset.visiblePaths=JSON.stringify(visibleSessions.map(s=>s.path));
@@ -1123,15 +1445,16 @@ async function addRelation(path){
 
 document.getElementById('themeToggle').onclick=()=>{const next=document.body.dataset.theme==='light'?'dark':'light';document.body.dataset.theme=next;localStorage.setItem('viewerTheme',next);updateThemeButton();};
 document.getElementById('sideClose').onclick=()=>{
-  if(currentView==='detail')applyLayout(layoutMode==='three'?'two':'one');
+  if(currentView==='detail'||currentView==='compare')applyLayout(layoutMode==='three'?'two':'one');
   else document.body.classList.add('sidebar-collapsed');
 };
 document.getElementById('sideOpen').onclick=()=>{
-  if(currentView==='detail')applyLayout(layoutMode==='one'?'two':'three');
+  if(currentView==='detail'||currentView==='compare')applyLayout(layoutMode==='one'?'two':'three');
   else document.body.classList.remove('sidebar-collapsed');
 };
 document.getElementById('homeBtn').onclick=()=>renderHome();
-document.getElementById('adminBtn').onclick=()=>renderAccessPage();
+document.getElementById('compareBtn').onclick=()=>compareState.mode==='off'?startCompareMode():exitCompareMode();
+document.getElementById('adminBtn').onclick=()=>{compareState={mode:'off',selected:[],details:[],syncScroll:false,syncing:false,alignment:null};renderAccessPage();};
 document.getElementById('searchBtn').onclick=()=>openSearch();
 document.getElementById('searchClose').onclick=()=>closeSearch();
 document.getElementById('searchModal').onclick=(ev)=>{if(ev.target.id==='searchModal')closeSearch();};
@@ -1154,6 +1477,7 @@ document.addEventListener('keydown',(ev)=>{
   if(ev.key==='Escape'){closeSearch();closeRelationPicker();closeTagEditor();}
 });
 updateThemeButton();
+applyContentWidth(contentWidthMode);
 applyLayout(layoutMode);
 loadList({renderHome:location.pathname!=='/admin'}).then(()=>{if(location.pathname==='/admin')renderAccessPage();});
 </script>

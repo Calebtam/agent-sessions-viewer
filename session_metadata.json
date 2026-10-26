@@ -216,6 +216,15 @@
   "2026/08/27/rollout-2026-08-27T16-36-22-01a0425c-f057-7082-b843-90f41547e556.jsonl": {
     "name": "global_mapping3"
   },
+  "2026/10/09/rollout-2026-10-09T15-13-54-01a11f82-dfdc-7d70-a5d4-4a799d000ea0.jsonl": {
+    "name": "什么模型"
+  },
+  "2026/10/12/rollout-2026-10-12T09-30-15-01a12dbb-5c09-7d91-b9e0-119539f2078c.jsonl": {
+    "name": "获取repo仓库拉取列表"
+  },
+  "2026/10/23/rollout-2026-10-23T14-59-01-01a1678e-4c85-7213-bfd5-29117d7dc1bf.jsonl": {
+    "name": "Agent-Viewer-Dev"
+  },
   "_access": {
     "publicSessions": [
       "2026/06/12/rollout-2026-06-12T14-36-29-019eba8b-e15f-7712-9000-ff1addd6a8ec.jsonl"
@@ -247,5 +256,23 @@
     "Deep",
     "-other",
     "Perception - fastDEM"
-  ]
+  ],
+  "copilot-cli:MzgzMWMyMzYtMjQ1ZC00NTQyLTliYzEtZGNmOGQ4YzFhMzhj": {
+    "name": "建图异常-楼层塌缩-室内检测失败"
+  },
+  "copilot-cli:NDU5NzljNGMtMmY0NS00NTkyLTg4ZmUtMWUwZTczZjNiZTQw": {
+    "name": "地图wiki -  1"
+  },
+  "copilot-cli:OTg1NmI2ZmEtMWNhYi00NzE0LTg2NjEtZDI0NDE5ZDBmYzkz": {
+    "name": "地图wiki - 3"
+  },
+  "copilot-cli:OWQwNGQ4MjItZGU0Ny00MWNmLTk4NDEtYTVjN2UwZWUzMTlk": {
+    "name": "建图失败-未完成建图-doorway构建失败"
+  },
+  "copilot-cli:YzZlNDRiZjctZDExMS00YTRmLTliN2QtZmRmZjY3YWQ0OGM1": {
+    "name": "地图wiki - 2"
+  },
+  "copilot-cli:ZTQyNThlMjItNDYzOS00NDNjLTk0NmItYmMxYTViYzcwNWQy": {
+    "name": "建图运行异常-dds通信未打通"
+  }
 }

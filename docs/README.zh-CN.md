@@ -19,6 +19,10 @@
 - [P0/P1 基线与诊断记录](p0-p1-baseline.zh-CN.md)
 - [P2 VS Code Chat 索引集成记录](p2-index-integration.zh-CN.md)
 - [P0–P2 实施与调查运行手册](p0-p2-playbook.zh-CN.md)
+- [前端可回退功能开关](前端可回退功能开关.md)
+  - Sessions 来源圆点和 Agent 内容宽度模式的 feature gate、搜索锚点与撤销步骤。
+- [Session 双栏对比功能](Session双栏对比功能.md)
+  - 两阶段会话选择、1/2/3 column 映射、双 Outline 和按序号同步滚动。
 
 ## 可复用脚本
 
